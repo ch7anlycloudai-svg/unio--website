@@ -26,31 +26,53 @@ const app = express();
 // MIDDLEWARE
 // ======================
 
+// CORS configuration - in production, same-origin requests don't need CORS
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',')
+    : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5500', 'http://127.0.0.1:5500'];
+
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5500', 'http://127.0.0.1:5500'],
+    origin: function(origin, callback) {
+        // Allow requests with no origin (same-origin, mobile apps, etc.)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'production') {
+            callback(null, true);
+        } else {
+            callback(null, true); // Allow all in development
+        }
+    },
     credentials: true
 }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 app.use(session({
     secret: process.env.SESSION_SECRET || 'mauritania-union-secret-key-change-in-production',
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false,
+        secure: isProduction, // Use secure cookies in production (HTTPS)
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000
-    }
+        maxAge: 24 * 60 * 60 * 1000,
+        sameSite: isProduction ? 'strict' : 'lax'
+    },
+    proxy: isProduction // Trust the reverse proxy in production
 }));
+
+// Trust proxy in production (Hostinger uses reverse proxy)
+if (isProduction) {
+    app.set('trust proxy', 1);
+}
 
 // ======================
 // STATIC FILES
 // ======================
 
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
-app.use('/admin', express.static(path.join(__dirname, '..', 'admin')));
+app.use('/admin', express.static(path.join(__dirname, 'admin')));
 
 // ======================
 // API ROUTES
@@ -75,15 +97,15 @@ pages.forEach(page => {
 });
 
 app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'admin', 'index.html'));
+    res.sendFile(path.join(__dirname, 'admin', 'index.html'));
 });
 
 app.get('/admin/*', (req, res) => {
     const adminPage = req.path.replace('/admin/', '').replace('/admin', '');
     const htmlFile = adminPage ? `${adminPage}.html` : 'index.html';
-    res.sendFile(path.join(__dirname, '..', 'admin', htmlFile), (err) => {
+    res.sendFile(path.join(__dirname, 'admin', htmlFile), (err) => {
         if (err) {
-            res.sendFile(path.join(__dirname, '..', 'admin', 'index.html'));
+            res.sendFile(path.join(__dirname, 'admin', 'index.html'));
         }
     });
 });

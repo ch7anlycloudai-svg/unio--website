@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلبات العضوية - لوحة التحكم</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>لوحة التحكم</h2>
+            <p>اتحاد الطلبة</p>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">
+                <span class="nav-icon">📊</span>
+                <span>الرئيسية</span>
+            </a>
+            <a href="news.html" class="nav-item">
+                <span class="nav-icon">📰</span>
+                <span>الأخبار</span>
+            </a>
+            <a href="messages.html" class="nav-item">
+                <span class="nav-icon">✉️</span>
+                <span>الرسائل</span>
+            </a>
+            <a href="memberships.html" class="nav-item active">
+                <span class="nav-icon">👥</span>
+                <span>طلبات العضوية</span>
+            </a>
+            <a href="pages.html" class="nav-item">
+                <span class="nav-icon">📄</span>
+                <span>محتوى الصفحات</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="/" class="nav-item">
+                <span class="nav-icon">🌐</span>
+                <span>الموقع الرئيسي</span>
+            </a>
+            <button onclick="logout()" class="nav-item logout-btn">
+                <span class="nav-icon">🚪</span>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="content-header">
+            <div class="header-title">
+                <h1>طلبات العضوية</h1>
+                <p>مراجعة وإدارة طلبات الانضمام للاتحاد</p>
+            </div>
+        </header>
+
+        <!-- Stats -->
+        <div class="mini-stats">
+            <div class="mini-stat">
+                <span class="mini-stat-value" id="totalCount">0</span>
+                <span class="mini-stat-label">إجمالي الطلبات</span>
+            </div>
+            <div class="mini-stat pending">
+                <span class="mini-stat-value" id="pendingCount">0</span>
+                <span class="mini-stat-label">قيد الانتظار</span>
+            </div>
+            <div class="mini-stat approved">
+                <span class="mini-stat-value" id="approvedCount">0</span>
+                <span class="mini-stat-label">مقبول</span>
+            </div>
+            <div class="mini-stat rejected">
+                <span class="mini-stat-value" id="rejectedCount">0</span>
+                <span class="mini-stat-label">مرفوض</span>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterMemberships('all')">الكل</button>
+            <button class="filter-tab" onclick="filterMemberships('pending')">قيد الانتظار</button>
+            <button class="filter-tab" onclick="filterMemberships('approved')">مقبول</button>
+            <button class="filter-tab" onclick="filterMemberships('rejected')">مرفوض</button>
+        </div>
+
+        <!-- Memberships List -->
+        <div class="data-table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>الجامعة</th>
+                        <th>التخصص</th>
+                        <th>المستوى</th>
+                        <th>الحالة</th>
+                        <th>التاريخ</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="membershipsTableBody">
+                    <tr>
+                        <td colspan="7" class="loading">جاري التحميل...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- View Details Modal -->
+    <div id="detailsModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تفاصيل طلب العضوية</h2>
+                <button onclick="closeDetailsModal()" class="close-btn">&times;</button>
+            </div>
+            <div id="membershipDetails" class="membership-details">
+                <!-- Details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal" style="display: none;">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>تأكيد الحذف</h2>
+                <button onclick="closeDeleteModal()" class="close-btn">&times;</button>
+            </div>
+            <p>هل أنت متأكد من حذف هذا الطلب؟</p>
+            <p class="warning-text">لا يمكن التراجع عن هذا الإجراء!</p>
+            <div class="modal-actions">
+                <button onclick="closeDeleteModal()" class="btn btn-secondary">إلغاء</button>
+                <button onclick="confirmDelete()" class="btn btn-danger">حذف</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+    <script>
+        // Require authentication
+        requireAuth();
+
+        let allMemberships = [];
+        let currentFilter = 'all';
+        let membershipToDelete = null;
+
+        // Load on page load
+        loadStats();
+        loadMemberships();
+
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/memberships/stats', { credentials: 'include' });
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('totalCount').textContent = data.data.total;
+                    document.getElementById('pendingCount').textContent = data.data.pending;
+                    document.getElementById('approvedCount').textContent = data.data.approved;
+                    document.getElementById('rejectedCount').textContent = data.data.rejected;
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        async function loadMemberships() {
+            try {
+                const response = await fetch('/api/memberships', { credentials: 'include' });
+                const data = await response.json();
+
+                if (data.success) {
+                    allMemberships = data.data;
+                    renderMemberships();
+                }
+            } catch (error) {
+                console.error('Error loading memberships:', error);
+                document.getElementById('membershipsTableBody').innerHTML =
+                    '<tr><td colspan="7" class="error">حدث خطأ في تحميل الطلبات</td></tr>';
+            }
+        }
+
+        function filterMemberships(filter) {
+            currentFilter = filter;
+
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            renderMemberships();
+        }
+
+        function renderMemberships() {
+            const tbody = document.getElementById('membershipsTableBody');
+            let filtered = allMemberships;
+
+            if (currentFilter !== 'all') {
+                filtered = allMemberships.filter(m => m.status === currentFilter);
+            }
+
+            if (filtered.length > 0) {
+                tbody.innerHTML = filtered.map(m => `
+                    <tr>
+                        <td>
+                            <strong>${escapeHtml(m.full_name)}</strong>
+                            <p class="subtitle">${escapeHtml(m.email)}</p>
+                        </td>
+                        <td>${escapeHtml(m.university)}</td>
+                        <td>${escapeHtml(m.major)}</td>
+                        <td>${escapeHtml(m.academic_level)}</td>
+                        <td>
+                            <span class="status-badge ${m.status}">
+                                ${getStatusLabel(m.status)}
+                            </span>
+                        </td>
+                        <td>${formatDate(m.created_at)}</td>
+                        <td class="actions">
+                            <button onclick="viewDetails(${m.id})" class="btn-icon" title="عرض التفاصيل">👁️</button>
+                            ${m.status === 'pending' ? `
+                                <button onclick="updateStatus(${m.id}, 'approved')" class="btn-icon success" title="قبول">✅</button>
+                                <button onclick="updateStatus(${m.id}, 'rejected')" class="btn-icon danger" title="رفض">❌</button>
+                            ` : ''}
+                            <button onclick="deleteMembership(${m.id})" class="btn-icon danger" title="حذف">🗑️</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty">لا توجد طلبات</td></tr>';
+            }
+        }
+
+        function getStatusLabel(status) {
+            const labels = {
+                'pending': 'قيد الانتظار',
+                'approved': 'مقبول',
+                'rejected': 'مرفوض'
+            };
+            return labels[status] || status;
+        }
+
+        async function viewDetails(id) {
+            const membership = allMemberships.find(m => m.id === id);
+            if (!membership) return;
+
+            const detailsDiv = document.getElementById('membershipDetails');
+            detailsDiv.innerHTML = `
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">الاسم الكامل</span>
+                        <span class="detail-value">${escapeHtml(membership.full_name)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">البريد الإلكتروني</span>
+                        <span class="detail-value">
+                            <a href="mailto:${escapeHtml(membership.email)}">${escapeHtml(membership.email)}</a>
+                        </span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">الهاتف</span>
+                        <span class="detail-value">
+                            <a href="tel:${escapeHtml(membership.phone)}">${escapeHtml(membership.phone)}</a>
+                        </span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">الجامعة</span>
+                        <span class="detail-value">${escapeHtml(membership.university)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">التخصص</span>
+                        <span class="detail-value">${escapeHtml(membership.major)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">المستوى الأكاديمي</span>
+                        <span class="detail-value">${escapeHtml(membership.academic_level)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">الولاية</span>
+                        <span class="detail-value">${escapeHtml(membership.wilaya)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">الحالة</span>
+                        <span class="detail-value">
+                            <span class="status-badge ${membership.status}">${getStatusLabel(membership.status)}</span>
+                        </span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">تاريخ التقديم</span>
+                        <span class="detail-value">${formatDate(membership.created_at)}</span>
+                    </div>
+                </div>
+
+                ${membership.status === 'pending' ? `
+                <div class="detail-actions">
+                    <button onclick="updateStatus(${membership.id}, 'approved'); closeDetailsModal();" class="btn btn-success">قبول الطلب</button>
+                    <button onclick="updateStatus(${membership.id}, 'rejected'); closeDetailsModal();" class="btn btn-danger">رفض الطلب</button>
+                </div>
+                ` : ''}
+            `;
+
+            document.getElementById('detailsModal').style.display = 'flex';
+        }
+
+        function closeDetailsModal() {
+            document.getElementById('detailsModal').style.display = 'none';
+        }
+
+        async function updateStatus(id, status) {
+            try {
+                const response = await fetch(`/api/memberships/${id}/status`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ status })
+                });
+
+                if (response.ok) {
+                    loadStats();
+                    loadMemberships();
+                }
+            } catch (error) {
+                console.error('Error updating status:', error);
+            }
+        }
+
+        function deleteMembership(id) {
+            membershipToDelete = id;
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+            membershipToDelete = null;
+        }
+
+        async function confirmDelete() {
+            if (!membershipToDelete) return;
+
+            try {
+                const response = await fetch(`/api/memberships/${membershipToDelete}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                if (response.ok) {
+                    closeDeleteModal();
+                    loadStats();
+                    loadMemberships();
+                }
+            } catch (error) {
+                console.error('Error deleting membership:', error);
+            }
+        }
+    </script>
+</body>
+</html>

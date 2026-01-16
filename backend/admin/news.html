@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الأخبار - لوحة التحكم</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>لوحة التحكم</h2>
+            <p>اتحاد الطلبة</p>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">
+                <span class="nav-icon">📊</span>
+                <span>الرئيسية</span>
+            </a>
+            <a href="news.html" class="nav-item active">
+                <span class="nav-icon">📰</span>
+                <span>الأخبار</span>
+            </a>
+            <a href="messages.html" class="nav-item">
+                <span class="nav-icon">✉️</span>
+                <span>الرسائل</span>
+            </a>
+            <a href="memberships.html" class="nav-item">
+                <span class="nav-icon">👥</span>
+                <span>طلبات العضوية</span>
+            </a>
+            <a href="pages.html" class="nav-item">
+                <span class="nav-icon">📄</span>
+                <span>محتوى الصفحات</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="/" class="nav-item">
+                <span class="nav-icon">🌐</span>
+                <span>الموقع الرئيسي</span>
+            </a>
+            <button onclick="logout()" class="nav-item logout-btn">
+                <span class="nav-icon">🚪</span>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="content-header">
+            <div class="header-title">
+                <h1>إدارة الأخبار</h1>
+                <p>إضافة وتعديل وحذف الأخبار والإعلانات</p>
+            </div>
+            <button onclick="showNewsModal()" class="btn btn-primary">
+                <span>➕</span> إضافة خبر جديد
+            </button>
+        </header>
+
+        <!-- News List -->
+        <div class="data-table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>العنوان</th>
+                        <th>التصنيف</th>
+                        <th>الحالة</th>
+                        <th>التاريخ</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="newsTableBody">
+                    <tr>
+                        <td colspan="5" class="loading">جاري التحميل...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- News Modal -->
+    <div id="newsModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">إضافة خبر جديد</h2>
+                <button onclick="closeNewsModal()" class="close-btn">&times;</button>
+            </div>
+
+            <form id="newsForm">
+                <input type="hidden" id="newsId">
+
+                <div class="form-group">
+                    <label for="newsTitle">عنوان الخبر *</label>
+                    <input type="text" id="newsTitle" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="newsContent">المحتوى *</label>
+                    <textarea id="newsContent" rows="6" required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newsCategory">التصنيف</label>
+                        <select id="newsCategory">
+                            <option value="news">أخبار</option>
+                            <option value="event">فعاليات</option>
+                            <option value="announcement">إعلانات</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newsLocation">المكان (اختياري)</label>
+                        <input type="text" id="newsLocation">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="newsImage">رابط الصورة (اختياري)</label>
+                    <input type="url" id="newsImage" placeholder="https://example.com/image.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="newsPublished" checked>
+                        <span>نشر الخبر</span>
+                    </label>
+                </div>
+
+                <div id="newsFormError" class="error-message" style="display: none;"></div>
+
+                <div class="modal-actions">
+                    <button type="button" onclick="closeNewsModal()" class="btn btn-secondary">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal" style="display: none;">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>تأكيد الحذف</h2>
+                <button onclick="closeDeleteModal()" class="close-btn">&times;</button>
+            </div>
+            <p>هل أنت متأكد من حذف هذا الخبر؟</p>
+            <p class="warning-text">لا يمكن التراجع عن هذا الإجراء!</p>
+            <div class="modal-actions">
+                <button onclick="closeDeleteModal()" class="btn btn-secondary">إلغاء</button>
+                <button onclick="confirmDelete()" class="btn btn-danger">حذف</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+    <script>
+        // Require authentication
+        requireAuth();
+
+        let newsToDelete = null;
+
+        // Load news on page load
+        loadNews();
+
+        async function loadNews() {
+            try {
+                const response = await fetch('/api/news/all', { credentials: 'include' });
+                const data = await response.json();
+
+                const tbody = document.getElementById('newsTableBody');
+
+                if (data.success && data.data.length > 0) {
+                    tbody.innerHTML = data.data.map(news => `
+                        <tr>
+                            <td>
+                                <strong>${escapeHtml(news.title)}</strong>
+                                <p class="subtitle">${escapeHtml(news.content.substring(0, 100))}...</p>
+                            </td>
+                            <td>
+                                <span class="badge badge-${getCategoryClass(news.category)}">
+                                    ${getCategoryLabel(news.category)}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="status-badge ${news.published ? 'published' : 'draft'}">
+                                    ${news.published ? 'منشور' : 'مسودة'}
+                                </span>
+                            </td>
+                            <td>${formatDate(news.created_at)}</td>
+                            <td class="actions">
+                                <button onclick="editNews(${news.id})" class="btn-icon" title="تعديل">✏️</button>
+                                <button onclick="togglePublish(${news.id})" class="btn-icon" title="${news.published ? 'إلغاء النشر' : 'نشر'}">
+                                    ${news.published ? '📤' : '📥'}
+                                </button>
+                                <button onclick="deleteNews(${news.id})" class="btn-icon danger" title="حذف">🗑️</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="5" class="empty">لا توجد أخبار</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error loading news:', error);
+                document.getElementById('newsTableBody').innerHTML =
+                    '<tr><td colspan="5" class="error">حدث خطأ في تحميل الأخبار</td></tr>';
+            }
+        }
+
+        function getCategoryLabel(category) {
+            const labels = {
+                'news': 'أخبار',
+                'event': 'فعاليات',
+                'announcement': 'إعلانات'
+            };
+            return labels[category] || category;
+        }
+
+        function getCategoryClass(category) {
+            const classes = {
+                'news': 'primary',
+                'event': 'success',
+                'announcement': 'warning'
+            };
+            return classes[category] || 'primary';
+        }
+
+        function showNewsModal(newsData = null) {
+            const modal = document.getElementById('newsModal');
+            const title = document.getElementById('modalTitle');
+            const form = document.getElementById('newsForm');
+
+            if (newsData) {
+                title.textContent = 'تعديل الخبر';
+                document.getElementById('newsId').value = newsData.id;
+                document.getElementById('newsTitle').value = newsData.title;
+                document.getElementById('newsContent').value = newsData.content;
+                document.getElementById('newsCategory').value = newsData.category;
+                document.getElementById('newsLocation').value = newsData.location || '';
+                document.getElementById('newsImage').value = newsData.image_url || '';
+                document.getElementById('newsPublished').checked = newsData.published;
+            } else {
+                title.textContent = 'إضافة خبر جديد';
+                form.reset();
+                document.getElementById('newsId').value = '';
+                document.getElementById('newsPublished').checked = true;
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeNewsModal() {
+            document.getElementById('newsModal').style.display = 'none';
+            document.getElementById('newsFormError').style.display = 'none';
+        }
+
+        async function editNews(id) {
+            try {
+                const response = await fetch(`/api/news/${id}`, { credentials: 'include' });
+                const data = await response.json();
+
+                if (data.success) {
+                    showNewsModal(data.data);
+                }
+            } catch (error) {
+                console.error('Error fetching news:', error);
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('newsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const id = document.getElementById('newsId').value;
+            const newsData = {
+                title: document.getElementById('newsTitle').value,
+                content: document.getElementById('newsContent').value,
+                category: document.getElementById('newsCategory').value,
+                location: document.getElementById('newsLocation').value || null,
+                image_url: document.getElementById('newsImage').value || null,
+                published: document.getElementById('newsPublished').checked ? 1 : 0
+            };
+
+            const errorDiv = document.getElementById('newsFormError');
+            errorDiv.style.display = 'none';
+
+            try {
+                const url = id ? `/api/news/${id}` : '/api/news';
+                const method = id ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(newsData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    closeNewsModal();
+                    loadNews();
+                } else {
+                    errorDiv.textContent = data.message;
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                errorDiv.textContent = 'حدث خطأ في حفظ الخبر';
+                errorDiv.style.display = 'block';
+            }
+        });
+
+        async function togglePublish(id) {
+            try {
+                const response = await fetch(`/api/news/${id}/toggle-publish`, {
+                    method: 'PATCH',
+                    credentials: 'include'
+                });
+
+                if (response.ok) {
+                    loadNews();
+                }
+            } catch (error) {
+                console.error('Error toggling publish:', error);
+            }
+        }
+
+        function deleteNews(id) {
+            newsToDelete = id;
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+            newsToDelete = null;
+        }
+
+        async function confirmDelete() {
+            if (!newsToDelete) return;
+
+            try {
+                const response = await fetch(`/api/news/${newsToDelete}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                if (response.ok) {
+                    closeDeleteModal();
+                    loadNews();
+                }
+            } catch (error) {
+                console.error('Error deleting news:', error);
+            }
+        }
+
+        // Check for action parameter (e.g., ?action=new)
+        if (new URLSearchParams(window.location.search).get('action') === 'new') {
+            showNewsModal();
+        }
+    </script>
+</body>
+</html>

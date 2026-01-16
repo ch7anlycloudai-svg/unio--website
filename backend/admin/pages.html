@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محتوى الصفحات - لوحة التحكم</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>لوحة التحكم</h2>
+            <p>اتحاد الطلبة</p>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">
+                <span class="nav-icon">📊</span>
+                <span>الرئيسية</span>
+            </a>
+            <a href="news.html" class="nav-item">
+                <span class="nav-icon">📰</span>
+                <span>الأخبار</span>
+            </a>
+            <a href="messages.html" class="nav-item">
+                <span class="nav-icon">✉️</span>
+                <span>الرسائل</span>
+            </a>
+            <a href="memberships.html" class="nav-item">
+                <span class="nav-icon">👥</span>
+                <span>طلبات العضوية</span>
+            </a>
+            <a href="pages.html" class="nav-item active">
+                <span class="nav-icon">📄</span>
+                <span>محتوى الصفحات</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="/" class="nav-item">
+                <span class="nav-icon">🌐</span>
+                <span>الموقع الرئيسي</span>
+            </a>
+            <button onclick="logout()" class="nav-item logout-btn">
+                <span class="nav-icon">🚪</span>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="content-header">
+            <div class="header-title">
+                <h1>محتوى الصفحات</h1>
+                <p>تعديل النصوص والمحتوى في جميع صفحات الموقع</p>
+            </div>
+        </header>
+
+        <!-- Page Tabs -->
+        <div class="page-tabs">
+            <button class="page-tab active" onclick="selectPage('home')" data-page="home">
+                <span>🏠</span> الرئيسية
+            </button>
+            <button class="page-tab" onclick="selectPage('about')" data-page="about">
+                <span>ℹ️</span> من نحن
+            </button>
+            <button class="page-tab" onclick="selectPage('guide')" data-page="guide">
+                <span>📖</span> دليل الطالب
+            </button>
+            <button class="page-tab" onclick="selectPage('programs')" data-page="programs">
+                <span>🎓</span> التخصصات
+            </button>
+            <button class="page-tab" onclick="selectPage('services')" data-page="services">
+                <span>🛠️</span> الخدمات
+            </button>
+            <button class="page-tab" onclick="selectPage('contact')" data-page="contact">
+                <span>📞</span> التواصل
+            </button>
+        </div>
+
+        <!-- Page Content Editor -->
+        <div class="page-editor">
+            <div class="editor-header">
+                <h2 id="currentPageTitle">محتوى الصفحة الرئيسية</h2>
+                <div class="editor-actions">
+                    <a id="previewLink" href="/" target="_blank" class="btn btn-secondary">
+                        <span>👁️</span> معاينة الصفحة
+                    </a>
+                    <button onclick="saveAllChanges()" class="btn btn-primary">
+                        <span>💾</span> حفظ جميع التغييرات
+                    </button>
+                </div>
+            </div>
+
+            <div id="sectionsContainer" class="sections-container">
+                <p class="loading">جاري التحميل...</p>
+            </div>
+        </div>
+
+        <!-- Success/Error Messages -->
+        <div id="saveMessage" class="save-message" style="display: none;"></div>
+    </main>
+
+    <script src="js/admin.js"></script>
+    <script>
+        // Require authentication
+        requireAuth();
+
+        let currentPage = 'home';
+        let pageContent = {};
+        let hasChanges = false;
+
+        const pageTitles = {
+            'home': 'الصفحة الرئيسية',
+            'about': 'من نحن',
+            'guide': 'دليل الطالب',
+            'programs': 'التخصصات',
+            'services': 'الخدمات',
+            'contact': 'التواصل'
+        };
+
+        const pageUrls = {
+            'home': '/',
+            'about': '/about',
+            'guide': '/guide',
+            'programs': '/programs',
+            'services': '/services',
+            'contact': '/contact'
+        };
+
+        // Load initial page
+        loadPageContent('home');
+
+        function selectPage(pageName) {
+            // Check for unsaved changes
+            if (hasChanges) {
+                if (!confirm('لديك تغييرات غير محفوظة. هل تريد المتابعة بدون حفظ؟')) {
+                    return;
+                }
+            }
+
+            currentPage = pageName;
+            hasChanges = false;
+
+            // Update active tab
+            document.querySelectorAll('.page-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[data-page="${pageName}"]`).classList.add('active');
+
+            // Update title and preview link
+            document.getElementById('currentPageTitle').textContent = `محتوى صفحة ${pageTitles[pageName]}`;
+            document.getElementById('previewLink').href = pageUrls[pageName];
+
+            // Load content
+            loadPageContent(pageName);
+        }
+
+        async function loadPageContent(pageName) {
+            const container = document.getElementById('sectionsContainer');
+            container.innerHTML = '<p class="loading">جاري التحميل...</p>';
+
+            try {
+                const response = await fetch(`/api/pages/${pageName}`, { credentials: 'include' });
+                const data = await response.json();
+
+                if (data.success) {
+                    pageContent = data.data;
+                    renderSections();
+                } else {
+                    container.innerHTML = '<p class="error">حدث خطأ في تحميل المحتوى</p>';
+                }
+            } catch (error) {
+                console.error('Error loading page content:', error);
+                container.innerHTML = '<p class="error">حدث خطأ في الاتصال بالخادم</p>';
+            }
+        }
+
+        function renderSections() {
+            const container = document.getElementById('sectionsContainer');
+            const sections = Object.entries(pageContent);
+
+            if (sections.length === 0) {
+                container.innerHTML = '<p class="empty">لا يوجد محتوى قابل للتعديل في هذه الصفحة</p>';
+                return;
+            }
+
+            container.innerHTML = sections.map(([sectionId, section]) => `
+                <div class="section-editor" data-section="${sectionId}">
+                    <div class="section-header">
+                        <h3>${escapeHtml(section.title || sectionId)}</h3>
+                        <span class="section-id">${sectionId}</span>
+                    </div>
+                    <div class="section-body">
+                        ${section.type === 'html' ? `
+                            <textarea
+                                class="section-content"
+                                data-section="${sectionId}"
+                                rows="4"
+                                onchange="markChanged()"
+                            >${escapeHtml(section.content)}</textarea>
+                            <p class="hint">يدعم HTML للتنسيق</p>
+                        ` : `
+                            <input
+                                type="text"
+                                class="section-content"
+                                data-section="${sectionId}"
+                                value="${escapeHtml(section.content)}"
+                                onchange="markChanged()"
+                            >
+                        `}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function markChanged() {
+            hasChanges = true;
+        }
+
+        async function saveAllChanges() {
+            const sections = [];
+            const inputs = document.querySelectorAll('.section-content');
+
+            inputs.forEach(input => {
+                const sectionId = input.dataset.section;
+                sections.push({
+                    section_id: sectionId,
+                    content: input.value
+                });
+            });
+
+            const messageDiv = document.getElementById('saveMessage');
+            messageDiv.style.display = 'block';
+            messageDiv.className = 'save-message loading';
+            messageDiv.textContent = 'جاري الحفظ...';
+
+            try {
+                const response = await fetch(`/api/pages/${currentPage}/bulk`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ sections })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    messageDiv.className = 'save-message success';
+                    messageDiv.textContent = 'تم حفظ التغييرات بنجاح!';
+                    hasChanges = false;
+
+                    // Hide message after 3 seconds
+                    setTimeout(() => {
+                        messageDiv.style.display = 'none';
+                    }, 3000);
+                } else {
+                    messageDiv.className = 'save-message error';
+                    messageDiv.textContent = data.message || 'حدث خطأ في حفظ التغييرات';
+                }
+            } catch (error) {
+                console.error('Error saving changes:', error);
+                messageDiv.className = 'save-message error';
+                messageDiv.textContent = 'حدث خطأ في الاتصال بالخادم';
+            }
+        }
+
+        // Warn before leaving with unsaved changes
+        window.addEventListener('beforeunload', (e) => {
+            if (hasChanges) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    </script>
+</body>
+</html>

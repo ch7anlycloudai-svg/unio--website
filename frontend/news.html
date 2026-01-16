@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="آخر أخبار وفعاليات اتحاد الطلبة الموريتانيين بالجزائر">
+    <title>الأخبار والفعاليات - اتحاد الطلبة الموريتانيين بالجزائر</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header__container">
+            <a href="index.html" class="header__logo">
+                <img src="assets/images/logo.png" alt="شعار اتحاد الطلبة الموريتانيين" onerror="this.style.display='none'">
+                <span class="header__logo-text">اتحاد الطلبة الموريتانيين</span>
+            </a>
+
+            <nav class="nav" id="mainNav">
+                <button class="nav__toggle" id="navToggle" aria-label="القائمة">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link">الرئيسية</a></li>
+                    <li><a href="about.html" class="nav__link">من نحن</a></li>
+                    <li><a href="news.html" class="nav__link nav__link--active">الأخبار</a></li>
+                    <li><a href="guide.html" class="nav__link">دليل الطالب</a></li>
+                    <li><a href="programs.html" class="nav__link">البرامج الأكاديمية</a></li>
+                    <li><a href="services.html" class="nav__link">الخدمات</a></li>
+                    <li><a href="contact.html" class="nav__link">اتصل بنا</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-header__title">الأخبار والفعاليات</h1>
+                <p class="page-header__breadcrumb">
+                    <a href="index.html">الرئيسية</a> / الأخبار والفعاليات
+                </p>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section class="section section--white">
+            <div class="container">
+                <!-- Filter Tabs -->
+                <div class="filter-tabs" id="newsFilter">
+                    <button class="filter-tab filter-tab--active" data-filter="all">الكل</button>
+                    <button class="filter-tab" data-filter="news">أخبار</button>
+                    <button class="filter-tab" data-filter="events">فعاليات</button>
+                    <button class="filter-tab" data-filter="announcements">إعلانات</button>
+                </div>
+
+                <!-- News Grid -->
+                <div class="card-grid" id="newsGrid">
+                    <!-- News Item 1 -->
+                    <article class="card" data-category="news">
+                        <div class="card__body">
+                            <span class="card__tag">أخبار</span>
+                            <h3 class="card__title">اجتماع الجمعية العامة السنوي</h3>
+                            <p class="card__text">
+                                يسر اتحاد الطلبة الموريتانيين دعوتكم لحضور الاجتماع السنوي للجمعية العامة الذي سيعقد في قاعة المحاضرات الكبرى بجامعة الجزائر. سيتم خلال هذا الاجتماع مناقشة التقرير السنوي وانتخاب المكتب التنفيذي الجديد.
+                            </p>
+                            <div class="card__meta">
+                                <span>📅 10 يناير 2026</span>
+                                <span>📍 جامعة الجزائر</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- News Item 2 -->
+                    <article class="card" data-category="events">
+                        <div class="card__body">
+                            <span class="card__tag" style="background-color: var(--color-accent); color: var(--color-text-dark);">فعاليات</span>
+                            <h3 class="card__title">ورشة عمل: التسجيل الجامعي للطلاب الجدد</h3>
+                            <p class="card__text">
+                                ورشة عمل توجيهية للطلاب الجدد حول إجراءات التسجيل والوثائق المطلوبة للالتحاق بالجامعات الجزائرية. سيقدم الورشة طلاب سابقون ذوو خبرة في هذا المجال.
+                            </p>
+                            <div class="card__meta">
+                                <span>📅 5 يناير 2026</span>
+                                <span>📍 عبر الإنترنت</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- News Item 3 -->
+                    <article class="card" data-category="announcements">
+                        <div class="card__body">
+                            <span class="card__tag" style="background-color: var(--color-secondary);">إعلان</span>
+                            <h3 class="card__title">فتح باب التسجيل للعضوية</h3>
+                            <p class="card__text">
+                                نعلن عن فتح باب التسجيل للعضوية في اتحاد الطلبة الموريتانيين للعام الدراسي الجديد. العضوية مجانية ومتاحة لجميع الطلبة الموريتانيين المسجلين في الجامعات الجزائرية.
+                            </p>
+                            <div class="card__meta">
+                                <span>📅 1 يناير 2026</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- News Item 4 -->
+                    <article class="card" data-category="events">
+                        <div class="card__body">
+                            <span class="card__tag" style="background-color: var(--color-accent); color: var(--color-text-dark);">فعاليات</span>
+                            <h3 class="card__title">حفل استقبال الطلاب الجدد</h3>
+                            <p class="card__text">
+                                ينظم الاتحاد حفل استقبال للطلاب الموريتانيين الجدد القادمين للدراسة في الجزائر. فرصة للتعارف وبناء علاقات جديدة والحصول على معلومات مفيدة.
+                            </p>
+                            <div class="card__meta">
+                                <span>📅 15 ديسمبر 2025</span>
+                                <span>📍 قاعة الشباب، الجزائر العاصمة</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- News Item 5 -->
+                    <article class="card" data-category="news">
+                        <div class="card__body">
+                            <span class="card__tag">أخبار</span>
+                            <h3 class="card__title">توقيع اتفاقية تعاون مع السفارة الموريتانية</h3>
+                            <p class="card__text">
+                                وقع اتحاد الطلبة الموريتانيين اتفاقية تعاون مع السفارة الموريتانية بالجزائر لتسهيل الإجراءات الإدارية للطلبة وتوفير الدعم اللازم لهم.
+                            </p>
+                            <div class="card__meta">
+                                <span>📅 10 ديسمبر 2025</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- News Item 6 -->
+                    <article class="card" data-category="announcements">
+                        <div class="card__body">
+                            <span class="card__tag" style="background-color: var(--color-secondary);">إعلان</span>
+                            <h3 class="card__title">منح دراسية متاحة</h3>
+                            <p class="card__text">
+                                نعلن عن توفر منح دراسية للطلبة المتفوقين في مختلف التخصصات. للمزيد من المعلومات والتقديم، يرجى التواصل مع مكتب الاتحاد.
+                            </p>
+                            <div class="card__meta">
+                                <span>📅 1 ديسمبر 2025</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Load More Button -->
+                <div class="text-center mt-4">
+                    <button class="btn btn--outline" id="loadMore">تحميل المزيد</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Signup -->
+        <section class="section section--primary">
+            <div class="container text-center">
+                <h2 style="color: var(--color-white);">ابق على اطلاع</h2>
+                <p style="color: rgba(255,255,255,0.9); max-width: 500px; margin-inline: auto; margin-bottom: var(--space-xl);">
+                    اشترك في قائمتنا البريدية لتصلك آخر الأخبار والإعلانات مباشرة على بريدك الإلكتروني.
+                </p>
+                <form class="newsletter-form" style="display: flex; gap: var(--space-md); max-width: 500px; margin-inline: auto; flex-wrap: wrap; justify-content: center;">
+                    <input type="email" class="form-input" placeholder="بريدك الإلكتروني" style="flex: 1; min-width: 250px;">
+                    <button type="submit" class="btn btn--secondary">اشتراك</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__section">
+                    <h4>اتحاد الطلبة الموريتانيين</h4>
+                    <p>منظمة طلابية تهدف لخدمة ودعم الطلبة الموريتانيين في الجزائر.</p>
+                    <div class="footer__social">
+                        <a href="#" class="footer__social-link" aria-label="فيسبوك">📘</a>
+                        <a href="#" class="footer__social-link" aria-label="انستغرام">📷</a>
+                        <a href="#" class="footer__social-link" aria-label="تويتر">🐦</a>
+                    </div>
+                </div>
+
+                <div class="footer__section">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="about.html">من نحن</a></li>
+                        <li><a href="guide.html">دليل الطالب</a></li>
+                        <li><a href="programs.html">البرامج الأكاديمية</a></li>
+                        <li><a href="services.html">الخدمات</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__section">
+                    <h4>تواصل معنا</h4>
+                    <ul>
+                        <li>📧 contact@uema-dz.org</li>
+                        <li>📱 +213 XX XX XX XX</li>
+                        <li>📍 الجزائر العاصمة، الجزائر</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <p>© 2026 اتحاد الطلبة الموريتانيين بالجزائر. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

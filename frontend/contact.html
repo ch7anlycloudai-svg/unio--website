@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تواصل مع اتحاد الطلبة الموريتانيين بالجزائر">
+    <title>اتصل بنا - اتحاد الطلبة الموريتانيين بالجزائر</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header__container">
+            <a href="index.html" class="header__logo">
+                <img src="assets/images/logo.png" alt="شعار اتحاد الطلبة الموريتانيين" onerror="this.style.display='none'">
+                <span class="header__logo-text">اتحاد الطلبة الموريتانيين</span>
+            </a>
+
+            <nav class="nav" id="mainNav">
+                <button class="nav__toggle" id="navToggle" aria-label="القائمة">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link">الرئيسية</a></li>
+                    <li><a href="about.html" class="nav__link">من نحن</a></li>
+                    <li><a href="news.html" class="nav__link">الأخبار</a></li>
+                    <li><a href="guide.html" class="nav__link">دليل الطالب</a></li>
+                    <li><a href="programs.html" class="nav__link">البرامج الأكاديمية</a></li>
+                    <li><a href="services.html" class="nav__link">الخدمات</a></li>
+                    <li><a href="contact.html" class="nav__link nav__link--active">اتصل بنا</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-header__title">اتصل بنا</h1>
+                <p class="page-header__breadcrumb">
+                    <a href="index.html">الرئيسية</a> / اتصل بنا
+                </p>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="section section--white">
+            <div class="container">
+                <div class="two-col">
+                    <!-- Contact Form -->
+                    <div>
+                        <h2 class="mb-3">أرسل لنا رسالة</h2>
+                        <p class="text-muted mb-4">لديك سؤال أو استفسار؟ لا تتردد في التواصل معنا.</p>
+
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <label class="form-label form-label--required">الاسم الكامل</label>
+                                <input type="text" class="form-input" name="name" required placeholder="أدخل اسمك الكامل">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label form-label--required">البريد الإلكتروني</label>
+                                <input type="email" class="form-input" name="email" required placeholder="example@email.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">رقم الهاتف</label>
+                                <input type="tel" class="form-input" name="phone" placeholder="+213 XXX XXX XXX">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label form-label--required">الموضوع</label>
+                                <select class="form-select" name="subject" required>
+                                    <option value="">اختر الموضوع</option>
+                                    <option value="general">استفسار عام</option>
+                                    <option value="registration">التسجيل والقبول</option>
+                                    <option value="membership">العضوية</option>
+                                    <option value="housing">السكن</option>
+                                    <option value="documents">الوثائق والإجراءات</option>
+                                    <option value="complaint">شكوى</option>
+                                    <option value="suggestion">اقتراح</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label form-label--required">الرسالة</label>
+                                <textarea class="form-textarea" name="message" required placeholder="اكتب رسالتك هنا..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn--primary btn--lg">إرسال الرسالة</button>
+                        </form>
+
+                        <div id="contactSuccess" class="alert alert--success mt-3" style="display: none;">
+                            تم إرسال رسالتك بنجاح! سنرد عليك في أقرب وقت.
+                        </div>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div>
+                        <h2 class="mb-3">معلومات التواصل</h2>
+                        <p class="text-muted mb-4">يمكنك أيضاً التواصل معنا مباشرة من خلال:</p>
+
+                        <div class="contact-info">
+                            <div class="contact-info__item">
+                                <div class="contact-info__icon">📧</div>
+                                <div class="contact-info__text">
+                                    <h4>البريد الإلكتروني</h4>
+                                    <p>contact@uema-dz.org</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-info__item">
+                                <div class="contact-info__icon">📱</div>
+                                <div class="contact-info__text">
+                                    <h4>الهاتف</h4>
+                                    <p>+213 XX XX XX XX</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-info__item">
+                                <div class="contact-info__icon">📍</div>
+                                <div class="contact-info__text">
+                                    <h4>العنوان</h4>
+                                    <p>الجزائر العاصمة، الجزائر</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-info__item">
+                                <div class="contact-info__icon">🕐</div>
+                                <div class="contact-info__text">
+                                    <h4>ساعات العمل</h4>
+                                    <p>السبت - الخميس: 9:00 - 17:00</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Media -->
+                        <div class="mt-4">
+                            <h3>تابعنا على</h3>
+                            <div class="footer__social" style="justify-content: flex-start; margin-top: var(--space-md);">
+                                <a href="#" class="footer__social-link" aria-label="فيسبوك" style="background-color: var(--color-primary);">📘</a>
+                                <a href="#" class="footer__social-link" aria-label="انستغرام" style="background-color: var(--color-primary);">📷</a>
+                                <a href="#" class="footer__social-link" aria-label="تويتر" style="background-color: var(--color-primary);">🐦</a>
+                                <a href="#" class="footer__social-link" aria-label="يوتيوب" style="background-color: var(--color-primary);">▶️</a>
+                            </div>
+                        </div>
+
+                        <!-- Emergency Contact -->
+                        <div class="info-box info-box--warning mt-4">
+                            <h4 class="info-box__title">للحالات الطارئة</h4>
+                            <p class="mb-0">في حالات الطوارئ، يمكنك الاتصال مباشرة بـ:</p>
+                            <ul class="mb-0">
+                                <li>السفارة الموريتانية: +213 XX XX XX XX</li>
+                                <li>الطوارئ الجزائرية: 14</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Map Section (Placeholder) -->
+        <section class="section section--alt">
+            <div class="container">
+                <div class="text-center mb-4">
+                    <h2>موقعنا</h2>
+                </div>
+
+                <!-- Map Placeholder -->
+                <div style="background-color: var(--color-bg-alt); border: 2px dashed var(--color-border); border-radius: var(--radius-lg); height: 400px; display: flex; align-items: center; justify-content: center; text-align: center;">
+                    <div>
+                        <p style="font-size: var(--font-size-3xl);">🗺️</p>
+                        <p class="text-muted">خريطة الموقع</p>
+                        <p class="text-muted text-sm">(يمكن إضافة خريطة Google Maps هنا)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Quick Links -->
+        <section class="section section--white">
+            <div class="container text-center">
+                <h2>هل تبحث عن إجابات سريعة؟</h2>
+                <p class="text-muted mb-4">قد تجد إجابة سؤالك في قسم الأسئلة الشائعة</p>
+                <a href="services.html#faq" class="btn btn--primary">الأسئلة الشائعة</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__section">
+                    <h4>اتحاد الطلبة الموريتانيين</h4>
+                    <p>منظمة طلابية تهدف لخدمة ودعم الطلبة الموريتانيين في الجزائر.</p>
+                    <div class="footer__social">
+                        <a href="#" class="footer__social-link" aria-label="فيسبوك">📘</a>
+                        <a href="#" class="footer__social-link" aria-label="انستغرام">📷</a>
+                        <a href="#" class="footer__social-link" aria-label="تويتر">🐦</a>
+                    </div>
+                </div>
+
+                <div class="footer__section">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="about.html">من نحن</a></li>
+                        <li><a href="guide.html">دليل الطالب</a></li>
+                        <li><a href="programs.html">البرامج الأكاديمية</a></li>
+                        <li><a href="services.html">الخدمات</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__section">
+                    <h4>تواصل معنا</h4>
+                    <ul>
+                        <li>📧 contact@uema-dz.org</li>
+                        <li>📱 +213 XX XX XX XX</li>
+                        <li>📍 الجزائر العاصمة، الجزائر</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <p>© 2026 اتحاد الطلبة الموريتانيين بالجزائر. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="خدمات اتحاد الطلبة الموريتانيين بالجزائر - العضوية، الدعم، والموارد">
+    <title>الخدمات - اتحاد الطلبة الموريتانيين بالجزائر</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header__container">
+            <a href="index.html" class="header__logo">
+                <img src="assets/images/logo.png" alt="شعار اتحاد الطلبة الموريتانيين" onerror="this.style.display='none'">
+                <span class="header__logo-text">اتحاد الطلبة الموريتانيين</span>
+            </a>
+
+            <nav class="nav" id="mainNav">
+                <button class="nav__toggle" id="navToggle" aria-label="القائمة">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link">الرئيسية</a></li>
+                    <li><a href="about.html" class="nav__link">من نحن</a></li>
+                    <li><a href="news.html" class="nav__link">الأخبار</a></li>
+                    <li><a href="guide.html" class="nav__link">دليل الطالب</a></li>
+                    <li><a href="programs.html" class="nav__link">البرامج الأكاديمية</a></li>
+                    <li><a href="services.html" class="nav__link nav__link--active">الخدمات</a></li>
+                    <li><a href="contact.html" class="nav__link">اتصل بنا</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-header__title">خدماتنا</h1>
+                <p class="page-header__breadcrumb">
+                    <a href="index.html">الرئيسية</a> / الخدمات
+                </p>
+            </div>
+        </section>
+
+        <!-- Services Overview -->
+        <section class="section section--white">
+            <div class="container">
+                <div class="text-center mb-4">
+                    <h2>ما نقدمه لك</h2>
+                    <p class="text-muted">خدمات متنوعة لدعم مسيرتك الأكاديمية</p>
+                </div>
+
+                <div class="card-grid">
+                    <div class="card feature-card">
+                        <div class="feature-card__icon">🎓</div>
+                        <h3 class="feature-card__title">الدعم الأكاديمي</h3>
+                        <p class="feature-card__text">توجيه ومساعدة في اختيار التخصص، والتسجيل، والإجراءات الإدارية الجامعية.</p>
+                    </div>
+
+                    <div class="card feature-card">
+                        <div class="feature-card__icon">📄</div>
+                        <h3 class="feature-card__title">المساعدة الإدارية</h3>
+                        <p class="feature-card__text">مساعدة في استخراج الوثائق، والإقامة، والتعامل مع الجهات الرسمية.</p>
+                    </div>
+
+                    <div class="card feature-card">
+                        <div class="feature-card__icon">🏠</div>
+                        <h3 class="feature-card__title">استشارات السكن</h3>
+                        <p class="feature-card__text">معلومات ونصائح حول الإقامة الجامعية والسكن الخاص.</p>
+                    </div>
+
+                    <div class="card feature-card">
+                        <div class="feature-card__icon">🤝</div>
+                        <h3 class="feature-card__title">التواصل والتشبيك</h3>
+                        <p class="feature-card__text">ربط الطلاب الجدد بالقدامى وبناء شبكة دعم اجتماعي.</p>
+                    </div>
+
+                    <div class="card feature-card">
+                        <div class="feature-card__icon">📢</div>
+                        <h3 class="feature-card__title">التمثيل والمناصرة</h3>
+                        <p class="feature-card__text">تمثيل مصالح الطلبة الموريتانيين أمام الجهات الرسمية.</p>
+                    </div>
+
+                    <div class="card feature-card">
+                        <div class="feature-card__icon">🎉</div>
+                        <h3 class="feature-card__title">الأنشطة الثقافية</h3>
+                        <p class="feature-card__text">تنظيم فعاليات ثقافية واجتماعية ورحلات جماعية.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Membership Form -->
+        <section class="section section--alt" id="membership">
+            <div class="container">
+                <div class="text-center mb-4">
+                    <h2>طلب العضوية</h2>
+                    <p class="text-muted">انضم إلى اتحاد الطلبة الموريتانيين - العضوية مجانية</p>
+                </div>
+
+                <div style="max-width: 700px; margin: 0 auto;">
+                    <div class="card">
+                        <div class="card__body">
+                            <form id="membershipForm">
+                                <div class="form-group">
+                                    <label class="form-label form-label--required">الاسم الكامل</label>
+                                    <input type="text" class="form-input" name="fullName" required placeholder="أدخل اسمك الكامل">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label form-label--required">البريد الإلكتروني</label>
+                                    <input type="email" class="form-input" name="email" required placeholder="example@email.com">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label form-label--required">رقم الهاتف</label>
+                                    <input type="tel" class="form-input" name="phone" required placeholder="+213 XXX XXX XXX">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label form-label--required">الجامعة</label>
+                                    <select class="form-select" name="university" required>
+                                        <option value="">اختر الجامعة</option>
+                                        <option value="algiers1">جامعة الجزائر 1</option>
+                                        <option value="algiers2">جامعة الجزائر 2</option>
+                                        <option value="algiers3">جامعة الجزائر 3</option>
+                                        <option value="usthb">جامعة هواري بومدين (USTHB)</option>
+                                        <option value="oran">جامعة وهران</option>
+                                        <option value="constantine">جامعة قسنطينة</option>
+                                        <option value="blida">جامعة البليدة</option>
+                                        <option value="other">أخرى</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label form-label--required">التخصص</label>
+                                    <input type="text" class="form-input" name="major" required placeholder="مثال: الطب، الهندسة، القانون...">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label form-label--required">المستوى الدراسي</label>
+                                    <select class="form-select" name="level" required>
+                                        <option value="">اختر المستوى</option>
+                                        <option value="l1">السنة الأولى ليسانس</option>
+                                        <option value="l2">السنة الثانية ليسانس</option>
+                                        <option value="l3">السنة الثالثة ليسانس</option>
+                                        <option value="m1">السنة الأولى ماستر</option>
+                                        <option value="m2">السنة الثانية ماستر</option>
+                                        <option value="phd">دكتوراه</option>
+                                        <option value="medicine">طب / صيدلة</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">الولاية في موريتانيا</label>
+                                    <input type="text" class="form-input" name="wilaya" placeholder="مثال: نواكشوط، نواذيبو...">
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input type="checkbox" id="terms" name="terms" required>
+                                        <label for="terms">أوافق على الانضمام للاتحاد والالتزام بقوانينه الداخلية</label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn--primary btn--block">تقديم الطلب</button>
+                            </form>
+
+                            <div id="formSuccess" class="alert alert--success mt-3" style="display: none;">
+                                تم استلام طلبك بنجاح! سنتواصل معك قريباً.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="section section--white">
+            <div class="container">
+                <div class="text-center mb-4">
+                    <h2>الأسئلة الشائعة</h2>
+                    <p class="text-muted">إجابات على أكثر الأسئلة تكراراً</p>
+                </div>
+
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion__item accordion__item--active">
+                        <button class="accordion__header">
+                            هل العضوية في الاتحاد مجانية؟
+                            <span class="accordion__icon">+</span>
+                        </button>
+                        <div class="accordion__body">
+                            <p>نعم، العضوية في اتحاد الطلبة الموريتانيين مجانية تماماً ومتاحة لجميع الطلبة الموريتانيين المسجلين في الجامعات والمعاهد الجزائرية.</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion__item">
+                        <button class="accordion__header">
+                            ما هي مزايا العضوية؟
+                            <span class="accordion__icon">+</span>
+                        </button>
+                        <div class="accordion__body">
+                            <ul>
+                                <li>الدعم والتوجيه الأكاديمي</li>
+                                <li>المساعدة في الإجراءات الإدارية</li>
+                                <li>الوصول إلى شبكة الطلاب الموريتانيين</li>
+                                <li>المشاركة في الفعاليات والأنشطة</li>
+                                <li>التمثيل أمام الجهات الرسمية</li>
+                                <li>الحصول على آخر الأخبار والمستجدات</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="accordion__item">
+                        <button class="accordion__header">
+                            كيف يمكنني التواصل مع الاتحاد؟
+                            <span class="accordion__icon">+</span>
+                        </button>
+                        <div class="accordion__body">
+                            <p>يمكنك التواصل معنا من خلال:</p>
+                            <ul>
+                                <li>البريد الإلكتروني: contact@uema-dz.org</li>
+                                <li>صفحتنا على فيسبوك</li>
+                                <li>نموذج الاتصال على الموقع</li>
+                                <li>الهاتف: +213 XX XX XX XX</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="accordion__item">
+                        <button class="accordion__header">
+                            هل يقدم الاتحاد مساعدات مالية؟
+                            <span class="accordion__icon">+</span>
+                        </button>
+                        <div class="accordion__body">
+                            <p>الاتحاد منظمة طلابية تطوعية ولا يملك ميزانية لتقديم مساعدات مالية مباشرة. لكننا نساعد في:</p>
+                            <ul>
+                                <li>توجيه الطلاب للمنح المتاحة</li>
+                                <li>المساعدة في إجراءات طلب المنح</li>
+                                <li>ربط الطلاب بجهات الدعم الرسمية</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="accordion__item">
+                        <button class="accordion__header">
+                            كيف يمكنني المساهمة في أنشطة الاتحاد؟
+                            <span class="accordion__icon">+</span>
+                        </button>
+                        <div class="accordion__body">
+                            <p>نرحب بمساهمتك! يمكنك:</p>
+                            <ul>
+                                <li>الانضمام للجان العمل المتخصصة</li>
+                                <li>المشاركة في تنظيم الفعاليات</li>
+                                <li>مساعدة الطلاب الجدد</li>
+                                <li>المساهمة بخبراتك ومهاراتك</li>
+                                <li>اقتراح أفكار ومبادرات جديدة</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="accordion__item">
+                        <button class="accordion__header">
+                            هل يمكن للخريجين البقاء أعضاء؟
+                            <span class="accordion__icon">+</span>
+                        </button>
+                        <div class="accordion__body">
+                            <p>نعم، نرحب بالخريجين كأعضاء شرفيين يمكنهم المساهمة بخبراتهم ومساعدة الطلاب الحاليين. العديد من خريجينا يواصلون دعم الاتحاد وتقديم النصح للطلاب.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources -->
+        <section class="section section--alt">
+            <div class="container">
+                <div class="text-center mb-4">
+                    <h2>موارد مفيدة</h2>
+                    <p class="text-muted">وثائق ونماذج للتحميل</p>
+                </div>
+
+                <div class="quick-links">
+                    <a href="#" class="quick-link">
+                        <div class="quick-link__icon">📥</div>
+                        <span class="quick-link__text">دليل الطالب الجديد (PDF)</span>
+                    </a>
+
+                    <a href="#" class="quick-link">
+                        <div class="quick-link__icon">📋</div>
+                        <span class="quick-link__text">قائمة الوثائق المطلوبة</span>
+                    </a>
+
+                    <a href="#" class="quick-link">
+                        <div class="quick-link__icon">📝</div>
+                        <span class="quick-link__text">نموذج طلب شهادة</span>
+                    </a>
+
+                    <a href="#" class="quick-link">
+                        <div class="quick-link__icon">📞</div>
+                        <span class="quick-link__text">دليل الأرقام المهمة</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__section">
+                    <h4>اتحاد الطلبة الموريتانيين</h4>
+                    <p>منظمة طلابية تهدف لخدمة ودعم الطلبة الموريتانيين في الجزائر.</p>
+                    <div class="footer__social">
+                        <a href="#" class="footer__social-link" aria-label="فيسبوك">📘</a>
+                        <a href="#" class="footer__social-link" aria-label="انستغرام">📷</a>
+                        <a href="#" class="footer__social-link" aria-label="تويتر">🐦</a>
+                    </div>
+                </div>
+
+                <div class="footer__section">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="about.html">من نحن</a></li>
+                        <li><a href="guide.html">دليل الطالب</a></li>
+                        <li><a href="programs.html">البرامج الأكاديمية</a></li>
+                        <li><a href="services.html">الخدمات</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__section">
+                    <h4>تواصل معنا</h4>
+                    <ul>
+                        <li>📧 contact@uema-dz.org</li>
+                        <li>📱 +213 XX XX XX XX</li>
+                        <li>📍 الجزائر العاصمة، الجزائر</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <p>© 2026 اتحاد الطلبة الموريتانيين بالجزائر. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

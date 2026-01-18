@@ -11,6 +11,7 @@ package-lock.json
 *.sqlite
 *.sqlite3
 database.sqlite
+backend/data/
 
 # Logs
 logs/

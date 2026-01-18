@@ -8,8 +8,14 @@ const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 
-// Database file path
-const dbPath = path.join(__dirname, '..', 'database.sqlite');
+// Database file path - use environment variable or default to backend folder
+const dbPath = process.env.DATABASE_PATH || path.join(__dirname, '..', 'data', 'database.sqlite');
+
+// Ensure data directory exists
+const dataDir = path.dirname(dbPath);
+if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+}
 
 // Global database instance
 let db = null;

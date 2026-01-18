@@ -126,8 +126,11 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-    console.error('Server Error:', err);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    console.error('Server Error:', err.stack || err);
+    const message = process.env.NODE_ENV === 'production'
+        ? 'Internal server error'
+        : err.message || 'Internal server error';
+    res.status(500).json({ success: false, message });
 });
 
 // ======================
@@ -139,23 +142,30 @@ const PORT = process.env.PORT || 3000;
 // Initialize database then start server
 async function startServer() {
     try {
-        await initializeDatabase();
+        console.log('Starting server...');
+        console.log('Environment:', process.env.NODE_ENV || 'development');
+        console.log('Working directory:', process.cwd());
 
-        app.listen(PORT, () => {
+        await initializeDatabase();
+        console.log('Database initialized successfully');
+
+        app.listen(PORT, '0.0.0.0', () => {
             console.log('='.repeat(50));
             console.log('  Mauritanian Students Union Website');
             console.log('='.repeat(50));
-            console.log(`  Server running on: http://localhost:${PORT}`);
-            console.log(`  Admin dashboard:   http://localhost:${PORT}/admin`);
+            console.log(`  Server running on port: ${PORT}`);
+            console.log(`  Environment: ${process.env.NODE_ENV || 'development'}`);
             console.log('='.repeat(50));
-            console.log('  Default admin credentials:');
-            console.log('  Username: admin');
-            console.log('  Password: admin123');
-            console.log('  (Please change after first login!)');
-            console.log('='.repeat(50));
+            if (process.env.NODE_ENV !== 'production') {
+                console.log('  Default admin credentials:');
+                console.log('  Username: admin');
+                console.log('  Password: admin123');
+                console.log('  (Please change after first login!)');
+                console.log('='.repeat(50));
+            }
         });
     } catch (error) {
-        console.error('Failed to start server:', error);
+        console.error('Failed to start server:', error.stack || error);
         process.exit(1);
     }
 }

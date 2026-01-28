@@ -64,43 +64,47 @@
                     <p class="text-muted">تخصصات متنوعة في الجامعات الجزائرية</p>
                 </div>
 
-                <div class="card-grid reveal-stagger">
-                    <!-- Medical Sciences -->
-                    <div class="card">
-                        <div class="card__body">
-                            <h3 style="color: var(--color-primary);">🏥 العلوم الطبية</h3>
-                            <ul>
+                <div class="card-grid reveal-stagger" id="specialtiesGrid">
+                    <!-- Specialties will be loaded dynamically from database -->
+                    <!-- Fallback static content shown while loading -->
+                    <div class="specialty-card" data-fallback="true">
+                        <div class="specialty-card__placeholder">🏥</div>
+                        <div class="specialty-card__body">
+                            <h3 class="specialty-card__title">🏥 العلوم الطبية</h3>
+                            <p class="specialty-card__description">تشمل تخصصات الطب العام وطب الأسنان والصيدلة</p>
+                            <ul class="specialty-card__items">
                                 <li>الطب العام</li>
                                 <li>طب الأسنان</li>
                                 <li>الصيدلة</li>
                                 <li>التمريض</li>
-
                                 <li>العلوم البيطرية</li>
                             </ul>
-                            <p class="text-muted text-sm">مدة الدراسة: 5-7 سنوات</p>
+                            <p class="specialty-card__duration">مدة الدراسة: 5-7 سنوات</p>
                         </div>
                     </div>
 
-                    <!-- Engineering -->
-                    <div class="card">
-                        <div class="card__body">
-                            <h3 style="color: var(--color-primary);">⚙️ الهندسة والتقنية</h3>
-                            <ul>
+                    <div class="specialty-card" data-fallback="true">
+                        <div class="specialty-card__placeholder">⚙️</div>
+                        <div class="specialty-card__body">
+                            <h3 class="specialty-card__title">⚙️ الهندسة والتقنية</h3>
+                            <p class="specialty-card__description">تخصصات هندسية متنوعة في أفضل الجامعات</p>
+                            <ul class="specialty-card__items">
                                 <li>الهندسة المدنية</li>
                                 <li>الهندسة الكهربائية</li>
                                 <li>الهندسة الميكانيكية</li>
                                 <li>هندسة الحاسوب</li>
                                 <li>الهندسة المعمارية</li>
                             </ul>
-                            <p class="text-muted text-sm">مدة الدراسة: 5 سنوات</p>
+                            <p class="specialty-card__duration">مدة الدراسة: 5 سنوات</p>
                         </div>
                     </div>
 
-                    <!-- Natural Sciences -->
-                    <div class="card">
-                        <div class="card__body">
-                            <h3 style="color: var(--color-primary);">🔬 العلوم الطبيعية</h3>
-                            <ul>
+                    <div class="specialty-card" data-fallback="true">
+                        <div class="specialty-card__placeholder">🔬</div>
+                        <div class="specialty-card__body">
+                            <h3 class="specialty-card__title">🔬 العلوم الطبيعية</h3>
+                            <p class="specialty-card__description">العلوم الأساسية والتطبيقية</p>
+                            <ul class="specialty-card__items">
                                 <li>الرياضيات</li>
                                 <li>الفيزياء</li>
                                 <li>الكيمياء</li>
@@ -108,55 +112,66 @@
                                 <li>علوم الأرض</li>
                                 <li>المحروقات</li>
                             </ul>
-                            <p class="text-muted text-sm">نظام LMD: ليسانس، ماستر، دكتوراه</p>
+                            <p class="specialty-card__duration">نظام LMD</p>
                         </div>
                     </div>
 
-                    <!-- Humanities -->
-                    <div class="card">
-                        <div class="card__body">
-                            <h3 style="color: var(--color-primary);">📚 العلوم الإنسانية</h3>
-                            <ul>
+                    <div class="specialty-card" data-fallback="true">
+                        <div class="specialty-card__placeholder">📚</div>
+                        <div class="specialty-card__body">
+                            <h3 class="specialty-card__title">📚 العلوم الإنسانية</h3>
+                            <p class="specialty-card__description">تخصصات الآداب والعلوم الإنسانية</p>
+                            <ul class="specialty-card__items">
                                 <li>الأدب العربي</li>
                                 <li>التاريخ</li>
                                 <li>الفلسفة</li>
                                 <li>علم النفس</li>
                                 <li>علم الاجتماع</li>
                             </ul>
-                            <p class="text-muted text-sm">نظام LMD: ليسانس، ماستر، دكتوراه</p>
+                            <p class="specialty-card__duration">نظام LMD</p>
                         </div>
                     </div>
 
-                    <!-- Law & Politics -->
-                    <div class="card">
-                        <div class="card__body">
-                            <h3 style="color: var(--color-primary);">⚖️ القانون والعلوم السياسية</h3>
-                            <ul>
+                    <div class="specialty-card" data-fallback="true">
+                        <div class="specialty-card__placeholder">⚖️</div>
+                        <div class="specialty-card__body">
+                            <h3 class="specialty-card__title">⚖️ القانون والعلوم السياسية</h3>
+                            <p class="specialty-card__description">القانون والعلاقات الدولية</p>
+                            <ul class="specialty-card__items">
                                 <li>القانون العام</li>
                                 <li>القانون الخاص</li>
                                 <li>العلوم السياسية</li>
                                 <li>العلاقات الدولية</li>
                             </ul>
-                            <p class="text-muted text-sm">نظام LMD: ليسانس، ماستر، دكتوراه</p>
+                            <p class="specialty-card__duration">نظام LMD</p>
                         </div>
                     </div>
 
-                    <!-- Economics -->
-                    <div class="card">
-                        <div class="card__body">
-                            <h3 style="color: var(--color-primary);">💼 الاقتصاد والتجارة</h3>
-                            <ul>
+                    <div class="specialty-card" data-fallback="true">
+                        <div class="specialty-card__placeholder">💼</div>
+                        <div class="specialty-card__body">
+                            <h3 class="specialty-card__title">💼 الاقتصاد والتجارة</h3>
+                            <p class="specialty-card__description">العلوم الاقتصادية والتجارية</p>
+                            <ul class="specialty-card__items">
                                 <li>العلوم الاقتصادية</li>
                                 <li>العلوم التجارية</li>
                                 <li>علوم التسيير</li>
                                 <li>المحاسبة والمالية</li>
                             </ul>
-                            <p class="text-muted text-sm">نظام LMD: ليسانس، ماستر، دكتوراه</p>
+                            <p class="specialty-card__duration">نظام LMD</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- Video Modal -->
+        <div class="video-modal" id="videoModal">
+            <div class="video-modal__content">
+                <button class="video-modal__close" id="videoModalClose" aria-label="إغلاق">✕</button>
+                <iframe class="video-modal__iframe" id="videoFrame" allowfullscreen></iframe>
+            </div>
+        </div>
 
         <!-- Registration Steps -->
         <section class="section section--alt">

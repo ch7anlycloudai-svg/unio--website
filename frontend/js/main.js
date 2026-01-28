@@ -6,10 +6,6 @@
 (function() {
     'use strict';
 
-    // ========================================
-    // Reduced Motion Check
-    // ========================================
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // ========================================
     // API Configuration
@@ -259,23 +255,10 @@
                 filterTabs.forEach(t => t.classList.remove('filter-tab--active'));
                 tab.classList.add('filter-tab--active');
 
-                // Filter items
+                // Filter items (no animation)
                 newsItems.forEach(item => {
                     const category = item.dataset.category;
-
-                    if (filter === 'all' || category === filter) {
-                        item.style.display = '';
-                        // Add fade-in animation
-                        item.style.opacity = '0';
-                        item.style.transform = 'translateY(20px)';
-                        setTimeout(() => {
-                            item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                            item.style.opacity = '1';
-                            item.style.transform = 'translateY(0)';
-                        }, 50);
-                    } else {
-                        item.style.display = 'none';
-                    }
+                    item.style.display = (filter === 'all' || category === filter) ? '' : 'none';
                 });
             });
         });
@@ -486,98 +469,27 @@
     };
 
     // ========================================
-    // Scroll Reveal Animations
+    // Make Reveal Elements Visible (no animation)
     // ========================================
     const initScrollReveal = () => {
-        if (prefersReducedMotion) {
-            // Make all elements visible immediately
-            document.querySelectorAll('.reveal').forEach(el => {
-                el.classList.add('reveal--visible');
-            });
-            document.querySelectorAll('.reveal-stagger').forEach(el => {
-                el.classList.add('reveal-stagger--visible');
-            });
-            return;
-        }
-
-        const revealElements = document.querySelectorAll('.reveal');
-        const staggerElements = document.querySelectorAll('.reveal-stagger');
-
-        if (!revealElements.length && !staggerElements.length) return;
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add(
-                        entry.target.classList.contains('reveal-stagger')
-                            ? 'reveal-stagger--visible'
-                            : 'reveal--visible'
-                    );
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+        // Make all elements visible immediately without animation
+        document.querySelectorAll('.reveal').forEach(el => {
+            el.classList.add('reveal--visible');
         });
-
-        revealElements.forEach(el => observer.observe(el));
-        staggerElements.forEach(el => observer.observe(el));
+        document.querySelectorAll('.reveal-stagger').forEach(el => {
+            el.classList.add('reveal-stagger--visible');
+        });
     };
 
     // ========================================
-    // Stats Counter Animation
+    // Stats Counter (show values immediately)
     // ========================================
     const initStatsCounter = () => {
         const statNumbers = document.querySelectorAll('.stat__number[data-target]');
-
-        if (!statNumbers.length) return;
-
-        if (prefersReducedMotion) {
-            statNumbers.forEach(el => {
-                const target = parseInt(el.dataset.target, 10);
-                const suffix = el.dataset.suffix || '';
-                el.textContent = target + suffix;
-            });
-            return;
-        }
-
-        const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
-
-        const animateCounter = (el) => {
+        statNumbers.forEach(el => {
             const target = parseInt(el.dataset.target, 10);
             const suffix = el.dataset.suffix || '';
-            const duration = 2000;
-            const start = performance.now();
-
-            const update = (now) => {
-                const elapsed = now - start;
-                const progress = Math.min(elapsed / duration, 1);
-                const easedProgress = easeOutQuart(progress);
-                const current = Math.round(easedProgress * target);
-
-                el.textContent = current + suffix;
-
-                if (progress < 1) {
-                    requestAnimationFrame(update);
-                }
-            };
-
-            requestAnimationFrame(update);
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounter(entry.target);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        statNumbers.forEach(el => {
-            el.textContent = '0' + (el.dataset.suffix || '');
-            observer.observe(el);
+            el.textContent = target + suffix;
         });
     };
 
@@ -615,32 +527,6 @@
         });
     };
 
-    // ========================================
-    // Button Ripple Effect
-    // ========================================
-    const initButtonRipple = () => {
-        if (prefersReducedMotion) return;
-
-        document.addEventListener('click', (e) => {
-            const btn = e.target.closest('.btn');
-            if (!btn) return;
-
-            const ripple = document.createElement('span');
-            ripple.className = 'ripple';
-
-            const rect = btn.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
-            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
-
-            btn.appendChild(ripple);
-
-            ripple.addEventListener('animationend', () => {
-                ripple.remove();
-            });
-        });
-    };
 
     // ========================================
     // Load More (News page)
@@ -664,6 +550,264 @@
     };
 
     // ========================================
+    // Hero Carousel
+    // ========================================
+    const initHeroCarousel = () => {
+        const carousel = document.getElementById('heroCarousel');
+        const slidesContainer = document.getElementById('heroSlides');
+        const dotsContainer = document.getElementById('heroDots');
+        const prevBtn = document.getElementById('heroPrev');
+        const nextBtn = document.getElementById('heroNext');
+
+        if (!carousel || !slidesContainer) return;
+
+        let currentSlide = 0;
+        let slides = [];
+        let autoplayInterval = null;
+
+        // Load slides from API
+        const loadSlides = async () => {
+            try {
+                const response = await fetch(`${API_BASE}/media/hero`);
+                const data = await response.json();
+
+                if (data.success && data.data.length > 0) {
+                    renderSlides(data.data);
+                }
+            } catch (error) {
+                console.log('Using default hero slide');
+            }
+        };
+
+        // Render slides
+        const renderSlides = (slidesData) => {
+            // Clear existing slides
+            slidesContainer.innerHTML = '';
+            dotsContainer.innerHTML = '';
+
+            slidesData.forEach((slide, index) => {
+                // Create slide
+                const slideEl = document.createElement('div');
+                slideEl.className = `hero-carousel__slide ${index === 0 ? 'hero-carousel__slide--active' : ''}`;
+                slideEl.dataset.slide = index;
+
+                slideEl.innerHTML = `
+                    ${slide.image_url ? `<img src="${escapeHtml(slide.image_url)}" alt="${escapeHtml(slide.title || '')}" class="hero-carousel__image" loading="${index === 0 ? 'eager' : 'lazy'}">` : ''}
+                    <div class="hero-carousel__overlay">
+                        <div class="hero-carousel__content">
+                            ${slide.title ? `<h1 class="hero-carousel__title">${escapeHtml(slide.title)}</h1>` : ''}
+                            ${slide.subtitle ? `<p class="hero-carousel__subtitle">${escapeHtml(slide.subtitle)}</p>` : ''}
+                            ${slide.link_url ? `
+                                <div class="btn-group btn-group--center">
+                                    <a href="${escapeHtml(slide.link_url)}" class="btn btn--secondary btn--lg">${escapeHtml(slide.link_text || 'المزيد')}</a>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+
+                slidesContainer.appendChild(slideEl);
+
+                // Create dot
+                const dot = document.createElement('button');
+                dot.className = `hero-carousel__dot ${index === 0 ? 'hero-carousel__dot--active' : ''}`;
+                dot.dataset.slide = index;
+                dot.setAttribute('aria-label', `الشريحة ${index + 1}`);
+                dotsContainer.appendChild(dot);
+            });
+
+            // Update slides array
+            slides = slidesContainer.querySelectorAll('.hero-carousel__slide');
+
+            // Show navigation if more than 1 slide
+            if (slides.length > 1) {
+                prevBtn.style.display = 'flex';
+                nextBtn.style.display = 'flex';
+                startAutoplay();
+            }
+
+            // Add dot click handlers
+            dotsContainer.querySelectorAll('.hero-carousel__dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    goToSlide(parseInt(dot.dataset.slide));
+                });
+            });
+        };
+
+        // Go to specific slide
+        const goToSlide = (index) => {
+            if (slides.length === 0) return;
+
+            slides[currentSlide].classList.remove('hero-carousel__slide--active');
+            dotsContainer.children[currentSlide]?.classList.remove('hero-carousel__dot--active');
+
+            currentSlide = (index + slides.length) % slides.length;
+
+            slides[currentSlide].classList.add('hero-carousel__slide--active');
+            dotsContainer.children[currentSlide]?.classList.add('hero-carousel__dot--active');
+        };
+
+        // Next slide
+        const nextSlide = () => goToSlide(currentSlide + 1);
+
+        // Previous slide
+        const prevSlide = () => goToSlide(currentSlide - 1);
+
+        // Autoplay
+        const startAutoplay = () => {
+            stopAutoplay();
+            autoplayInterval = setInterval(nextSlide, 5000);
+        };
+
+        const stopAutoplay = () => {
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+                autoplayInterval = null;
+            }
+        };
+
+        // Event listeners
+        if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); startAutoplay(); });
+        if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); startAutoplay(); });
+
+        // Pause autoplay on hover
+        carousel.addEventListener('mouseenter', stopAutoplay);
+        carousel.addEventListener('mouseleave', () => {
+            if (slides.length > 1) startAutoplay();
+        });
+
+        // Load slides
+        loadSlides();
+    };
+
+    // ========================================
+    // Specialties Loading
+    // ========================================
+    const initSpecialties = () => {
+        const grid = document.getElementById('specialtiesGrid');
+        if (!grid) return;
+
+        const loadSpecialties = async () => {
+            try {
+                const response = await fetch(`${API_BASE}/media/specialties`);
+                const data = await response.json();
+
+                if (data.success && data.data.length > 0) {
+                    renderSpecialties(data.data);
+                }
+            } catch (error) {
+                console.log('Using static specialties');
+            }
+        };
+
+        const renderSpecialties = (specialties) => {
+            // Remove fallback cards
+            grid.querySelectorAll('[data-fallback="true"]').forEach(el => el.remove());
+
+            specialties.forEach(spec => {
+                const card = document.createElement('div');
+                card.className = 'specialty-card';
+                card.dataset.id = spec.id;
+
+                const items = Array.isArray(spec.items) ? spec.items : [];
+
+                card.innerHTML = `
+                    ${spec.image_url
+                        ? `<img src="${escapeHtml(spec.image_url)}" alt="${escapeHtml(spec.name_ar)}" class="specialty-card__image" loading="lazy">`
+                        : `<div class="specialty-card__placeholder">${escapeHtml(spec.icon || '📚')}</div>`
+                    }
+                    <div class="specialty-card__body">
+                        <h3 class="specialty-card__title">${escapeHtml(spec.icon || '')} ${escapeHtml(spec.name_ar)}</h3>
+                        ${spec.description ? `<p class="specialty-card__description">${escapeHtml(spec.description)}</p>` : ''}
+                        ${items.length > 0 ? `
+                            <ul class="specialty-card__items">
+                                ${items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}
+                            </ul>
+                        ` : ''}
+                        ${spec.duration ? `<p class="specialty-card__duration">مدة الدراسة: ${escapeHtml(spec.duration)}</p>` : ''}
+                        ${spec.video_url ? `
+                            <button class="specialty-card__video-btn" data-video="${escapeHtml(spec.video_url)}" data-type="${escapeHtml(spec.video_type || 'youtube')}">
+                                ▶️ شاهد فيديو تعريفي
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+
+            // Add video button handlers
+            grid.querySelectorAll('.specialty-card__video-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    openVideoModal(btn.dataset.video, btn.dataset.type);
+                });
+            });
+        };
+
+        loadSpecialties();
+    };
+
+    // ========================================
+    // Video Modal
+    // ========================================
+    const initVideoModal = () => {
+        const modal = document.getElementById('videoModal');
+        const closeBtn = document.getElementById('videoModalClose');
+        const iframe = document.getElementById('videoFrame');
+
+        if (!modal) return;
+
+        // Close modal
+        const closeModal = () => {
+            modal.classList.remove('video-modal--open');
+            if (iframe) iframe.src = '';
+        };
+
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Close on ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('video-modal--open')) {
+                closeModal();
+            }
+        });
+
+        // Make openVideoModal available globally
+        window.openVideoModal = (url, type) => {
+            if (!iframe) return;
+
+            let embedUrl = url;
+
+            // Parse URL based on type
+            if (type === 'youtube' || url.includes('youtube.com') || url.includes('youtu.be')) {
+                const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                if (match) embedUrl = `https://www.youtube.com/embed/${match[1]}`;
+            } else if (type === 'vimeo' || url.includes('vimeo.com')) {
+                const match = url.match(/(?:vimeo\.com\/)(\d+)/);
+                if (match) embedUrl = `https://player.vimeo.com/video/${match[1]}`;
+            } else if (type === 'drive' || url.includes('drive.google.com')) {
+                const match = url.match(/(?:drive\.google\.com\/file\/d\/)([a-zA-Z0-9_-]+)/);
+                if (match) embedUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
+            }
+
+            iframe.src = embedUrl;
+            modal.classList.add('video-modal--open');
+        };
+    };
+
+    // Helper function for openVideoModal (accessible outside IIFE)
+    function openVideoModal(url, type) {
+        if (window.openVideoModal) {
+            window.openVideoModal(url, type);
+        }
+    }
+
+    // ========================================
     // Initialize Everything
     // ========================================
     const init = () => {
@@ -678,7 +822,7 @@
         initScrollReveal();
         initStatsCounter();
         initBackToTop();
-        initButtonRipple();
+        initVideoModal();
 
         // Load dynamic content based on current page
         const currentPage = detectCurrentPage();
@@ -686,9 +830,18 @@
             loadPageContent(currentPage);
         }
 
-        // Load news if on news page or home page
-        if (currentPage === 'home' || currentPage === 'news') {
+        // Page-specific initializations
+        if (currentPage === 'home') {
+            initHeroCarousel();
             loadNews();
+        }
+
+        if (currentPage === 'news') {
+            loadNews();
+        }
+
+        if (currentPage === 'programs') {
+            initSpecialties();
         }
 
         console.log('Website initialized successfully');

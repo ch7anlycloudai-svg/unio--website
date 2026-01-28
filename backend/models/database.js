@@ -142,8 +142,46 @@ function createTables() {
         )
     `);
 
+    // Hero slides table (for homepage carousel)
+    db.run(`
+        CREATE TABLE IF NOT EXISTS hero_slides (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT,
+            subtitle TEXT,
+            image_url TEXT NOT NULL,
+            link_url TEXT,
+            link_text TEXT,
+            display_order INTEGER DEFAULT 0,
+            is_active INTEGER DEFAULT 1,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+
+    // Specialties table (for programs page)
+    db.run(`
+        CREATE TABLE IF NOT EXISTS specialties (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            name_ar TEXT NOT NULL,
+            icon TEXT DEFAULT '📚',
+            description TEXT,
+            image_url TEXT,
+            video_url TEXT,
+            video_type TEXT DEFAULT 'youtube',
+            items TEXT,
+            duration TEXT,
+            display_order INTEGER DEFAULT 0,
+            is_active INTEGER DEFAULT 1,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+
     // Create default admin if not exists
     createDefaultAdmin();
+
+    // Initialize default specialties
+    initializeDefaultSpecialties();
 
     // Initialize default page content
     initializeDefaultContent();
@@ -161,6 +199,83 @@ function createDefaultAdmin() {
         saveDatabase();
         console.log('Default admin created (username: admin, password: admin123)');
         console.log('IMPORTANT: Please change the password after first login!');
+    }
+}
+
+/**
+ * Initialize default specialties
+ */
+function initializeDefaultSpecialties() {
+    const result = db.exec("SELECT id FROM specialties LIMIT 1");
+
+    if (result.length === 0 || result[0].values.length === 0) {
+        const specialties = [
+            {
+                name: 'medical',
+                name_ar: 'العلوم الطبية',
+                icon: '🏥',
+                description: 'تشمل تخصصات الطب العام وطب الأسنان والصيدلة والعلوم البيطرية',
+                items: JSON.stringify(['الطب العام', 'طب الأسنان', 'الصيدلة', 'التمريض', 'العلوم البيطرية']),
+                duration: '5-7 سنوات',
+                display_order: 1
+            },
+            {
+                name: 'engineering',
+                name_ar: 'الهندسة والتقنية',
+                icon: '⚙️',
+                description: 'تخصصات هندسية متنوعة في أفضل الجامعات الجزائرية',
+                items: JSON.stringify(['الهندسة المدنية', 'الهندسة الكهربائية', 'الهندسة الميكانيكية', 'هندسة الحاسوب', 'الهندسة المعمارية']),
+                duration: '5 سنوات',
+                display_order: 2
+            },
+            {
+                name: 'science',
+                name_ar: 'العلوم الطبيعية',
+                icon: '🔬',
+                description: 'العلوم الأساسية والتطبيقية',
+                items: JSON.stringify(['الرياضيات', 'الفيزياء', 'الكيمياء', 'البيولوجيا', 'علوم الأرض', 'المحروقات']),
+                duration: 'نظام LMD',
+                display_order: 3
+            },
+            {
+                name: 'humanities',
+                name_ar: 'العلوم الإنسانية',
+                icon: '📚',
+                description: 'تخصصات الآداب والعلوم الإنسانية',
+                items: JSON.stringify(['الأدب العربي', 'التاريخ', 'الفلسفة', 'علم النفس', 'علم الاجتماع']),
+                duration: 'نظام LMD',
+                display_order: 4
+            },
+            {
+                name: 'law',
+                name_ar: 'القانون والعلوم السياسية',
+                icon: '⚖️',
+                description: 'القانون والعلاقات الدولية',
+                items: JSON.stringify(['القانون العام', 'القانون الخاص', 'العلوم السياسية', 'العلاقات الدولية']),
+                duration: 'نظام LMD',
+                display_order: 5
+            },
+            {
+                name: 'economics',
+                name_ar: 'الاقتصاد والتجارة',
+                icon: '💼',
+                description: 'العلوم الاقتصادية والتجارية وعلوم التسيير',
+                items: JSON.stringify(['العلوم الاقتصادية', 'العلوم التجارية', 'علوم التسيير', 'المحاسبة والمالية']),
+                duration: 'نظام LMD',
+                display_order: 6
+            }
+        ];
+
+        specialties.forEach(spec => {
+            db.run(
+                `INSERT INTO specialties (name, name_ar, icon, description, items, duration, display_order)
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [spec.name, spec.name_ar, spec.icon, spec.description, spec.items, spec.duration, spec.display_order]
+            );
+        });
+
+        saveDatabase();
+        console.log('Default specialties initialized!');
     }
 }
 

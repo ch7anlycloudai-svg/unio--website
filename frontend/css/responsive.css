@@ -22,13 +22,17 @@
         z-index: 1001;
     }
 
-    /* Mobile Navigation */
+    /* Mobile Navigation
+       NOTE: backdrop-filter on .header creates a containing block for
+       fixed-position children, so .nav__list uses absolute positioning
+       relative to the header instead. */
     .nav__list {
-        position: fixed;
-        top: var(--header-height);
+        position: absolute;
+        top: 100%;
         left: 0;
         right: 0;
-        bottom: 0;
+        height: calc(100vh - var(--header-height));
+        height: calc(100dvh - var(--header-height));
         flex-direction: column;
         align-items: stretch;
         gap: 0;
@@ -68,12 +72,7 @@
         transform: rotate(-45deg) translate(6px, -6px);
     }
 
-    /* Mobile Backdrop Overlay */
-    .nav__backdrop {
-        display: none;
-    }
-
-    .nav--open ~ .nav__backdrop,
+    /* Mobile Backdrop Overlay — toggled via JS .nav__backdrop--visible */
     .nav__backdrop--visible {
         display: block;
         background-color: rgba(0, 0, 0, 0.5);
@@ -120,6 +119,55 @@
 
     .hero__subtitle {
         font-size: var(--font-size-base);
+    }
+
+    /* Hero Carousel */
+    .hero-carousel {
+        height: 50vh;
+        min-height: 350px;
+    }
+
+    .hero-carousel__title {
+        font-size: var(--font-size-2xl);
+    }
+
+    .hero-carousel__subtitle {
+        font-size: var(--font-size-base);
+    }
+
+    .hero-carousel__nav {
+        width: 40px;
+        height: 40px;
+        font-size: var(--font-size-lg);
+    }
+
+    .hero-carousel__nav--prev {
+        left: var(--space-sm);
+    }
+
+    .hero-carousel__nav--next {
+        right: var(--space-sm);
+    }
+
+    [dir="rtl"] .hero-carousel__nav--prev {
+        left: auto;
+        right: var(--space-sm);
+    }
+
+    [dir="rtl"] .hero-carousel__nav--next {
+        right: auto;
+        left: var(--space-sm);
+    }
+
+    /* Specialty Cards */
+    .specialty-card__image,
+    .specialty-card__placeholder {
+        height: 150px;
+    }
+
+    /* Video Modal */
+    .video-modal {
+        padding: var(--space-md);
     }
 
     /* Cards */
@@ -407,7 +455,7 @@
 }
 
 /* ========================================
-   Reduced Motion
+   Reduced Motion (simplified - most animations already removed)
    ======================================== */
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -417,21 +465,6 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
-    }
-
-    /* Ensure reveal elements are visible without animation */
-    .reveal,
-    .reveal-stagger > * {
-        opacity: 1 !important;
-        transform: none !important;
-    }
-
-    /* Disable hero entrance animations */
-    .hero__title,
-    .hero__subtitle,
-    .hero__content .btn-group {
-        opacity: 1 !important;
-        transform: none !important;
     }
 }
 

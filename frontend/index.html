@@ -47,20 +47,42 @@
 
     <!-- Main Content -->
     <main class="main">
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="container hero__content">
-                <h1 class="hero__title">
-                    اتحاد الطلبة <span class="hero__accent">الموريتانيين</span> بالجزائر
-                </h1>
-                <p class="hero__subtitle">
-                    نعمل معاً لدعم وخدمة الطلبة الموريتانيين في الجزائر وتوفير بيئة أكاديمية واجتماعية متميزة
-                </p>
-                <div class="btn-group btn-group--center">
-                    <a href="guide.html" class="btn btn--secondary btn--lg">دليل الطالب الجديد</a>
-                    <a href="services.html" class="btn btn--outline-white btn--lg">انضم إلينا</a>
+        <!-- Hero Carousel Section -->
+        <section class="hero-carousel" id="heroCarousel">
+            <div class="hero-carousel__slides" id="heroSlides">
+                <!-- Default slide (shown when no images from database) -->
+                <div class="hero-carousel__slide hero-carousel__slide--active" data-slide="0">
+                    <div class="hero-carousel__overlay">
+                        <div class="hero-carousel__content">
+                            <h1 class="hero-carousel__title">
+                                اتحاد الطلبة <span style="color: var(--color-accent);">الموريتانيين</span> بالجزائر
+                            </h1>
+                            <p class="hero-carousel__subtitle">
+                                نعمل معاً لدعم وخدمة الطلبة الموريتانيين في الجزائر وتوفير بيئة أكاديمية واجتماعية متميزة
+                            </p>
+                            <div class="btn-group btn-group--center">
+                                <a href="guide.html" class="btn btn--secondary btn--lg">دليل الطالب الجديد</a>
+                                <a href="services.html" class="btn btn--outline-white btn--lg">انضم إلينا</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- Navigation Arrows -->
+            <button class="hero-carousel__nav hero-carousel__nav--prev" id="heroPrev" aria-label="السابق" style="display: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+            </button>
+            <button class="hero-carousel__nav hero-carousel__nav--next" id="heroNext" aria-label="التالي" style="display: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                </svg>
+            </button>
+
+            <!-- Dots Indicator -->
+            <div class="hero-carousel__dots" id="heroDots"></div>
         </section>
 
         <!-- Stats Section -->

@@ -7,6 +7,11 @@
     'use strict';
 
     // ========================================
+    // Reduced Motion Check
+    // ========================================
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ========================================
     // API Configuration
     // ========================================
     const API_BASE = '/api';
@@ -151,34 +156,57 @@
     };
 
     // ========================================
-    // Mobile Navigation
+    // Mobile Navigation with Backdrop
     // ========================================
     const initMobileNav = () => {
         const navToggle = document.getElementById('navToggle');
         const mainNav = document.getElementById('mainNav');
+        const backdrop = document.getElementById('navBackdrop');
 
         if (!navToggle || !mainNav) return;
 
-        navToggle.addEventListener('click', () => {
-            mainNav.classList.toggle('nav--open');
+        const openMenu = () => {
+            mainNav.classList.add('nav--open');
+            navToggle.setAttribute('aria-expanded', 'true');
+            document.body.classList.add('menu-open');
+            if (backdrop) {
+                backdrop.classList.add('nav__backdrop--visible');
+            }
+        };
 
-            // Update aria-expanded
+        const closeMenu = () => {
+            mainNav.classList.remove('nav--open');
+            navToggle.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('menu-open');
+            if (backdrop) {
+                backdrop.classList.remove('nav__backdrop--visible');
+            }
+        };
+
+        navToggle.addEventListener('click', () => {
             const isOpen = mainNav.classList.contains('nav--open');
-            navToggle.setAttribute('aria-expanded', isOpen);
+            if (isOpen) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
         });
 
         // Close menu when clicking on a link
         const navLinks = mainNav.querySelectorAll('.nav__link');
         navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mainNav.classList.remove('nav--open');
-            });
+            link.addEventListener('click', closeMenu);
         });
+
+        // Close menu when clicking backdrop
+        if (backdrop) {
+            backdrop.addEventListener('click', closeMenu);
+        }
 
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!mainNav.contains(e.target) && mainNav.classList.contains('nav--open')) {
-                mainNav.classList.remove('nav--open');
+                closeMenu();
             }
         });
     };
@@ -199,11 +227,6 @@
 
                 header.addEventListener('click', () => {
                     const isActive = item.classList.contains('accordion__item--active');
-
-                    // Optional: Close other items in the same accordion
-                    // items.forEach(otherItem => {
-                    //     otherItem.classList.remove('accordion__item--active');
-                    // });
 
                     // Toggle current item
                     if (isActive) {
@@ -433,25 +456,189 @@
     };
 
     // ========================================
-    // Header Scroll Effect
+    // Glassmorphism Header with Shrink
     // ========================================
     const initHeaderScroll = () => {
         const header = document.querySelector('.header');
 
         if (!header) return;
 
-        let lastScroll = 0;
+        let ticking = false;
 
-        window.addEventListener('scroll', () => {
+        const onScroll = () => {
             const currentScroll = window.pageYOffset;
 
-            if (currentScroll > 100) {
-                header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
+            if (currentScroll > 50) {
+                header.classList.add('header--scrolled');
             } else {
-                header.style.boxShadow = '';
+                header.classList.remove('header--scrolled');
             }
 
-            lastScroll = currentScroll;
+            ticking = false;
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(onScroll);
+                ticking = true;
+            }
+        }, { passive: true });
+    };
+
+    // ========================================
+    // Scroll Reveal Animations
+    // ========================================
+    const initScrollReveal = () => {
+        if (prefersReducedMotion) {
+            // Make all elements visible immediately
+            document.querySelectorAll('.reveal').forEach(el => {
+                el.classList.add('reveal--visible');
+            });
+            document.querySelectorAll('.reveal-stagger').forEach(el => {
+                el.classList.add('reveal-stagger--visible');
+            });
+            return;
+        }
+
+        const revealElements = document.querySelectorAll('.reveal');
+        const staggerElements = document.querySelectorAll('.reveal-stagger');
+
+        if (!revealElements.length && !staggerElements.length) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add(
+                        entry.target.classList.contains('reveal-stagger')
+                            ? 'reveal-stagger--visible'
+                            : 'reveal--visible'
+                    );
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => observer.observe(el));
+        staggerElements.forEach(el => observer.observe(el));
+    };
+
+    // ========================================
+    // Stats Counter Animation
+    // ========================================
+    const initStatsCounter = () => {
+        const statNumbers = document.querySelectorAll('.stat__number[data-target]');
+
+        if (!statNumbers.length) return;
+
+        if (prefersReducedMotion) {
+            statNumbers.forEach(el => {
+                const target = parseInt(el.dataset.target, 10);
+                const suffix = el.dataset.suffix || '';
+                el.textContent = target + suffix;
+            });
+            return;
+        }
+
+        const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+
+        const animateCounter = (el) => {
+            const target = parseInt(el.dataset.target, 10);
+            const suffix = el.dataset.suffix || '';
+            const duration = 2000;
+            const start = performance.now();
+
+            const update = (now) => {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const easedProgress = easeOutQuart(progress);
+                const current = Math.round(easedProgress * target);
+
+                el.textContent = current + suffix;
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            };
+
+            requestAnimationFrame(update);
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(el => {
+            el.textContent = '0' + (el.dataset.suffix || '');
+            observer.observe(el);
+        });
+    };
+
+    // ========================================
+    // Back to Top Button
+    // ========================================
+    const initBackToTop = () => {
+        const btn = document.getElementById('backToTop');
+
+        if (!btn) return;
+
+        let ticking = false;
+
+        const onScroll = () => {
+            if (window.pageYOffset > 400) {
+                btn.classList.add('back-to-top--visible');
+            } else {
+                btn.classList.remove('back-to-top--visible');
+            }
+            ticking = false;
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(onScroll);
+                ticking = true;
+            }
+        }, { passive: true });
+
+        btn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    };
+
+    // ========================================
+    // Button Ripple Effect
+    // ========================================
+    const initButtonRipple = () => {
+        if (prefersReducedMotion) return;
+
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn');
+            if (!btn) return;
+
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+
+            const rect = btn.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+
+            btn.appendChild(ripple);
+
+            ripple.addEventListener('animationend', () => {
+                ripple.remove();
+            });
         });
     };
 
@@ -488,6 +675,10 @@
         initSmoothScroll();
         initHeaderScroll();
         initLoadMore();
+        initScrollReveal();
+        initStatsCounter();
+        initBackToTop();
+        initButtonRipple();
 
         // Load dynamic content based on current page
         const currentPage = detectCurrentPage();

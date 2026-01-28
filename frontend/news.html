@@ -21,7 +21,7 @@
             </a>
 
             <nav class="nav" id="mainNav">
-                <button class="nav__toggle" id="navToggle" aria-label="القائمة">
+                <button class="nav__toggle" id="navToggle" aria-label="القائمة" aria-expanded="false">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -38,6 +38,8 @@
             </nav>
         </div>
     </header>
+    <!-- Nav Backdrop -->
+    <div class="nav__backdrop" id="navBackdrop"></div>
 
     <!-- Main Content -->
     <main class="main">
@@ -63,7 +65,7 @@
                 </div>
 
                 <!-- News Grid -->
-                <div class="card-grid" id="newsGrid">
+                <div class="card-grid reveal-stagger" id="newsGrid">
                     <!-- News Item 1 -->
                     <article class="card" data-category="news">
                         <div class="card__body">
@@ -161,7 +163,7 @@
 
         <!-- Newsletter Signup -->
         <section class="section section--primary">
-            <div class="container text-center">
+            <div class="container text-center reveal">
                 <h2 style="color: var(--color-white);">ابق على اطلاع</h2>
                 <p style="color: rgba(255,255,255,0.9); max-width: 500px; margin-inline: auto; margin-bottom: var(--space-xl);">
                     اشترك في قائمتنا البريدية لتصلك آخر الأخبار والإعلانات مباشرة على بريدك الإلكتروني.
@@ -213,6 +215,11 @@
             </div>
         </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>
+    </button>
 
     <script src="js/main.js"></script>
 </body>

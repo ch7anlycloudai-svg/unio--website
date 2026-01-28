@@ -25,7 +25,7 @@
             </a>
 
             <nav class="nav" id="mainNav">
-                <button class="nav__toggle" id="navToggle" aria-label="القائمة">
+                <button class="nav__toggle" id="navToggle" aria-label="القائمة" aria-expanded="false">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -42,6 +42,8 @@
             </nav>
         </div>
     </header>
+    <!-- Nav Backdrop -->
+    <div class="nav__backdrop" id="navBackdrop"></div>
 
     <!-- Main Content -->
     <main class="main">
@@ -58,12 +60,12 @@
         <!-- History Section -->
         <section class="section section--white">
             <div class="container">
-                <div class="text-center mb-4">
+                <div class="text-center mb-4 reveal">
                     <h2>تاريخنا</h2>
                     <p class="text-muted">مسيرة عطاء وخدمة للطلبة الموريتانيين</p>
                 </div>
 
-                <div class="info-box info-box--primary">
+                <div class="info-box info-box--primary reveal">
                     <p>
                         تأسس اتحاد الطلبة الموريتانيين بالجزائر ليكون الإطار الجامع للطلبة الموريتانيين الدارسين في
                         مختلف الجامعات والمعاهد الجزائرية. منذ تأسيسه، يعمل الاتحاد على توفير الدعم والمساندة للطلبة في
@@ -80,7 +82,7 @@
         <!-- Vision & Mission -->
         <section class="section section--alt">
             <div class="container">
-                <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                <div class="card-grid reveal-stagger" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
                     <div class="card">
                         <div class="card__body">
                             <h3 style="color: var(--color-primary);">🎯 رؤيتنا</h3>
@@ -117,12 +119,12 @@
         <!-- Values -->
         <section class="section section--white">
             <div class="container">
-                <div class="text-center mb-4">
+                <div class="text-center mb-4 reveal">
                     <h2>قيمنا</h2>
                     <p class="text-muted">المبادئ التي توجه عملنا</p>
                 </div>
 
-                <div class="card-grid">
+                <div class="card-grid reveal-stagger">
                     <div class="card feature-card">
                         <div class="feature-card__icon">🤲</div>
                         <h3 class="feature-card__title">التضامن</h3>
@@ -154,12 +156,12 @@
         <!-- Organizational Structure -->
         <section class="section section--alt">
             <div class="container">
-                <div class="text-center mb-4">
+                <div class="text-center mb-4 reveal">
                     <h2>الهيكل التنظيمي</h2>
                     <p class="text-muted">تعرف على بنية الاتحاد وأجهزته</p>
                 </div>
 
-                <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <div class="card-grid reveal-stagger" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
                     <div class="card">
                         <div class="card__body text-center">
                             <h4 style="color: var(--color-primary);">الجمعية العامة</h4>
@@ -187,13 +189,13 @@
         <!-- Executive Board -->
         <section class="section section--white">
             <div class="container">
-                <div class="text-center mb-4">
+                <div class="text-center mb-4 reveal">
                     <h2>المكتب التنفيذي</h2>
                     <p class="text-muted">أعضاء المكتب التنفيذي الحالي</p>
                 </div>
 
                 <div class="team-grid">
-                    <div class="team-member">
+                    <div class="team-member reveal">
                         <div class="team-member__photo">
                             <!-- Placeholder for photo -->
                         </div>
@@ -201,7 +203,7 @@
                         <p class="team-member__role">الرئيس</p>
                     </div>
 
-                    <div class="team-member">
+                    <div class="team-member reveal">
                         <div class="team-member__photo">
                             <!-- Placeholder for photo -->
                         </div>
@@ -209,7 +211,7 @@
                         <p class="team-member__role">نائب الرئيس</p>
                     </div>
 
-                    <div class="team-member">
+                    <div class="team-member reveal">
                         <div class="team-member__photo">
                             <!-- Placeholder for photo -->
                         </div>
@@ -217,7 +219,7 @@
                         <p class="team-member__role">الأمين العام</p>
                     </div>
 
-                    <div class="team-member">
+                    <div class="team-member reveal">
                         <div class="team-member__photo">
                             <!-- Placeholder for photo -->
                         </div>
@@ -225,7 +227,7 @@
                         <p class="team-member__role">أمين المال</p>
                     </div>
 
-                    <div class="team-member">
+                    <div class="team-member reveal">
                         <div class="team-member__photo">
                             <!-- Placeholder for photo -->
                         </div>
@@ -234,7 +236,7 @@
                     </div>
                 </div>
 
-                <div class="info-box info-box--warning mt-4">
+                <div class="info-box info-box--warning mt-4 reveal">
                     <p class="mb-0">
                         <strong>ملاحظة:</strong> هذه بيانات تجريبية. يرجى تحديث أسماء وصور أعضاء المكتب التنفيذي
                         الفعليين.
@@ -283,6 +285,11 @@
             </div>
         </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>
+    </button>
 
     <script src="js/main.js"></script>
 </body>

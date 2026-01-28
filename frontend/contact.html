@@ -21,7 +21,7 @@
             </a>
 
             <nav class="nav" id="mainNav">
-                <button class="nav__toggle" id="navToggle" aria-label="القائمة">
+                <button class="nav__toggle" id="navToggle" aria-label="القائمة" aria-expanded="false">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -38,6 +38,8 @@
             </nav>
         </div>
     </header>
+    <!-- Nav Backdrop -->
+    <div class="nav__backdrop" id="navBackdrop"></div>
 
     <!-- Main Content -->
     <main class="main">
@@ -56,7 +58,7 @@
             <div class="container">
                 <div class="two-col">
                     <!-- Contact Form -->
-                    <div>
+                    <div class="reveal">
                         <h2 class="mb-3">أرسل لنا رسالة</h2>
                         <p class="text-muted mb-4">لديك سؤال أو استفسار؟ لا تتردد في التواصل معنا.</p>
 
@@ -105,7 +107,7 @@
                     </div>
 
                     <!-- Contact Info -->
-                    <div>
+                    <div class="reveal">
                         <h2 class="mb-3">معلومات التواصل</h2>
                         <p class="text-muted mb-4">يمكنك أيضاً التواصل معنا مباشرة من خلال:</p>
 
@@ -171,7 +173,7 @@
         <!-- Map Section (Placeholder) -->
         <section class="section section--alt">
             <div class="container">
-                <div class="text-center mb-4">
+                <div class="text-center mb-4 reveal">
                     <h2>موقعنا</h2>
                 </div>
 
@@ -188,7 +190,7 @@
 
         <!-- FAQ Quick Links -->
         <section class="section section--white">
-            <div class="container text-center">
+            <div class="container text-center reveal">
                 <h2>هل تبحث عن إجابات سريعة؟</h2>
                 <p class="text-muted mb-4">قد تجد إجابة سؤالك في قسم الأسئلة الشائعة</p>
                 <a href="services.html#faq" class="btn btn--primary">الأسئلة الشائعة</a>
@@ -235,6 +237,11 @@
             </div>
         </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>
+    </button>
 
     <script src="js/main.js"></script>
 </body>

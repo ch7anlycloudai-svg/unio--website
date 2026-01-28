@@ -24,7 +24,7 @@
             </a>
 
             <nav class="nav" id="mainNav">
-                <button class="nav__toggle" id="navToggle" aria-label="القائمة">
+                <button class="nav__toggle" id="navToggle" aria-label="القائمة" aria-expanded="false">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -41,6 +41,8 @@
             </nav>
         </div>
     </header>
+    <!-- Nav Backdrop -->
+    <div class="nav__backdrop" id="navBackdrop"></div>
 
     <!-- Main Content -->
     <main class="main">
@@ -57,12 +59,12 @@
         <!-- Available Programs -->
         <section class="section section--white">
             <div class="container">
-                <div class="text-center mb-4">
+                <div class="text-center mb-4 reveal">
                     <h2>التخصصات المتاحة</h2>
                     <p class="text-muted">تخصصات متنوعة في الجامعات الجزائرية</p>
                 </div>
 
-                <div class="card-grid">
+                <div class="card-grid reveal-stagger">
                     <!-- Medical Sciences -->
                     <div class="card">
                         <div class="card__body">
@@ -72,6 +74,7 @@
                                 <li>طب الأسنان</li>
                                 <li>الصيدلة</li>
                                 <li>التمريض</li>
+
                                 <li>العلوم البيطرية</li>
                             </ul>
                             <p class="text-muted text-sm">مدة الدراسة: 5-7 سنوات</p>
@@ -158,13 +161,13 @@
         <!-- Registration Steps -->
         <section class="section section--alt">
             <div class="container">
-                <div class="text-center mb-4">
+                <div class="text-center mb-4 reveal">
                     <h2>خطوات التسجيل</h2>
                     <p class="text-muted">الإجراءات المطلوبة للتسجيل في الجامعات الجزائرية</p>
                 </div>
 
                 <div class="timeline">
-                    <div class="timeline__item">
+                    <div class="timeline__item reveal">
                         <div class="timeline__marker">1</div>
                         <div class="timeline__content">
                             <h4 class="timeline__title">التسجيل المسبق</h4>
@@ -173,7 +176,7 @@
                         </div>
                     </div>
 
-                    <div class="timeline__item">
+                    <div class="timeline__item reveal">
                         <div class="timeline__marker">2</div>
                         <div class="timeline__content">
                             <h4 class="timeline__title">تجهيز الملف</h4>
@@ -182,7 +185,7 @@
                         </div>
                     </div>
 
-                    <div class="timeline__item">
+                    <div class="timeline__item reveal">
                         <div class="timeline__marker">3</div>
                         <div class="timeline__content">
                             <h4 class="timeline__title">رسالة القبول</h4>
@@ -191,7 +194,7 @@
                         </div>
                     </div>
 
-                    <div class="timeline__item">
+                    <div class="timeline__item reveal">
                         <div class="timeline__marker">4</div>
                         <div class="timeline__content">
                             <h4 class="timeline__title">الحصول على التأشيرة</h4>
@@ -200,7 +203,7 @@
                         </div>
                     </div>
 
-                    <div class="timeline__item">
+                    <div class="timeline__item reveal">
                         <div class="timeline__marker">5</div>
                         <div class="timeline__content">
                             <h4 class="timeline__title">التسجيل النهائي</h4>
@@ -209,7 +212,7 @@
                         </div>
                     </div>
 
-                    <div class="timeline__item">
+                    <div class="timeline__item reveal">
                         <div class="timeline__marker">6</div>
                         <div class="timeline__content">
                             <h4 class="timeline__title">استخراج بطاقة الطالب</h4>
@@ -224,12 +227,12 @@
         <!-- Important Deadlines -->
         <section class="section section--white">
             <div class="container">
-                <div class="text-center mb-4">
+                <div class="text-center mb-4 reveal">
                     <h2>المواعيد المهمة</h2>
                     <p class="text-muted">تواريخ يجب مراعاتها</p>
                 </div>
 
-                <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <div class="card-grid reveal-stagger" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
                     <div class="card">
                         <div class="card__body text-center">
                             <h4 style="color: var(--color-accent);">📅 يونيو - يوليو</h4>
@@ -259,7 +262,7 @@
                     </div>
                 </div>
 
-                <div class="info-box info-box--warning mt-4">
+                <div class="info-box info-box--warning mt-4 reveal">
                     <p class="mb-0"><strong>تنبيه:</strong> هذه تواريخ تقريبية وقد تتغير. تابع الموقع الرسمي لوزارة
                         التعليم العالي الجزائرية للتواريخ الدقيقة.</p>
                 </div>
@@ -269,12 +272,12 @@
         <!-- Useful Links -->
         <section class="section section--alt">
             <div class="container">
-                <div class="text-center mb-4">
+                <div class="text-center mb-4 reveal">
                     <h2>روابط مفيدة</h2>
                     <p class="text-muted">مواقع رسمية للاطلاع</p>
                 </div>
 
-                <div class="quick-links">
+                <div class="quick-links reveal-stagger">
                     <a href="https://www.mesrs.dz" target="_blank" rel="noopener" class="quick-link">
                         <div class="quick-link__icon">🏛️</div>
                         <span class="quick-link__text">وزارة التعليم العالي الجزائرية</span>
@@ -300,7 +303,7 @@
 
         <!-- CTA -->
         <section class="section section--primary">
-            <div class="container text-center">
+            <div class="container text-center reveal">
                 <h2 style="color: var(--color-white);">هل تحتاج مساعدة في التسجيل؟</h2>
                 <p style="color: rgba(255,255,255,0.9); margin-bottom: var(--space-xl);">
                     فريقنا جاهز لمساعدتك في جميع مراحل التسجيل
@@ -352,6 +355,11 @@
             </div>
         </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>
+    </button>
 
     <script src="js/main.js"></script>
 </body>

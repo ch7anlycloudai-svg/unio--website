@@ -19,6 +19,7 @@
     /* Mobile Menu Toggle */
     .nav__toggle {
         display: flex;
+        z-index: 1001;
     }
 
     /* Mobile Navigation */
@@ -36,6 +37,7 @@
         transform: translateX(100%);
         transition: transform var(--transition-base);
         overflow-y: auto;
+        z-index: 1000;
     }
 
     [dir="rtl"] .nav__list {
@@ -64,6 +66,35 @@
 
     .nav--open .nav__toggle span:nth-child(3) {
         transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    /* Mobile Backdrop Overlay */
+    .nav__backdrop {
+        display: none;
+    }
+
+    .nav--open ~ .nav__backdrop,
+    .nav__backdrop--visible {
+        display: block;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Body scroll lock when menu open */
+    body.menu-open {
+        overflow: hidden;
+    }
+
+    /* Back-to-top smaller on mobile */
+    .back-to-top {
+        bottom: var(--space-lg);
+        right: var(--space-lg);
+        width: 42px;
+        height: 42px;
+    }
+
+    [dir="rtl"] .back-to-top {
+        right: auto;
+        left: var(--space-lg);
     }
 }
 
@@ -386,6 +417,21 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+
+    /* Ensure reveal elements are visible without animation */
+    .reveal,
+    .reveal-stagger > * {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    /* Disable hero entrance animations */
+    .hero__title,
+    .hero__subtitle,
+    .hero__content .btn-group {
+        opacity: 1 !important;
+        transform: none !important;
     }
 }
 

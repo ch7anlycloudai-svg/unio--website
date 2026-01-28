@@ -25,7 +25,7 @@
             </a>
 
             <nav class="nav" id="mainNav">
-                <button class="nav__toggle" id="navToggle" aria-label="القائمة">
+                <button class="nav__toggle" id="navToggle" aria-label="القائمة" aria-expanded="false">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -42,6 +42,8 @@
             </nav>
         </div>
     </header>
+    <!-- Nav Backdrop -->
+    <div class="nav__backdrop" id="navBackdrop"></div>
 
     <!-- Main Content -->
     <main class="main">
@@ -64,36 +66,43 @@
         <!-- Stats Section -->
         <section class="section section--primary">
             <div class="container">
-                <div class="stats">
+                <div class="stats reveal-stagger">
                     <div class="stat">
-                        <div class="stat__number">500+</div>
+                        <div class="stat__number" data-target="500" data-suffix="+">500+</div>
                         <div class="stat__label">طالب وطالبة</div>
                     </div>
                     <div class="stat">
-                        <div class="stat__number">15+</div>
+                        <div class="stat__number" data-target="15" data-suffix="+">15+</div>
                         <div class="stat__label">ولاية جزائرية</div>
                     </div>
                     <div class="stat">
-                        <div class="stat__number">30+</div>
+                        <div class="stat__number" data-target="30" data-suffix="+">30+</div>
                         <div class="stat__label">تخصص جامعي</div>
                     </div>
                     <div class="stat">
-                        <div class="stat__number">10+</div>
+                        <div class="stat__number" data-target="10" data-suffix="+">10+</div>
                         <div class="stat__label">سنوات من العطاء</div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Wave: primary -> white -->
+        <div class="wave-divider wave-divider--primary-white">
+            <svg viewBox="0 0 1440 50" preserveAspectRatio="none">
+                <path d="M0,25 C240,50 480,0 720,25 C960,50 1200,0 1440,25 L1440,50 L0,50 Z"/>
+            </svg>
+        </div>
+
         <!-- About Preview -->
         <section class="section section--white">
             <div class="container">
-                <div class="text-center mb-4">
+                <div class="text-center mb-4 reveal">
                     <h2>من نحن</h2>
                     <p class="text-muted">تعرف على اتحاد الطلبة الموريتانيين بالجزائر</p>
                 </div>
 
-                <div class="card-grid">
+                <div class="card-grid reveal-stagger">
                     <div class="card feature-card">
                         <div class="feature-card__icon">🎯</div>
                         <h3 class="feature-card__title">رؤيتنا</h3>
@@ -119,21 +128,28 @@
                     </div>
                 </div>
 
-                <div class="text-center mt-4">
+                <div class="text-center mt-4 reveal">
                     <a href="about.html" class="btn btn--primary">اعرف المزيد عنا</a>
                 </div>
             </div>
         </section>
 
+        <!-- Wave: white -> alt -->
+        <div class="wave-divider wave-divider--white-alt">
+            <svg viewBox="0 0 1440 50" preserveAspectRatio="none">
+                <path d="M0,25 C360,50 1080,0 1440,30 L1440,50 L0,50 Z"/>
+            </svg>
+        </div>
+
         <!-- Quick Links -->
         <section class="section section--alt">
             <div class="container">
-                <div class="text-center mb-4">
+                <div class="text-center mb-4 reveal">
                     <h2>روابط سريعة</h2>
                     <p class="text-muted">وصول سريع لأهم الخدمات والمعلومات</p>
                 </div>
 
-                <div class="quick-links">
+                <div class="quick-links reveal-stagger">
                     <a href="guide.html#bank" class="quick-link">
                         <div class="quick-link__icon">🏦</div>
                         <span class="quick-link__text">فتح حساب بنكي</span>
@@ -162,15 +178,22 @@
             </div>
         </section>
 
+        <!-- Wave: alt -> white -->
+        <div class="wave-divider wave-divider--alt-white">
+            <svg viewBox="0 0 1440 50" preserveAspectRatio="none">
+                <path d="M0,15 C480,50 960,0 1440,35 L1440,50 L0,50 Z"/>
+            </svg>
+        </div>
+
         <!-- Latest News Preview -->
         <section class="section section--white">
             <div class="container">
-                <div class="text-center mb-4">
+                <div class="text-center mb-4 reveal">
                     <h2>آخر الأخبار</h2>
                     <p class="text-muted">تابع أحدث الأخبار والفعاليات</p>
                 </div>
 
-                <div class="card-grid">
+                <div class="card-grid reveal-stagger">
                     <article class="card">
                         <div class="card__body">
                             <span class="card__tag">أخبار</span>
@@ -211,7 +234,7 @@
                     </article>
                 </div>
 
-                <div class="text-center mt-4">
+                <div class="text-center mt-4 reveal">
                     <a href="news.html" class="btn btn--outline">عرض جميع الأخبار</a>
                 </div>
             </div>
@@ -219,7 +242,7 @@
 
         <!-- CTA Section -->
         <section class="section section--primary">
-            <div class="container text-center">
+            <div class="container text-center reveal">
                 <h2 style="color: var(--color-white);">هل أنت طالب موريتاني في الجزائر؟</h2>
                 <p style="color: rgba(255,255,255,0.9); max-width: 600px; margin-inline: auto; margin-bottom: var(--space-xl);">
                     انضم إلى مجتمعنا واستفد من الخدمات والدعم الذي نقدمه للطلبة. العضوية مجانية ومفتوحة لجميع الطلبة الموريتانيين.
@@ -275,6 +298,11 @@
             </div>
         </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>
+    </button>
 
     <!-- JavaScript -->
     <script src="js/main.js"></script>

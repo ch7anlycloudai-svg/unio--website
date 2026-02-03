@@ -43,6 +43,7 @@ const newsRoutes = require('./backend/routes/news');
 const messagesRoutes = require('./backend/routes/messages');
 const pagesRoutes = require('./backend/routes/pages');
 const membershipsRoutes = require('./backend/routes/memberships');
+const mediaRoutes = require('./backend/routes/media');
 
 // Create Express app
 const app = express();
@@ -92,6 +93,7 @@ app.use('/api/news', newsRoutes);
 app.use('/api/messages', messagesRoutes);
 app.use('/api/pages', pagesRoutes);
 app.use('/api/memberships', membershipsRoutes);
+app.use('/api/media', mediaRoutes);
 
 // ======================
 // FRONTEND ROUTES

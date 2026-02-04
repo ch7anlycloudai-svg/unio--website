@@ -319,57 +319,6 @@
             });
         }
 
-        // Membership Form
-        const membershipForm = document.getElementById('membershipForm');
-        const formSuccess = document.getElementById('formSuccess');
-
-        if (membershipForm) {
-            membershipForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                if (!validateForm(membershipForm)) return;
-
-                const submitBtn = membershipForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.textContent;
-                submitBtn.textContent = 'جاري الإرسال...';
-                submitBtn.disabled = true;
-
-                // Collect form data
-                const formData = {
-                    full_name: membershipForm.querySelector('#fullName')?.value || membershipForm.querySelector('[name="fullName"]')?.value,
-                    email: membershipForm.querySelector('#memberEmail')?.value || membershipForm.querySelector('[name="email"]')?.value,
-                    phone: membershipForm.querySelector('#memberPhone')?.value || membershipForm.querySelector('[name="phone"]')?.value,
-                    university: membershipForm.querySelector('#university')?.value || membershipForm.querySelector('[name="university"]')?.value,
-                    major: membershipForm.querySelector('#major')?.value || membershipForm.querySelector('[name="major"]')?.value,
-                    academic_level: membershipForm.querySelector('#level')?.value || membershipForm.querySelector('[name="level"]')?.value,
-                    wilaya: membershipForm.querySelector('#wilaya')?.value || membershipForm.querySelector('[name="wilaya"]')?.value
-                };
-
-                try {
-                    const response = await fetch(`${API_BASE}/memberships`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formData)
-                    });
-
-                    const data = await response.json();
-
-                    if (data.success) {
-                        membershipForm.reset();
-                        formSuccess.style.display = 'block';
-                        setTimeout(() => { formSuccess.style.display = 'none'; }, 5000);
-                    } else {
-                        alert(data.message || 'حدث خطأ في تسجيل العضوية');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('حدث خطأ في الاتصال بالخادم');
-                }
-
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            });
-        }
     };
 
     // Form Validation

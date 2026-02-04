@@ -17,7 +17,6 @@ const authRoutes = require('./routes/auth');
 const newsRoutes = require('./routes/news');
 const messagesRoutes = require('./routes/messages');
 const pagesRoutes = require('./routes/pages');
-const membershipsRoutes = require('./routes/memberships');
 const mediaRoutes = require('./routes/media');
 
 // Create Express app
@@ -83,7 +82,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/messages', messagesRoutes);
 app.use('/api/pages', pagesRoutes);
-app.use('/api/memberships', membershipsRoutes);
 app.use('/api/media', mediaRoutes);
 
 // ======================

@@ -31,10 +31,6 @@
                 <span>الرسائل</span>
                 <span id="unreadBadge" class="badge" style="display: none;">0</span>
             </a>
-            <a href="memberships.html" class="nav-item">
-                <span class="nav-icon">👥</span>
-                <span>طلبات العضوية</span>
-            </a>
             <a href="pages.html" class="nav-item">
                 <span class="nav-icon">📄</span>
                 <span>محتوى الصفحات</span>
@@ -82,13 +78,6 @@
                 </div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-icon">👥</div>
-                <div class="stat-info">
-                    <h3 id="membershipsCount">0</h3>
-                    <p>طلبات العضوية</p>
-                </div>
-            </div>
 
             <div class="stat-card">
                 <div class="stat-icon">📄</div>
@@ -114,10 +103,6 @@
                 <a href="pages.html" class="action-card">
                     <span class="action-icon">✏️</span>
                     <span>تعديل المحتوى</span>
-                </a>
-                <a href="memberships.html" class="action-card">
-                    <span class="action-icon">👤</span>
-                    <span>مراجعة الطلبات</span>
                 </a>
             </div>
         </section>
@@ -175,15 +160,13 @@
         async function loadDashboard() {
             try {
                 // Load stats
-                const [newsRes, messagesRes, membershipsRes] = await Promise.all([
+                const [newsRes, messagesRes] = await Promise.all([
                     fetch('/api/news/all', { credentials: 'include' }),
-                    fetch('/api/messages', { credentials: 'include' }),
-                    fetch('/api/memberships/stats', { credentials: 'include' })
+                    fetch('/api/messages', { credentials: 'include' })
                 ]);
 
                 const newsData = await newsRes.json();
                 const messagesData = await messagesRes.json();
-                const membershipsData = await membershipsRes.json();
 
                 // Update stats
                 if (newsData.success) {
@@ -196,9 +179,6 @@
                         document.getElementById('unreadBadge').textContent = unread;
                         document.getElementById('unreadBadge').style.display = 'inline';
                     }
-                }
-                if (membershipsData.success) {
-                    document.getElementById('membershipsCount').textContent = membershipsData.data.total;
                 }
 
                 // Load recent news

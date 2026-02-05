@@ -107,16 +107,16 @@
                     </div>
 
                     <!-- Contact Info -->
-                    <div class="reveal">
+                    <div class="reveal" data-page="contact">
                         <h2 class="mb-3">معلومات التواصل</h2>
                         <p class="text-muted mb-4">يمكنك أيضاً التواصل معنا مباشرة من خلال:</p>
 
-                        <div class="contact-info">
+                        <div class="contact-info" id="contactInfo" data-dynamic="contact-info">
                             <div class="contact-info__item">
                                 <div class="contact-info__icon">📧</div>
                                 <div class="contact-info__text">
                                     <h4>البريد الإلكتروني</h4>
-                                    <p>contact@uema-dz.org</p>
+                                    <p data-content="email">contact@uema-dz.org</p>
                                 </div>
                             </div>
 
@@ -124,7 +124,7 @@
                                 <div class="contact-info__icon">📱</div>
                                 <div class="contact-info__text">
                                     <h4>الهاتف</h4>
-                                    <p>+213 XX XX XX XX</p>
+                                    <p data-content="phone">+213 XX XX XX XX</p>
                                 </div>
                             </div>
 
@@ -132,7 +132,7 @@
                                 <div class="contact-info__icon">📍</div>
                                 <div class="contact-info__text">
                                     <h4>العنوان</h4>
-                                    <p>الجزائر العاصمة، الجزائر</p>
+                                    <p data-content="address">الجزائر العاصمة، الجزائر</p>
                                 </div>
                             </div>
 
@@ -140,7 +140,7 @@
                                 <div class="contact-info__icon">🕐</div>
                                 <div class="contact-info__text">
                                     <h4>ساعات العمل</h4>
-                                    <p>السبت - الخميس: 9:00 - 17:00</p>
+                                    <p data-content="hours">السبت - الخميس: 9:00 - 17:00</p>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
                         </div>
 
                         <!-- Emergency Contact -->
-                        <div class="info-box info-box--warning mt-4">
+                        <div class="info-box info-box--warning mt-4" data-content="emergency_info">
                             <h4 class="info-box__title">للحالات الطارئة</h4>
                             <p class="mb-0">في حالات الطوارئ، يمكنك الاتصال مباشرة بـ:</p>
                             <ul class="mb-0">

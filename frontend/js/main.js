@@ -46,7 +46,21 @@
                 if (sectionData.type === 'html') {
                     element.innerHTML = sectionData.content;
                 } else {
-                    element.textContent = sectionData.content;
+                    // For accordion headers, preserve the icon span
+                    if (element.classList.contains('accordion__header')) {
+                        const iconSpan = element.querySelector('.accordion__icon');
+                        element.innerHTML = sectionData.content;
+                        if (iconSpan) {
+                            element.appendChild(iconSpan);
+                        } else {
+                            const newIcon = document.createElement('span');
+                            newIcon.className = 'accordion__icon';
+                            newIcon.textContent = '+';
+                            element.appendChild(newIcon);
+                        }
+                    } else {
+                        element.textContent = sectionData.content;
+                    }
                 }
             }
         });
@@ -793,7 +807,70 @@
             initSpecialties();
         }
 
+        // Guide page - load accordion content dynamically
+        if (currentPage === 'guide') {
+            loadGuideAccordionContent();
+        }
+
+        // Services page - load services and FAQ dynamically
+        if (currentPage === 'services') {
+            loadServicesContent();
+        }
+
+        // Contact page - load contact info dynamically
+        if (currentPage === 'contact') {
+            loadContactContent();
+        }
+
         console.log('Website initialized successfully');
+    };
+
+    /**
+     * Load guide page accordion content from API
+     */
+    const loadGuideAccordionContent = async () => {
+        try {
+            const response = await fetch(`${API_BASE}/pages/guide`);
+            const data = await response.json();
+
+            if (data.success) {
+                updatePageContent(data.data);
+            }
+        } catch (error) {
+            console.log('Using static guide content (API not available)');
+        }
+    };
+
+    /**
+     * Load services page content (service cards and FAQ) from API
+     */
+    const loadServicesContent = async () => {
+        try {
+            const response = await fetch(`${API_BASE}/pages/services`);
+            const data = await response.json();
+
+            if (data.success) {
+                updatePageContent(data.data);
+            }
+        } catch (error) {
+            console.log('Using static services content (API not available)');
+        }
+    };
+
+    /**
+     * Load contact page content from API
+     */
+    const loadContactContent = async () => {
+        try {
+            const response = await fetch(`${API_BASE}/pages/contact`);
+            const data = await response.json();
+
+            if (data.success) {
+                updatePageContent(data.data);
+            }
+        } catch (error) {
+            console.log('Using static contact content (API not available)');
+        }
     };
 
     /**

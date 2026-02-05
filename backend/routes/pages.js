@@ -57,6 +57,48 @@ router.get('/:pageName', (req, res) => {
 });
 
 /**
+ * PUT /api/pages/:pageName/bulk - Bulk update (admin)
+ * NOTE: This route must come BEFORE /:pageName/:sectionId to match correctly
+ */
+router.put('/:pageName/bulk', isAuthenticated, (req, res) => {
+    try {
+        const { pageName } = req.params;
+        const { sections } = req.body;
+
+        if (!sections || !Array.isArray(sections)) {
+            return res.status(400).json({ success: false, message: 'sections array is required' });
+        }
+
+        for (const section of sections) {
+            // Only update section_title if provided
+            if (section.section_title !== undefined) {
+                db.run(
+                    `UPDATE page_content SET
+                        content = ?,
+                        section_title = ?,
+                        updated_at = CURRENT_TIMESTAMP
+                    WHERE page_name = ? AND section_id = ?`,
+                    [section.content, section.section_title, pageName, section.section_id]
+                );
+            } else {
+                db.run(
+                    `UPDATE page_content SET
+                        content = ?,
+                        updated_at = CURRENT_TIMESTAMP
+                    WHERE page_name = ? AND section_id = ?`,
+                    [section.content, pageName, section.section_id]
+                );
+            }
+        }
+
+        res.json({ success: true, message: `Updated ${sections.length} sections successfully` });
+    } catch (error) {
+        console.error('Bulk update error:', error);
+        res.status(500).json({ success: false, message: 'Error updating sections' });
+    }
+});
+
+/**
  * GET /api/pages/:pageName/:sectionId - Get specific section
  */
 router.get('/:pageName/:sectionId', (req, res) => {
@@ -184,36 +226,6 @@ router.delete('/:pageName/:sectionId', isAuthenticated, (req, res) => {
     } catch (error) {
         console.error('Delete section error:', error);
         res.status(500).json({ success: false, message: 'Error deleting section' });
-    }
-});
-
-/**
- * PUT /api/pages/:pageName/bulk - Bulk update (admin)
- */
-router.put('/:pageName/bulk', isAuthenticated, (req, res) => {
-    try {
-        const { pageName } = req.params;
-        const { sections } = req.body;
-
-        if (!sections || !Array.isArray(sections)) {
-            return res.status(400).json({ success: false, message: 'sections array is required' });
-        }
-
-        for (const section of sections) {
-            db.run(
-                `UPDATE page_content SET
-                    content = ?,
-                    section_title = COALESCE(?, section_title),
-                    updated_at = CURRENT_TIMESTAMP
-                WHERE page_name = ? AND section_id = ?`,
-                [section.content, section.section_title, pageName, section.section_id]
-            );
-        }
-
-        res.json({ success: true, message: `Updated ${sections.length} sections successfully` });
-    } catch (error) {
-        console.error('Bulk update error:', error);
-        res.status(500).json({ success: false, message: 'Error updating sections' });
     }
 });
 

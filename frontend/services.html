@@ -54,48 +54,48 @@
         </section>
 
         <!-- Services Overview -->
-        <section class="section section--white">
+        <section class="section section--white" data-page="services">
             <div class="container">
                 <div class="text-center mb-4 reveal">
                     <h2>ما نقدمه لك</h2>
                     <p class="text-muted">خدمات متنوعة لدعم مسيرتك الأكاديمية</p>
                 </div>
 
-                <div class="card-grid reveal-stagger">
-                    <div class="card feature-card">
-                        <div class="feature-card__icon">🎓</div>
-                        <h3 class="feature-card__title">الدعم الأكاديمي</h3>
-                        <p class="feature-card__text">توجيه ومساعدة في اختيار التخصص، والتسجيل، والإجراءات الإدارية الجامعية.</p>
+                <div class="card-grid reveal-stagger" id="servicesGrid" data-dynamic="services">
+                    <div class="card feature-card" data-service="academic">
+                        <div class="feature-card__icon" data-content="service_academic_icon">🎓</div>
+                        <h3 class="feature-card__title" data-content="service_academic_title">الدعم الأكاديمي</h3>
+                        <p class="feature-card__text" data-content="service_academic">توجيه ومساعدة في اختيار التخصص، والتسجيل، والإجراءات الإدارية الجامعية.</p>
                     </div>
 
-                    <div class="card feature-card">
-                        <div class="feature-card__icon">📄</div>
-                        <h3 class="feature-card__title">المساعدة الإدارية</h3>
-                        <p class="feature-card__text">مساعدة في استخراج الوثائق، والإقامة، والتعامل مع الجهات الرسمية.</p>
+                    <div class="card feature-card" data-service="admin">
+                        <div class="feature-card__icon" data-content="service_admin_icon">📄</div>
+                        <h3 class="feature-card__title" data-content="service_admin_title">المساعدة الإدارية</h3>
+                        <p class="feature-card__text" data-content="service_admin">مساعدة في استخراج الوثائق، والإقامة، والتعامل مع الجهات الرسمية.</p>
                     </div>
 
-                    <div class="card feature-card">
-                        <div class="feature-card__icon">🏠</div>
-                        <h3 class="feature-card__title">استشارات السكن</h3>
-                        <p class="feature-card__text">معلومات ونصائح حول الإقامة الجامعية والسكن الخاص.</p>
+                    <div class="card feature-card" data-service="housing">
+                        <div class="feature-card__icon" data-content="service_housing_icon">🏠</div>
+                        <h3 class="feature-card__title" data-content="service_housing_title">استشارات السكن</h3>
+                        <p class="feature-card__text" data-content="service_housing">معلومات ونصائح حول الإقامة الجامعية والسكن الخاص.</p>
                     </div>
 
-                    <div class="card feature-card">
-                        <div class="feature-card__icon">🤝</div>
-                        <h3 class="feature-card__title">التواصل والتشبيك</h3>
-                        <p class="feature-card__text">ربط الطلاب الجدد بالقدامى وبناء شبكة دعم اجتماعي.</p>
+                    <div class="card feature-card" data-service="network">
+                        <div class="feature-card__icon" data-content="service_network_icon">🤝</div>
+                        <h3 class="feature-card__title" data-content="service_network_title">التواصل والتشبيك</h3>
+                        <p class="feature-card__text" data-content="service_network">ربط الطلاب الجدد بالقدامى وبناء شبكة دعم اجتماعي.</p>
                     </div>
 
-                    <div class="card feature-card">
-                        <div class="feature-card__icon">📢</div>
-                        <h3 class="feature-card__title">التمثيل والمناصرة</h3>
-                        <p class="feature-card__text">تمثيل مصالح الطلبة الموريتانيين أمام الجهات الرسمية.</p>
+                    <div class="card feature-card" data-service="advocacy">
+                        <div class="feature-card__icon" data-content="service_advocacy_icon">📢</div>
+                        <h3 class="feature-card__title" data-content="service_advocacy_title">التمثيل والمناصرة</h3>
+                        <p class="feature-card__text" data-content="service_advocacy">تمثيل مصالح الطلبة الموريتانيين أمام الجهات الرسمية.</p>
                     </div>
 
-                    <div class="card feature-card">
-                        <div class="feature-card__icon">🎉</div>
-                        <h3 class="feature-card__title">الأنشطة الثقافية</h3>
-                        <p class="feature-card__text">تنظيم فعاليات ثقافية واجتماعية ورحلات جماعية.</p>
+                    <div class="card feature-card" data-service="activities">
+                        <div class="feature-card__icon" data-content="service_activities_icon">🎉</div>
+                        <h3 class="feature-card__title" data-content="service_activities_title">الأنشطة الثقافية</h3>
+                        <p class="feature-card__text" data-content="service_activities">تنظيم فعاليات ثقافية واجتماعية ورحلات جماعية.</p>
                     </div>
                 </div>
             </div>
@@ -109,23 +109,23 @@
                     <p class="text-muted">إجابات على أكثر الأسئلة تكراراً</p>
                 </div>
 
-                <div class="accordion reveal" id="faqAccordion">
-                    <div class="accordion__item accordion__item--active">
-                        <button class="accordion__header">
+                <div class="accordion reveal" id="faqAccordion" data-page="services" data-dynamic="faq">
+                    <div class="accordion__item accordion__item--active" data-faq-item="1">
+                        <button class="accordion__header" data-content="faq_1_question">
                             هل العضوية في الاتحاد مجانية؟
                             <span class="accordion__icon">+</span>
                         </button>
-                        <div class="accordion__body">
+                        <div class="accordion__body" data-content="faq_1">
                             <p>نعم، العضوية في اتحاد الطلبة الموريتانيين مجانية تماماً ومتاحة لجميع الطلبة الموريتانيين المسجلين في الجامعات والمعاهد الجزائرية.</p>
                         </div>
                     </div>
 
-                    <div class="accordion__item">
-                        <button class="accordion__header">
+                    <div class="accordion__item" data-faq-item="2">
+                        <button class="accordion__header" data-content="faq_2_question">
                             ما هي مزايا العضوية؟
                             <span class="accordion__icon">+</span>
                         </button>
-                        <div class="accordion__body">
+                        <div class="accordion__body" data-content="faq_2">
                             <ul>
                                 <li>الدعم والتوجيه الأكاديمي</li>
                                 <li>المساعدة في الإجراءات الإدارية</li>
@@ -137,12 +137,12 @@
                         </div>
                     </div>
 
-                    <div class="accordion__item">
-                        <button class="accordion__header">
+                    <div class="accordion__item" data-faq-item="3">
+                        <button class="accordion__header" data-content="faq_3_question">
                             كيف يمكنني التواصل مع الاتحاد؟
                             <span class="accordion__icon">+</span>
                         </button>
-                        <div class="accordion__body">
+                        <div class="accordion__body" data-content="faq_3">
                             <p>يمكنك التواصل معنا من خلال:</p>
                             <ul>
                                 <li>البريد الإلكتروني: contact@uema-dz.org</li>
@@ -153,12 +153,12 @@
                         </div>
                     </div>
 
-                    <div class="accordion__item">
-                        <button class="accordion__header">
+                    <div class="accordion__item" data-faq-item="4">
+                        <button class="accordion__header" data-content="faq_4_question">
                             هل يقدم الاتحاد مساعدات مالية؟
                             <span class="accordion__icon">+</span>
                         </button>
-                        <div class="accordion__body">
+                        <div class="accordion__body" data-content="faq_4">
                             <p>الاتحاد منظمة طلابية تطوعية ولا يملك ميزانية لتقديم مساعدات مالية مباشرة. لكننا نساعد في:</p>
                             <ul>
                                 <li>توجيه الطلاب للمنح المتاحة</li>
@@ -168,12 +168,12 @@
                         </div>
                     </div>
 
-                    <div class="accordion__item">
-                        <button class="accordion__header">
+                    <div class="accordion__item" data-faq-item="5">
+                        <button class="accordion__header" data-content="faq_5_question">
                             كيف يمكنني المساهمة في أنشطة الاتحاد؟
                             <span class="accordion__icon">+</span>
                         </button>
-                        <div class="accordion__body">
+                        <div class="accordion__body" data-content="faq_5">
                             <p>نرحب بمساهمتك! يمكنك:</p>
                             <ul>
                                 <li>الانضمام للجان العمل المتخصصة</li>
@@ -185,12 +185,12 @@
                         </div>
                     </div>
 
-                    <div class="accordion__item">
-                        <button class="accordion__header">
+                    <div class="accordion__item" data-faq-item="6">
+                        <button class="accordion__header" data-content="faq_6_question">
                             هل يمكن للخريجين البقاء أعضاء؟
                             <span class="accordion__icon">+</span>
                         </button>
-                        <div class="accordion__body">
+                        <div class="accordion__body" data-content="faq_6">
                             <p>نعم، نرحب بالخريجين كأعضاء شرفيين يمكنهم المساهمة بخبراتهم ومساعدة الطلاب الحاليين. العديد من خريجينا يواصلون دعم الاتحاد وتقديم النصح للطلاب.</p>
                         </div>
                     </div>

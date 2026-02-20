@@ -12,7 +12,7 @@ const { isAuthenticated, isNotAuthenticated } = require('../middleware/auth');
 /**
  * POST /api/auth/login
  */
-router.post('/login', isNotAuthenticated, (req, res) => {
+router.post('/login', isNotAuthenticated, async (req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -23,7 +23,7 @@ router.post('/login', isNotAuthenticated, (req, res) => {
             });
         }
 
-        const admin = db.get('SELECT * FROM admins WHERE username = ?', [username]);
+        const admin = await db.get('SELECT * FROM admins WHERE username = ?', [username]);
 
         if (!admin) {
             return res.status(401).json({
@@ -85,7 +85,7 @@ router.get('/check', (req, res) => {
 /**
  * PUT /api/auth/change-password
  */
-router.put('/change-password', isAuthenticated, (req, res) => {
+router.put('/change-password', isAuthenticated, async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
 
@@ -103,7 +103,7 @@ router.put('/change-password', isAuthenticated, (req, res) => {
             });
         }
 
-        const admin = db.get('SELECT * FROM admins WHERE id = ?', [req.session.adminId]);
+        const admin = await db.get('SELECT * FROM admins WHERE id = ?', [req.session.adminId]);
         const isValidPassword = bcrypt.compareSync(currentPassword, admin.password);
 
         if (!isValidPassword) {
@@ -114,7 +114,7 @@ router.put('/change-password', isAuthenticated, (req, res) => {
         }
 
         const hashedPassword = bcrypt.hashSync(newPassword, 10);
-        db.run('UPDATE admins SET password = ? WHERE id = ?', [hashedPassword, req.session.adminId]);
+        await db.run('UPDATE admins SET password = ? WHERE id = ?', [hashedPassword, req.session.adminId]);
 
         res.json({ success: true, message: 'Password changed successfully' });
     } catch (error) {

@@ -10,9 +10,9 @@ const { isAuthenticated } = require('../middleware/auth');
 /**
  * GET /api/pages - Get all pages with content
  */
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const content = db.all('SELECT * FROM page_content ORDER BY page_name, display_order');
+        const content = await db.all('SELECT * FROM page_content ORDER BY page_name, display_order');
 
         const pages = {};
         content.forEach(item => {
@@ -32,9 +32,9 @@ router.get('/', (req, res) => {
 /**
  * GET /api/pages/:pageName - Get content for a page
  */
-router.get('/:pageName', (req, res) => {
+router.get('/:pageName', async (req, res) => {
     try {
-        const content = db.all(
+        const content = await db.all(
             'SELECT * FROM page_content WHERE page_name = ? ORDER BY display_order',
             [req.params.pageName]
         );
@@ -60,7 +60,7 @@ router.get('/:pageName', (req, res) => {
  * PUT /api/pages/:pageName/bulk - Bulk update (admin)
  * NOTE: This route must come BEFORE /:pageName/:sectionId to match correctly
  */
-router.put('/:pageName/bulk', isAuthenticated, (req, res) => {
+router.put('/:pageName/bulk', isAuthenticated, async (req, res) => {
     try {
         const { pageName } = req.params;
         const { sections } = req.body;
@@ -72,7 +72,7 @@ router.put('/:pageName/bulk', isAuthenticated, (req, res) => {
         for (const section of sections) {
             // Only update section_title if provided
             if (section.section_title !== undefined) {
-                db.run(
+                await db.run(
                     `UPDATE page_content SET
                         content = ?,
                         section_title = ?,
@@ -81,7 +81,7 @@ router.put('/:pageName/bulk', isAuthenticated, (req, res) => {
                     [section.content, section.section_title, pageName, section.section_id]
                 );
             } else {
-                db.run(
+                await db.run(
                     `UPDATE page_content SET
                         content = ?,
                         updated_at = CURRENT_TIMESTAMP
@@ -101,9 +101,9 @@ router.put('/:pageName/bulk', isAuthenticated, (req, res) => {
 /**
  * GET /api/pages/:pageName/:sectionId - Get specific section
  */
-router.get('/:pageName/:sectionId', (req, res) => {
+router.get('/:pageName/:sectionId', async (req, res) => {
     try {
-        const content = db.get(
+        const content = await db.get(
             'SELECT * FROM page_content WHERE page_name = ? AND section_id = ?',
             [req.params.pageName, req.params.sectionId]
         );
@@ -122,12 +122,12 @@ router.get('/:pageName/:sectionId', (req, res) => {
 /**
  * PUT /api/pages/:pageName/:sectionId - Update section (admin)
  */
-router.put('/:pageName/:sectionId', isAuthenticated, (req, res) => {
+router.put('/:pageName/:sectionId', isAuthenticated, async (req, res) => {
     try {
         const { pageName, sectionId } = req.params;
         const { section_title, content, content_type } = req.body;
 
-        const existing = db.get(
+        const existing = await db.get(
             'SELECT * FROM page_content WHERE page_name = ? AND section_id = ?',
             [pageName, sectionId]
         );
@@ -136,7 +136,7 @@ router.put('/:pageName/:sectionId', isAuthenticated, (req, res) => {
             return res.status(404).json({ success: false, message: 'Section not found' });
         }
 
-        db.run(
+        await db.run(
             `UPDATE page_content SET
                 section_title = COALESCE(?, section_title),
                 content = COALESCE(?, content),
@@ -146,7 +146,7 @@ router.put('/:pageName/:sectionId', isAuthenticated, (req, res) => {
             [section_title, content, content_type, pageName, sectionId]
         );
 
-        const updated = db.get(
+        const updated = await db.get(
             'SELECT * FROM page_content WHERE page_name = ? AND section_id = ?',
             [pageName, sectionId]
         );
@@ -161,7 +161,7 @@ router.put('/:pageName/:sectionId', isAuthenticated, (req, res) => {
 /**
  * POST /api/pages/:pageName - Add new section (admin)
  */
-router.post('/:pageName', isAuthenticated, (req, res) => {
+router.post('/:pageName', isAuthenticated, async (req, res) => {
     try {
         const { pageName } = req.params;
         const { section_id, section_title, content, content_type, display_order } = req.body;
@@ -170,7 +170,7 @@ router.post('/:pageName', isAuthenticated, (req, res) => {
             return res.status(400).json({ success: false, message: 'section_id and content are required' });
         }
 
-        const existing = db.get(
+        const existing = await db.get(
             'SELECT * FROM page_content WHERE page_name = ? AND section_id = ?',
             [pageName, section_id]
         );
@@ -181,19 +181,19 @@ router.post('/:pageName', isAuthenticated, (req, res) => {
 
         let order = display_order;
         if (!order) {
-            const maxOrder = db.get(
+            const maxOrder = await db.get(
                 'SELECT MAX(display_order) as max_order FROM page_content WHERE page_name = ?',
                 [pageName]
             );
             order = (maxOrder?.max_order || 0) + 1;
         }
 
-        db.run(
+        await db.run(
             'INSERT INTO page_content (page_name, section_id, section_title, content, content_type, display_order) VALUES (?, ?, ?, ?, ?, ?)',
             [pageName, section_id, section_title || '', content, content_type || 'text', order]
         );
 
-        const newSection = db.get(
+        const newSection = await db.get(
             'SELECT * FROM page_content WHERE page_name = ? AND section_id = ?',
             [pageName, section_id]
         );
@@ -208,11 +208,11 @@ router.post('/:pageName', isAuthenticated, (req, res) => {
 /**
  * DELETE /api/pages/:pageName/:sectionId - Delete section (admin)
  */
-router.delete('/:pageName/:sectionId', isAuthenticated, (req, res) => {
+router.delete('/:pageName/:sectionId', isAuthenticated, async (req, res) => {
     try {
         const { pageName, sectionId } = req.params;
 
-        const existing = db.get(
+        const existing = await db.get(
             'SELECT * FROM page_content WHERE page_name = ? AND section_id = ?',
             [pageName, sectionId]
         );
@@ -221,7 +221,7 @@ router.delete('/:pageName/:sectionId', isAuthenticated, (req, res) => {
             return res.status(404).json({ success: false, message: 'Section not found' });
         }
 
-        db.run('DELETE FROM page_content WHERE page_name = ? AND section_id = ?', [pageName, sectionId]);
+        await db.run('DELETE FROM page_content WHERE page_name = ? AND section_id = ?', [pageName, sectionId]);
         res.json({ success: true, message: 'Section deleted successfully' });
     } catch (error) {
         console.error('Delete section error:', error);

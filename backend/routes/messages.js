@@ -10,7 +10,7 @@ const { isAuthenticated } = require('../middleware/auth');
 /**
  * POST /api/messages - Submit contact form (public)
  */
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const { name, email, phone, subject, message } = req.body;
 
@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
             return res.status(400).json({ success: false, message: 'Invalid email format' });
         }
 
-        db.run(
+        await db.run(
             'INSERT INTO messages (name, email, phone, subject, message) VALUES (?, ?, ?, ?, ?)',
             [name, email, phone || null, subject, message]
         );
@@ -38,9 +38,9 @@ router.post('/', (req, res) => {
 /**
  * GET /api/messages - Get all messages (admin)
  */
-router.get('/', isAuthenticated, (req, res) => {
+router.get('/', isAuthenticated, async (req, res) => {
     try {
-        const messages = db.all('SELECT * FROM messages ORDER BY created_at DESC');
+        const messages = await db.all('SELECT * FROM messages ORDER BY created_at DESC');
         res.json({ success: true, data: messages });
     } catch (error) {
         console.error('Get messages error:', error);
@@ -51,9 +51,9 @@ router.get('/', isAuthenticated, (req, res) => {
 /**
  * GET /api/messages/unread-count - Get unread count (admin)
  */
-router.get('/unread-count', isAuthenticated, (req, res) => {
+router.get('/unread-count', isAuthenticated, async (req, res) => {
     try {
-        const result = db.get('SELECT COUNT(*) as count FROM messages WHERE is_read = 0');
+        const result = await db.get('SELECT COUNT(*) as count FROM messages WHERE is_read = 0');
         res.json({ success: true, count: result ? result.count : 0 });
     } catch (error) {
         console.error('Get unread count error:', error);
@@ -64,9 +64,9 @@ router.get('/unread-count', isAuthenticated, (req, res) => {
 /**
  * GET /api/messages/:id - Get single message (admin)
  */
-router.get('/:id', isAuthenticated, (req, res) => {
+router.get('/:id', isAuthenticated, async (req, res) => {
     try {
-        const message = db.get('SELECT * FROM messages WHERE id = ?', [req.params.id]);
+        const message = await db.get('SELECT * FROM messages WHERE id = ?', [req.params.id]);
         if (!message) {
             return res.status(404).json({ success: false, message: 'Message not found' });
         }
@@ -80,14 +80,14 @@ router.get('/:id', isAuthenticated, (req, res) => {
 /**
  * PATCH /api/messages/:id/read - Mark as read (admin)
  */
-router.patch('/:id/read', isAuthenticated, (req, res) => {
+router.patch('/:id/read', isAuthenticated, async (req, res) => {
     try {
-        const existing = db.get('SELECT * FROM messages WHERE id = ?', [req.params.id]);
+        const existing = await db.get('SELECT * FROM messages WHERE id = ?', [req.params.id]);
         if (!existing) {
             return res.status(404).json({ success: false, message: 'Message not found' });
         }
 
-        db.run('UPDATE messages SET is_read = 1 WHERE id = ?', [req.params.id]);
+        await db.run('UPDATE messages SET is_read = 1 WHERE id = ?', [req.params.id]);
         res.json({ success: true, message: 'Message marked as read' });
     } catch (error) {
         console.error('Mark as read error:', error);
@@ -98,14 +98,14 @@ router.patch('/:id/read', isAuthenticated, (req, res) => {
 /**
  * PATCH /api/messages/:id/unread - Mark as unread (admin)
  */
-router.patch('/:id/unread', isAuthenticated, (req, res) => {
+router.patch('/:id/unread', isAuthenticated, async (req, res) => {
     try {
-        const existing = db.get('SELECT * FROM messages WHERE id = ?', [req.params.id]);
+        const existing = await db.get('SELECT * FROM messages WHERE id = ?', [req.params.id]);
         if (!existing) {
             return res.status(404).json({ success: false, message: 'Message not found' });
         }
 
-        db.run('UPDATE messages SET is_read = 0 WHERE id = ?', [req.params.id]);
+        await db.run('UPDATE messages SET is_read = 0 WHERE id = ?', [req.params.id]);
         res.json({ success: true, message: 'Message marked as unread' });
     } catch (error) {
         console.error('Mark as unread error:', error);
@@ -116,14 +116,14 @@ router.patch('/:id/unread', isAuthenticated, (req, res) => {
 /**
  * DELETE /api/messages/:id - Delete message (admin)
  */
-router.delete('/:id', isAuthenticated, (req, res) => {
+router.delete('/:id', isAuthenticated, async (req, res) => {
     try {
-        const existing = db.get('SELECT * FROM messages WHERE id = ?', [req.params.id]);
+        const existing = await db.get('SELECT * FROM messages WHERE id = ?', [req.params.id]);
         if (!existing) {
             return res.status(404).json({ success: false, message: 'Message not found' });
         }
 
-        db.run('DELETE FROM messages WHERE id = ?', [req.params.id]);
+        await db.run('DELETE FROM messages WHERE id = ?', [req.params.id]);
         res.json({ success: true, message: 'Message deleted successfully' });
     } catch (error) {
         console.error('Delete message error:', error);

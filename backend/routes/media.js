@@ -66,9 +66,9 @@ const upload = multer({
 /**
  * GET /api/media/hero - Get all active hero slides (public)
  */
-router.get('/hero', (req, res) => {
+router.get('/hero', async (req, res) => {
     try {
-        const slides = db.all(
+        const slides = await db.all(
             'SELECT * FROM hero_slides WHERE is_active = 1 ORDER BY display_order ASC'
         );
         res.json({ success: true, data: slides });
@@ -81,9 +81,9 @@ router.get('/hero', (req, res) => {
 /**
  * GET /api/media/hero/all - Get all hero slides (admin)
  */
-router.get('/hero/all', requireAuth, (req, res) => {
+router.get('/hero/all', requireAuth, async (req, res) => {
     try {
-        const slides = db.all('SELECT * FROM hero_slides ORDER BY display_order ASC');
+        const slides = await db.all('SELECT * FROM hero_slides ORDER BY display_order ASC');
         res.json({ success: true, data: slides });
     } catch (error) {
         console.error('Error fetching all hero slides:', error);
@@ -94,7 +94,7 @@ router.get('/hero/all', requireAuth, (req, res) => {
 /**
  * POST /api/media/hero - Add new hero slide (admin)
  */
-router.post('/hero', requireAuth, (req, res) => {
+router.post('/hero', requireAuth, async (req, res) => {
     try {
         const { title, subtitle, image_url, link_url, link_text, display_order } = req.body;
 
@@ -102,7 +102,7 @@ router.post('/hero', requireAuth, (req, res) => {
             return res.status(400).json({ success: false, message: 'رابط الصورة مطلوب' });
         }
 
-        const result = db.run(
+        const result = await db.run(
             `INSERT INTO hero_slides (title, subtitle, image_url, link_url, link_text, display_order)
              VALUES (?, ?, ?, ?, ?, ?)`,
             [title || '', subtitle || '', image_url, link_url || '', link_text || '', display_order || 0]
@@ -122,12 +122,12 @@ router.post('/hero', requireAuth, (req, res) => {
 /**
  * PUT /api/media/hero/:id - Update hero slide (admin)
  */
-router.put('/hero/:id', requireAuth, (req, res) => {
+router.put('/hero/:id', requireAuth, async (req, res) => {
     try {
         const { id } = req.params;
         const { title, subtitle, image_url, link_url, link_text, display_order, is_active } = req.body;
 
-        db.run(
+        await db.run(
             `UPDATE hero_slides
              SET title = ?, subtitle = ?, image_url = ?, link_url = ?, link_text = ?,
                  display_order = ?, is_active = ?
@@ -145,14 +145,14 @@ router.put('/hero/:id', requireAuth, (req, res) => {
 /**
  * DELETE /api/media/hero/:id - Delete hero slide (admin)
  */
-router.delete('/hero/:id', requireAuth, (req, res) => {
+router.delete('/hero/:id', requireAuth, async (req, res) => {
     try {
         const { id } = req.params;
 
         // Get slide to delete its image
-        const slide = db.get('SELECT image_url FROM hero_slides WHERE id = ?', [id]);
+        const slide = await db.get('SELECT image_url FROM hero_slides WHERE id = ?', [id]);
 
-        db.run('DELETE FROM hero_slides WHERE id = ?', [id]);
+        await db.run('DELETE FROM hero_slides WHERE id = ?', [id]);
 
         // Delete image file if it's a local upload
         if (slide && slide.image_url && slide.image_url.startsWith('/assets/uploads/')) {
@@ -176,9 +176,9 @@ router.delete('/hero/:id', requireAuth, (req, res) => {
 /**
  * GET /api/media/specialties - Get all active specialties (public)
  */
-router.get('/specialties', (req, res) => {
+router.get('/specialties', async (req, res) => {
     try {
-        const specialties = db.all(
+        const specialties = await db.all(
             'SELECT * FROM specialties WHERE is_active = 1 ORDER BY display_order ASC'
         );
 
@@ -198,9 +198,9 @@ router.get('/specialties', (req, res) => {
 /**
  * GET /api/media/specialties/all - Get all specialties (admin)
  */
-router.get('/specialties/all', requireAuth, (req, res) => {
+router.get('/specialties/all', requireAuth, async (req, res) => {
     try {
-        const specialties = db.all('SELECT * FROM specialties ORDER BY display_order ASC');
+        const specialties = await db.all('SELECT * FROM specialties ORDER BY display_order ASC');
 
         const parsed = specialties.map(spec => ({
             ...spec,
@@ -217,10 +217,10 @@ router.get('/specialties/all', requireAuth, (req, res) => {
 /**
  * GET /api/media/specialties/:id - Get single specialty
  */
-router.get('/specialties/:id', (req, res) => {
+router.get('/specialties/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const specialty = db.get('SELECT * FROM specialties WHERE id = ?', [id]);
+        const specialty = await db.get('SELECT * FROM specialties WHERE id = ?', [id]);
 
         if (!specialty) {
             return res.status(404).json({ success: false, message: 'التخصص غير موجود' });
@@ -238,7 +238,7 @@ router.get('/specialties/:id', (req, res) => {
 /**
  * POST /api/media/specialties - Add new specialty (admin)
  */
-router.post('/specialties', requireAuth, (req, res) => {
+router.post('/specialties', requireAuth, async (req, res) => {
     try {
         const { name, name_ar, icon, description, image_url, video_url, video_type, items, duration, display_order } = req.body;
 
@@ -248,7 +248,7 @@ router.post('/specialties', requireAuth, (req, res) => {
 
         const itemsJson = Array.isArray(items) ? JSON.stringify(items) : items;
 
-        const result = db.run(
+        const result = await db.run(
             `INSERT INTO specialties (name, name_ar, icon, description, image_url, video_url, video_type, items, duration, display_order)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [name, name_ar, icon || '📚', description || '', image_url || '', video_url || '', video_type || 'youtube', itemsJson || '[]', duration || '', display_order || 0]
@@ -268,14 +268,14 @@ router.post('/specialties', requireAuth, (req, res) => {
 /**
  * PUT /api/media/specialties/:id - Update specialty (admin)
  */
-router.put('/specialties/:id', requireAuth, (req, res) => {
+router.put('/specialties/:id', requireAuth, async (req, res) => {
     try {
         const { id } = req.params;
         const { name, name_ar, icon, description, image_url, video_url, video_type, items, duration, display_order, is_active } = req.body;
 
         const itemsJson = Array.isArray(items) ? JSON.stringify(items) : items;
 
-        db.run(
+        await db.run(
             `UPDATE specialties
              SET name = ?, name_ar = ?, icon = ?, description = ?, image_url = ?,
                  video_url = ?, video_type = ?, items = ?, duration = ?,
@@ -294,14 +294,14 @@ router.put('/specialties/:id', requireAuth, (req, res) => {
 /**
  * DELETE /api/media/specialties/:id - Delete specialty (admin)
  */
-router.delete('/specialties/:id', requireAuth, (req, res) => {
+router.delete('/specialties/:id', requireAuth, async (req, res) => {
     try {
         const { id } = req.params;
 
         // Get specialty to delete its image
-        const specialty = db.get('SELECT image_url FROM specialties WHERE id = ?', [id]);
+        const specialty = await db.get('SELECT image_url FROM specialties WHERE id = ?', [id]);
 
-        db.run('DELETE FROM specialties WHERE id = ?', [id]);
+        await db.run('DELETE FROM specialties WHERE id = ?', [id]);
 
         // Delete image file if it's a local upload
         if (specialty && specialty.image_url && specialty.image_url.startsWith('/assets/uploads/')) {

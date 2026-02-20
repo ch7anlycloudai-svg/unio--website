@@ -1,202 +1,170 @@
 /**
- * Database Configuration - SQLite (using sql.js)
- * This file sets up the database and creates all necessary tables
+ * Database Configuration - MySQL (using mysql2)
+ * This file sets up the database connection pool and creates all necessary tables
  */
 
-const initSqlJs = require('sql.js');
-const fs = require('fs');
-const path = require('path');
+const mysql = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
 
-// Database file path - use environment variable or default to backend folder
-const dbPath = process.env.DATABASE_PATH || path.join(__dirname, '..', 'data', 'database.sqlite');
-
-// Ensure data directory exists
-const dataDir = path.dirname(dbPath);
-if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-}
-
-// Global database instance
-let db = null;
+// MySQL connection pool
+let pool = null;
 
 /**
  * Initialize the database
- * @returns {Promise<Database>}
+ * @returns {Promise<void>}
  */
 async function initializeDatabase() {
-    const SQL = await initSqlJs();
+    pool = mysql.createPool({
+        host: process.env.DB_HOST || 'localhost',
+        port: parseInt(process.env.DB_PORT) || 3306,
+        database: process.env.DB_NAME || 'u666876119_abdo',
+        user: process.env.DB_USER || 'u666876119_lightgreenlap',
+        password: process.env.DB_PASSWORD || '',
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+        charset: 'utf8mb4'
+    });
 
-    // Load existing database or create new one
-    if (fs.existsSync(dbPath)) {
-        const fileBuffer = fs.readFileSync(dbPath);
-        db = new SQL.Database(fileBuffer);
-        console.log('Loaded existing database');
-    } else {
-        db = new SQL.Database();
-        console.log('Created new database');
-    }
+    // Test connection
+    const connection = await pool.getConnection();
+    console.log('Connected to MySQL database successfully');
+    connection.release();
 
     // Create tables
-    createTables();
-
-    // Save database to file
-    saveDatabase();
+    await createTables();
 
     console.log('Database initialized successfully!');
-    return db;
-}
-
-/**
- * Get database instance
- */
-function getDb() {
-    if (!db) {
-        throw new Error('Database not initialized. Call initializeDatabase() first.');
-    }
-    return db;
-}
-
-/**
- * Save database to file
- */
-function saveDatabase() {
-    if (db) {
-        const data = db.export();
-        const buffer = Buffer.from(data);
-        fs.writeFileSync(dbPath, buffer);
-    }
 }
 
 /**
  * Create all database tables
  */
-function createTables() {
+async function createTables() {
     // Admin users table
-    db.run(`
+    await pool.execute(`
         CREATE TABLE IF NOT EXISTS admins (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            username VARCHAR(255) UNIQUE NOT NULL,
+            password VARCHAR(255) NOT NULL,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
 
     // News table
-    db.run(`
+    await pool.execute(`
         CREATE TABLE IF NOT EXISTS news (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL,
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            title VARCHAR(500) NOT NULL,
             content TEXT NOT NULL,
-            category TEXT NOT NULL DEFAULT 'news',
+            category VARCHAR(100) NOT NULL DEFAULT 'news',
             image_url TEXT,
-            location TEXT,
-            published INTEGER DEFAULT 1,
+            location VARCHAR(500),
+            published TINYINT(1) DEFAULT 1,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
 
     // Contact messages table
-    db.run(`
+    await pool.execute(`
         CREATE TABLE IF NOT EXISTS messages (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            email TEXT NOT NULL,
-            phone TEXT,
-            subject TEXT NOT NULL,
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL,
+            phone VARCHAR(50),
+            subject VARCHAR(500) NOT NULL,
             message TEXT NOT NULL,
-            is_read INTEGER DEFAULT 0,
+            is_read TINYINT(1) DEFAULT 0,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
 
     // Page content table
-    db.run(`
+    await pool.execute(`
         CREATE TABLE IF NOT EXISTS page_content (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            page_name TEXT NOT NULL,
-            section_id TEXT NOT NULL,
-            section_title TEXT,
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            page_name VARCHAR(100) NOT NULL,
+            section_id VARCHAR(100) NOT NULL,
+            section_title VARCHAR(500),
             content TEXT NOT NULL,
-            content_type TEXT DEFAULT 'text',
-            display_order INTEGER DEFAULT 0,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            UNIQUE(page_name, section_id)
-        )
+            content_type VARCHAR(50) DEFAULT 'text',
+            display_order INT DEFAULT 0,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            UNIQUE KEY unique_page_section (page_name, section_id)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
 
     // Membership applications table
-    db.run(`
+    await pool.execute(`
         CREATE TABLE IF NOT EXISTS memberships (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            full_name TEXT NOT NULL,
-            email TEXT NOT NULL,
-            phone TEXT NOT NULL,
-            university TEXT NOT NULL,
-            major TEXT NOT NULL,
-            academic_level TEXT NOT NULL,
-            wilaya TEXT NOT NULL,
-            status TEXT DEFAULT 'pending',
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            full_name VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL,
+            phone VARCHAR(50) NOT NULL,
+            university VARCHAR(500) NOT NULL,
+            major VARCHAR(255) NOT NULL,
+            academic_level VARCHAR(100) NOT NULL,
+            wilaya VARCHAR(255) NOT NULL,
+            status VARCHAR(50) DEFAULT 'pending',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
 
     // Hero slides table (for homepage carousel)
-    db.run(`
+    await pool.execute(`
         CREATE TABLE IF NOT EXISTS hero_slides (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT,
-            subtitle TEXT,
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            title VARCHAR(500),
+            subtitle VARCHAR(500),
             image_url TEXT NOT NULL,
             link_url TEXT,
-            link_text TEXT,
-            display_order INTEGER DEFAULT 0,
-            is_active INTEGER DEFAULT 1,
+            link_text VARCHAR(255),
+            display_order INT DEFAULT 0,
+            is_active TINYINT(1) DEFAULT 1,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
 
     // Specialties table (for programs page)
-    db.run(`
+    await pool.execute(`
         CREATE TABLE IF NOT EXISTS specialties (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            name_ar TEXT NOT NULL,
-            icon TEXT DEFAULT '📚',
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            name_ar VARCHAR(255) NOT NULL,
+            icon VARCHAR(50) DEFAULT '📚',
             description TEXT,
             image_url TEXT,
             video_url TEXT,
-            video_type TEXT DEFAULT 'youtube',
+            video_type VARCHAR(50) DEFAULT 'youtube',
             items TEXT,
-            duration TEXT,
-            display_order INTEGER DEFAULT 0,
-            is_active INTEGER DEFAULT 1,
+            duration VARCHAR(100),
+            display_order INT DEFAULT 0,
+            is_active TINYINT(1) DEFAULT 1,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
 
     // Create default admin if not exists
-    createDefaultAdmin();
+    await createDefaultAdmin();
 
     // Initialize default specialties
-    initializeDefaultSpecialties();
+    await initializeDefaultSpecialties();
 
     // Initialize default page content
-    initializeDefaultContent();
+    await initializeDefaultContent();
 }
 
 /**
  * Create default admin user
  */
-function createDefaultAdmin() {
-    const result = db.exec("SELECT id FROM admins WHERE username = 'admin'");
+async function createDefaultAdmin() {
+    const [rows] = await pool.execute("SELECT id FROM admins WHERE username = 'admin'");
 
-    if (result.length === 0 || result[0].values.length === 0) {
+    if (rows.length === 0) {
         const hashedPassword = bcrypt.hashSync('admin123', 10);
-        db.run("INSERT INTO admins (username, password) VALUES (?, ?)", ['admin', hashedPassword]);
-        saveDatabase();
+        await pool.execute("INSERT INTO admins (username, password) VALUES (?, ?)", ['admin', hashedPassword]);
         console.log('Default admin created (username: admin, password: admin123)');
         console.log('IMPORTANT: Please change the password after first login!');
     }
@@ -205,10 +173,10 @@ function createDefaultAdmin() {
 /**
  * Initialize default specialties
  */
-function initializeDefaultSpecialties() {
-    const result = db.exec("SELECT id FROM specialties LIMIT 1");
+async function initializeDefaultSpecialties() {
+    const [rows] = await pool.execute("SELECT id FROM specialties LIMIT 1");
 
-    if (result.length === 0 || result[0].values.length === 0) {
+    if (rows.length === 0) {
         const specialties = [
             {
                 name: 'medical',
@@ -266,15 +234,14 @@ function initializeDefaultSpecialties() {
             }
         ];
 
-        specialties.forEach(spec => {
-            db.run(
+        for (const spec of specialties) {
+            await pool.execute(
                 `INSERT INTO specialties (name, name_ar, icon, description, items, duration, display_order)
                  VALUES (?, ?, ?, ?, ?, ?, ?)`,
                 [spec.name, spec.name_ar, spec.icon, spec.description, spec.items, spec.duration, spec.display_order]
             );
-        });
+        }
 
-        saveDatabase();
         console.log('Default specialties initialized!');
     }
 }
@@ -282,45 +249,45 @@ function initializeDefaultSpecialties() {
 /**
  * Initialize default page content
  */
-function initializeDefaultContent() {
-    const result = db.exec("SELECT id FROM page_content LIMIT 1");
+async function initializeDefaultContent() {
+    const [rows] = await pool.execute("SELECT id FROM page_content LIMIT 1");
 
-    if (result.length === 0 || result[0].values.length === 0) {
-        const insertContent = (page, section, title, content, type, order) => {
-            db.run(
-                "INSERT OR IGNORE INTO page_content (page_name, section_id, section_title, content, content_type, display_order) VALUES (?, ?, ?, ?, ?, ?)",
+    if (rows.length === 0) {
+        const insertContent = async (page, section, title, content, type, order) => {
+            await pool.execute(
+                "INSERT IGNORE INTO page_content (page_name, section_id, section_title, content, content_type, display_order) VALUES (?, ?, ?, ?, ?, ?)",
                 [page, section, title, content, type, order]
             );
         };
 
         // HOME PAGE
-        insertContent('home', 'hero_title', 'Hero Title', 'اتحاد الطلبة الموريتانيين بالجزائر', 'text', 1);
-        insertContent('home', 'hero_subtitle', 'Hero Subtitle', 'معاً نحو التميز والنجاح في مسيرتنا الأكاديمية', 'text', 2);
-        insertContent('home', 'stats_students', 'Stats - Students', '500+', 'text', 3);
-        insertContent('home', 'stats_states', 'Stats - States', '15+', 'text', 4);
-        insertContent('home', 'stats_majors', 'Stats - Majors', '30+', 'text', 5);
-        insertContent('home', 'stats_years', 'Stats - Years', '10+', 'text', 6);
-        insertContent('home', 'about_preview_vision', 'Vision', 'أن نكون الجسر الذي يربط الطلبة الموريتانيين بفرص النجاح والتميز في الجزائر', 'text', 7);
-        insertContent('home', 'about_preview_mission', 'Mission', 'توفير الدعم الشامل للطلبة وتسهيل اندماجهم في الحياة الأكاديمية والاجتماعية', 'text', 8);
-        insertContent('home', 'about_preview_values', 'Values', 'نؤمن بالتضامن، التميز، الشفافية والعمل الجماعي كقيم أساسية', 'text', 9);
-        insertContent('home', 'cta_title', 'CTA Title', 'انضم إلى عائلة اتحاد الطلبة', 'text', 10);
-        insertContent('home', 'cta_text', 'CTA Text', 'سجل الآن واستفد من خدماتنا المتنوعة ودعمنا المستمر طوال مسيرتك الأكاديمية', 'text', 11);
+        await insertContent('home', 'hero_title', 'Hero Title', 'اتحاد الطلبة الموريتانيين بالجزائر', 'text', 1);
+        await insertContent('home', 'hero_subtitle', 'Hero Subtitle', 'معاً نحو التميز والنجاح في مسيرتنا الأكاديمية', 'text', 2);
+        await insertContent('home', 'stats_students', 'Stats - Students', '500+', 'text', 3);
+        await insertContent('home', 'stats_states', 'Stats - States', '15+', 'text', 4);
+        await insertContent('home', 'stats_majors', 'Stats - Majors', '30+', 'text', 5);
+        await insertContent('home', 'stats_years', 'Stats - Years', '10+', 'text', 6);
+        await insertContent('home', 'about_preview_vision', 'Vision', 'أن نكون الجسر الذي يربط الطلبة الموريتانيين بفرص النجاح والتميز في الجزائر', 'text', 7);
+        await insertContent('home', 'about_preview_mission', 'Mission', 'توفير الدعم الشامل للطلبة وتسهيل اندماجهم في الحياة الأكاديمية والاجتماعية', 'text', 8);
+        await insertContent('home', 'about_preview_values', 'Values', 'نؤمن بالتضامن، التميز، الشفافية والعمل الجماعي كقيم أساسية', 'text', 9);
+        await insertContent('home', 'cta_title', 'CTA Title', 'انضم إلى عائلة اتحاد الطلبة', 'text', 10);
+        await insertContent('home', 'cta_text', 'CTA Text', 'سجل الآن واستفد من خدماتنا المتنوعة ودعمنا المستمر طوال مسيرتك الأكاديمية', 'text', 11);
 
         // ABOUT PAGE
-        insertContent('about', 'history_title', 'History Title', 'تاريخ الاتحاد', 'text', 1);
-        insertContent('about', 'history_content', 'History Content', 'تأسس اتحاد الطلبة الموريتانيين بالجزائر لخدمة الطلبة الموريتانيين الدارسين في الجزائر، ويسعى منذ تأسيسه إلى توفير بيئة داعمة تساعد الطلبة على التفوق الأكاديمي والاندماج في المجتمع الجزائري.', 'html', 2);
-        insertContent('about', 'vision_title', 'Vision Title', 'رؤيتنا', 'text', 3);
-        insertContent('about', 'vision_content', 'Vision Content', 'أن نكون المرجع الأول والأفضل للطلبة الموريتانيين في الجزائر، ونساهم في بناء جيل متميز من الكفاءات الوطنية.', 'html', 4);
-        insertContent('about', 'mission_title', 'Mission Title', 'مهمتنا', 'text', 5);
-        insertContent('about', 'mission_content', 'Mission Content', 'تقديم الدعم الشامل للطلبة الموريتانيين في جميع المجالات الأكاديمية والإدارية والاجتماعية.', 'html', 6);
+        await insertContent('about', 'history_title', 'History Title', 'تاريخ الاتحاد', 'text', 1);
+        await insertContent('about', 'history_content', 'History Content', 'تأسس اتحاد الطلبة الموريتانيين بالجزائر لخدمة الطلبة الموريتانيين الدارسين في الجزائر، ويسعى منذ تأسيسه إلى توفير بيئة داعمة تساعد الطلبة على التفوق الأكاديمي والاندماج في المجتمع الجزائري.', 'html', 2);
+        await insertContent('about', 'vision_title', 'Vision Title', 'رؤيتنا', 'text', 3);
+        await insertContent('about', 'vision_content', 'Vision Content', 'أن نكون المرجع الأول والأفضل للطلبة الموريتانيين في الجزائر، ونساهم في بناء جيل متميز من الكفاءات الوطنية.', 'html', 4);
+        await insertContent('about', 'mission_title', 'Mission Title', 'مهمتنا', 'text', 5);
+        await insertContent('about', 'mission_content', 'Mission Content', 'تقديم الدعم الشامل للطلبة الموريتانيين في جميع المجالات الأكاديمية والإدارية والاجتماعية.', 'html', 6);
 
         // GUIDE PAGE - Accordion Sections
-        insertContent('guide', 'intro_title', 'Guide Intro', 'دليل الطالب الشامل', 'text', 1);
-        insertContent('guide', 'intro_text', 'Guide Intro Text', 'كل ما تحتاج معرفته للحياة والدراسة في الجزائر', 'text', 2);
+        await insertContent('guide', 'intro_title', 'Guide Intro', 'دليل الطالب الشامل', 'text', 1);
+        await insertContent('guide', 'intro_text', 'Guide Intro Text', 'كل ما تحتاج معرفته للحياة والدراسة في الجزائر', 'text', 2);
 
         // Bank Account Section
-        insertContent('guide', 'accordion_bank_title', 'عنوان قسم البنك', '🏦 فتح حساب بنكي', 'text', 3);
-        insertContent('guide', 'accordion_bank', 'محتوى قسم البنك', `<h4>الوثائق المطلوبة:</h4>
+        await insertContent('guide', 'accordion_bank_title', 'عنوان قسم البنك', '🏦 فتح حساب بنكي', 'text', 3);
+        await insertContent('guide', 'accordion_bank', 'محتوى قسم البنك', `<h4>الوثائق المطلوبة:</h4>
 <ul>
     <li>جواز السفر ساري المفعول</li>
     <li>شهادة الإقامة أو عقد الإيجار</li>
@@ -341,8 +308,8 @@ function initializeDefaultContent() {
 </div>`, 'html', 4);
 
         // Transportation Section
-        insertContent('guide', 'accordion_transport_title', 'عنوان قسم المواصلات', '🚌 المواصلات والتنقل', 'text', 5);
-        insertContent('guide', 'accordion_transport', 'محتوى قسم المواصلات', `<h4>وسائل النقل في المدن:</h4>
+        await insertContent('guide', 'accordion_transport_title', 'عنوان قسم المواصلات', '🚌 المواصلات والتنقل', 'text', 5);
+        await insertContent('guide', 'accordion_transport', 'محتوى قسم المواصلات', `<h4>وسائل النقل في المدن:</h4>
 <ul>
     <li><strong>المترو:</strong> متوفر في الجزائر العاصمة (خطان)</li>
     <li><strong>الترامواي:</strong> متوفر في عدة مدن (الجزائر، وهران، قسنطينة)</li>
@@ -361,8 +328,8 @@ function initializeDefaultContent() {
 <p>يمكنك الحصول على بطاقة نقل جامعي مخفضة من مصلحة النشاطات الجامعية. تتيح لك خصماً على وسائل النقل العام.</p>`, 'html', 6);
 
         // Housing Section
-        insertContent('guide', 'accordion_housing_title', 'عنوان قسم السكن', '🏠 السكن الجامعي', 'text', 7);
-        insertContent('guide', 'accordion_housing', 'محتوى قسم السكن', `<h4>أنواع السكن:</h4>
+        await insertContent('guide', 'accordion_housing_title', 'عنوان قسم السكن', '🏠 السكن الجامعي', 'text', 7);
+        await insertContent('guide', 'accordion_housing', 'محتوى قسم السكن', `<h4>أنواع السكن:</h4>
 
 <h5>1. الإقامة الجامعية (الحي الجامعي):</h5>
 <ul>
@@ -392,8 +359,8 @@ function initializeDefaultContent() {
 </div>`, 'html', 8);
 
         // Documents Section
-        insertContent('guide', 'accordion_documents_title', 'عنوان قسم الوثائق', '📋 الوثائق المطلوبة', 'text', 9);
-        insertContent('guide', 'accordion_documents', 'محتوى قسم الوثائق', `<h4>الوثائق الأساسية:</h4>
+        await insertContent('guide', 'accordion_documents_title', 'عنوان قسم الوثائق', '📋 الوثائق المطلوبة', 'text', 9);
+        await insertContent('guide', 'accordion_documents', 'محتوى قسم الوثائق', `<h4>الوثائق الأساسية:</h4>
 <ul>
     <li>جواز السفر ساري المفعول (+ نسخ)</li>
     <li>شهادة البكالوريا مصدقة ومترجمة</li>
@@ -423,8 +390,8 @@ function initializeDefaultContent() {
 </div>`, 'html', 10);
 
         // Daily Tips Section
-        insertContent('guide', 'accordion_tips_title', 'عنوان قسم النصائح', '💡 نصائح للحياة اليومية', 'text', 11);
-        insertContent('guide', 'accordion_tips', 'محتوى قسم النصائح', `<h4>الاتصالات:</h4>
+        await insertContent('guide', 'accordion_tips_title', 'عنوان قسم النصائح', '💡 نصائح للحياة اليومية', 'text', 11);
+        await insertContent('guide', 'accordion_tips', 'محتوى قسم النصائح', `<h4>الاتصالات:</h4>
 <ul>
     <li>شركات الاتصال الرئيسية: Djezzy, Mobilis, Ooredoo</li>
     <li>يمكنك شراء شريحة بجواز السفر فقط</li>
@@ -463,8 +430,8 @@ function initializeDefaultContent() {
 </ul>`, 'html', 12);
 
         // Culture Section
-        insertContent('guide', 'accordion_culture_title', 'عنوان قسم الثقافة', '🌍 الثقافة والاندماج', 'text', 13);
-        insertContent('guide', 'accordion_culture', 'محتوى قسم الثقافة', `<h4>عن الجزائر:</h4>
+        await insertContent('guide', 'accordion_culture_title', 'عنوان قسم الثقافة', '🌍 الثقافة والاندماج', 'text', 13);
+        await insertContent('guide', 'accordion_culture', 'محتوى قسم الثقافة', `<h4>عن الجزائر:</h4>
 <p>الجزائر بلد عربي إسلامي يتميز بتنوع ثقافي غني. الشعب الجزائري معروف بكرمه وحسن ضيافته، وستجد ترحيباً حاراً كطالب موريتاني.</p>
 
 <h4>اللغة:</h4>
@@ -484,44 +451,43 @@ function initializeDefaultContent() {
 </ul>`, 'html', 14);
 
         // PROGRAMS PAGE
-        insertContent('programs', 'intro_title', 'Programs Intro', 'التخصصات الجامعية', 'text', 1);
-        insertContent('programs', 'intro_text', 'Programs Intro Text', 'استكشف التخصصات المتاحة للطلبة الموريتانيين في الجامعات الجزائرية', 'text', 2);
+        await insertContent('programs', 'intro_title', 'Programs Intro', 'التخصصات الجامعية', 'text', 1);
+        await insertContent('programs', 'intro_text', 'Programs Intro Text', 'استكشف التخصصات المتاحة للطلبة الموريتانيين في الجامعات الجزائرية', 'text', 2);
 
         // SERVICES PAGE - Service Cards
-        insertContent('services', 'intro_title', 'Services Intro', 'خدمات الاتحاد', 'text', 1);
-        insertContent('services', 'intro_text', 'Services Intro Text', 'نقدم مجموعة متنوعة من الخدمات لدعم الطلبة في جميع جوانب حياتهم الأكاديمية', 'text', 2);
+        await insertContent('services', 'intro_title', 'Services Intro', 'خدمات الاتحاد', 'text', 1);
+        await insertContent('services', 'intro_text', 'Services Intro Text', 'نقدم مجموعة متنوعة من الخدمات لدعم الطلبة في جميع جوانب حياتهم الأكاديمية', 'text', 2);
 
-        // Service Cards
-        insertContent('services', 'service_academic_icon', 'أيقونة الدعم الأكاديمي', '🎓', 'text', 3);
-        insertContent('services', 'service_academic_title', 'عنوان الدعم الأكاديمي', 'الدعم الأكاديمي', 'text', 4);
-        insertContent('services', 'service_academic', 'وصف الدعم الأكاديمي', 'توجيه ومساعدة في اختيار التخصص، والتسجيل، والإجراءات الإدارية الجامعية.', 'text', 5);
+        await insertContent('services', 'service_academic_icon', 'أيقونة الدعم الأكاديمي', '🎓', 'text', 3);
+        await insertContent('services', 'service_academic_title', 'عنوان الدعم الأكاديمي', 'الدعم الأكاديمي', 'text', 4);
+        await insertContent('services', 'service_academic', 'وصف الدعم الأكاديمي', 'توجيه ومساعدة في اختيار التخصص، والتسجيل، والإجراءات الإدارية الجامعية.', 'text', 5);
 
-        insertContent('services', 'service_admin_icon', 'أيقونة المساعدة الإدارية', '📄', 'text', 6);
-        insertContent('services', 'service_admin_title', 'عنوان المساعدة الإدارية', 'المساعدة الإدارية', 'text', 7);
-        insertContent('services', 'service_admin', 'وصف المساعدة الإدارية', 'مساعدة في استخراج الوثائق، والإقامة، والتعامل مع الجهات الرسمية.', 'text', 8);
+        await insertContent('services', 'service_admin_icon', 'أيقونة المساعدة الإدارية', '📄', 'text', 6);
+        await insertContent('services', 'service_admin_title', 'عنوان المساعدة الإدارية', 'المساعدة الإدارية', 'text', 7);
+        await insertContent('services', 'service_admin', 'وصف المساعدة الإدارية', 'مساعدة في استخراج الوثائق، والإقامة، والتعامل مع الجهات الرسمية.', 'text', 8);
 
-        insertContent('services', 'service_housing_icon', 'أيقونة استشارات السكن', '🏠', 'text', 9);
-        insertContent('services', 'service_housing_title', 'عنوان استشارات السكن', 'استشارات السكن', 'text', 10);
-        insertContent('services', 'service_housing', 'وصف استشارات السكن', 'معلومات ونصائح حول الإقامة الجامعية والسكن الخاص.', 'text', 11);
+        await insertContent('services', 'service_housing_icon', 'أيقونة استشارات السكن', '🏠', 'text', 9);
+        await insertContent('services', 'service_housing_title', 'عنوان استشارات السكن', 'استشارات السكن', 'text', 10);
+        await insertContent('services', 'service_housing', 'وصف استشارات السكن', 'معلومات ونصائح حول الإقامة الجامعية والسكن الخاص.', 'text', 11);
 
-        insertContent('services', 'service_network_icon', 'أيقونة التواصل والتشبيك', '🤝', 'text', 12);
-        insertContent('services', 'service_network_title', 'عنوان التواصل والتشبيك', 'التواصل والتشبيك', 'text', 13);
-        insertContent('services', 'service_network', 'وصف التواصل والتشبيك', 'ربط الطلاب الجدد بالقدامى وبناء شبكة دعم اجتماعي.', 'text', 14);
+        await insertContent('services', 'service_network_icon', 'أيقونة التواصل والتشبيك', '🤝', 'text', 12);
+        await insertContent('services', 'service_network_title', 'عنوان التواصل والتشبيك', 'التواصل والتشبيك', 'text', 13);
+        await insertContent('services', 'service_network', 'وصف التواصل والتشبيك', 'ربط الطلاب الجدد بالقدامى وبناء شبكة دعم اجتماعي.', 'text', 14);
 
-        insertContent('services', 'service_advocacy_icon', 'أيقونة التمثيل والمناصرة', '📢', 'text', 15);
-        insertContent('services', 'service_advocacy_title', 'عنوان التمثيل والمناصرة', 'التمثيل والمناصرة', 'text', 16);
-        insertContent('services', 'service_advocacy', 'وصف التمثيل والمناصرة', 'تمثيل مصالح الطلبة الموريتانيين أمام الجهات الرسمية.', 'text', 17);
+        await insertContent('services', 'service_advocacy_icon', 'أيقونة التمثيل والمناصرة', '📢', 'text', 15);
+        await insertContent('services', 'service_advocacy_title', 'عنوان التمثيل والمناصرة', 'التمثيل والمناصرة', 'text', 16);
+        await insertContent('services', 'service_advocacy', 'وصف التمثيل والمناصرة', 'تمثيل مصالح الطلبة الموريتانيين أمام الجهات الرسمية.', 'text', 17);
 
-        insertContent('services', 'service_activities_icon', 'أيقونة الأنشطة الثقافية', '🎉', 'text', 18);
-        insertContent('services', 'service_activities_title', 'عنوان الأنشطة الثقافية', 'الأنشطة الثقافية', 'text', 19);
-        insertContent('services', 'service_activities', 'وصف الأنشطة الثقافية', 'تنظيم فعاليات ثقافية واجتماعية ورحلات جماعية.', 'text', 20);
+        await insertContent('services', 'service_activities_icon', 'أيقونة الأنشطة الثقافية', '🎉', 'text', 18);
+        await insertContent('services', 'service_activities_title', 'عنوان الأنشطة الثقافية', 'الأنشطة الثقافية', 'text', 19);
+        await insertContent('services', 'service_activities', 'وصف الأنشطة الثقافية', 'تنظيم فعاليات ثقافية واجتماعية ورحلات جماعية.', 'text', 20);
 
         // FAQ Items
-        insertContent('services', 'faq_1_question', 'السؤال الشائع 1', 'هل العضوية في الاتحاد مجانية؟', 'text', 21);
-        insertContent('services', 'faq_1', 'جواب السؤال 1', '<p>نعم، العضوية في اتحاد الطلبة الموريتانيين مجانية تماماً ومتاحة لجميع الطلبة الموريتانيين المسجلين في الجامعات والمعاهد الجزائرية.</p>', 'html', 22);
+        await insertContent('services', 'faq_1_question', 'السؤال الشائع 1', 'هل العضوية في الاتحاد مجانية؟', 'text', 21);
+        await insertContent('services', 'faq_1', 'جواب السؤال 1', '<p>نعم، العضوية في اتحاد الطلبة الموريتانيين مجانية تماماً ومتاحة لجميع الطلبة الموريتانيين المسجلين في الجامعات والمعاهد الجزائرية.</p>', 'html', 22);
 
-        insertContent('services', 'faq_2_question', 'السؤال الشائع 2', 'ما هي مزايا العضوية؟', 'text', 23);
-        insertContent('services', 'faq_2', 'جواب السؤال 2', `<ul>
+        await insertContent('services', 'faq_2_question', 'السؤال الشائع 2', 'ما هي مزايا العضوية؟', 'text', 23);
+        await insertContent('services', 'faq_2', 'جواب السؤال 2', `<ul>
     <li>الدعم والتوجيه الأكاديمي</li>
     <li>المساعدة في الإجراءات الإدارية</li>
     <li>الوصول إلى شبكة الطلاب الموريتانيين</li>
@@ -530,8 +496,8 @@ function initializeDefaultContent() {
     <li>الحصول على آخر الأخبار والمستجدات</li>
 </ul>`, 'html', 24);
 
-        insertContent('services', 'faq_3_question', 'السؤال الشائع 3', 'كيف يمكنني التواصل مع الاتحاد؟', 'text', 25);
-        insertContent('services', 'faq_3', 'جواب السؤال 3', `<p>يمكنك التواصل معنا من خلال:</p>
+        await insertContent('services', 'faq_3_question', 'السؤال الشائع 3', 'كيف يمكنني التواصل مع الاتحاد؟', 'text', 25);
+        await insertContent('services', 'faq_3', 'جواب السؤال 3', `<p>يمكنك التواصل معنا من خلال:</p>
 <ul>
     <li>البريد الإلكتروني: contact@uema-dz.org</li>
     <li>صفحتنا على فيسبوك</li>
@@ -539,16 +505,16 @@ function initializeDefaultContent() {
     <li>الهاتف: +213 XX XX XX XX</li>
 </ul>`, 'html', 26);
 
-        insertContent('services', 'faq_4_question', 'السؤال الشائع 4', 'هل يقدم الاتحاد مساعدات مالية؟', 'text', 27);
-        insertContent('services', 'faq_4', 'جواب السؤال 4', `<p>الاتحاد منظمة طلابية تطوعية ولا يملك ميزانية لتقديم مساعدات مالية مباشرة. لكننا نساعد في:</p>
+        await insertContent('services', 'faq_4_question', 'السؤال الشائع 4', 'هل يقدم الاتحاد مساعدات مالية؟', 'text', 27);
+        await insertContent('services', 'faq_4', 'جواب السؤال 4', `<p>الاتحاد منظمة طلابية تطوعية ولا يملك ميزانية لتقديم مساعدات مالية مباشرة. لكننا نساعد في:</p>
 <ul>
     <li>توجيه الطلاب للمنح المتاحة</li>
     <li>المساعدة في إجراءات طلب المنح</li>
     <li>ربط الطلاب بجهات الدعم الرسمية</li>
 </ul>`, 'html', 28);
 
-        insertContent('services', 'faq_5_question', 'السؤال الشائع 5', 'كيف يمكنني المساهمة في أنشطة الاتحاد؟', 'text', 29);
-        insertContent('services', 'faq_5', 'جواب السؤال 5', `<p>نرحب بمساهمتك! يمكنك:</p>
+        await insertContent('services', 'faq_5_question', 'السؤال الشائع 5', 'كيف يمكنني المساهمة في أنشطة الاتحاد؟', 'text', 29);
+        await insertContent('services', 'faq_5', 'جواب السؤال 5', `<p>نرحب بمساهمتك! يمكنك:</p>
 <ul>
     <li>الانضمام للجان العمل المتخصصة</li>
     <li>المشاركة في تنظيم الفعاليات</li>
@@ -557,89 +523,68 @@ function initializeDefaultContent() {
     <li>اقتراح أفكار ومبادرات جديدة</li>
 </ul>`, 'html', 30);
 
-        insertContent('services', 'faq_6_question', 'السؤال الشائع 6', 'هل يمكن للخريجين البقاء أعضاء؟', 'text', 31);
-        insertContent('services', 'faq_6', 'جواب السؤال 6', '<p>نعم، نرحب بالخريجين كأعضاء شرفيين يمكنهم المساهمة بخبراتهم ومساعدة الطلاب الحاليين. العديد من خريجينا يواصلون دعم الاتحاد وتقديم النصح للطلاب.</p>', 'html', 32);
+        await insertContent('services', 'faq_6_question', 'السؤال الشائع 6', 'هل يمكن للخريجين البقاء أعضاء؟', 'text', 31);
+        await insertContent('services', 'faq_6', 'جواب السؤال 6', '<p>نعم، نرحب بالخريجين كأعضاء شرفيين يمكنهم المساهمة بخبراتهم ومساعدة الطلاب الحاليين. العديد من خريجينا يواصلون دعم الاتحاد وتقديم النصح للطلاب.</p>', 'html', 32);
 
         // CONTACT PAGE
-        insertContent('contact', 'intro_title', 'Contact Intro', 'تواصل معنا', 'text', 1);
-        insertContent('contact', 'intro_text', 'Contact Intro Text', 'نحن هنا لمساعدتك. لا تتردد في التواصل معنا لأي استفسار', 'text', 2);
-        insertContent('contact', 'email', 'البريد الإلكتروني', 'contact@uema-dz.org', 'text', 3);
-        insertContent('contact', 'phone', 'الهاتف', '+213 XX XX XX XX', 'text', 4);
-        insertContent('contact', 'address', 'العنوان', 'الجزائر العاصمة، الجزائر', 'text', 5);
-        insertContent('contact', 'hours', 'ساعات العمل', 'السبت - الخميس: 9:00 - 17:00', 'text', 6);
-        insertContent('contact', 'emergency_info', 'معلومات الطوارئ', `<h4 class="info-box__title">للحالات الطارئة</h4>
+        await insertContent('contact', 'intro_title', 'Contact Intro', 'تواصل معنا', 'text', 1);
+        await insertContent('contact', 'intro_text', 'Contact Intro Text', 'نحن هنا لمساعدتك. لا تتردد في التواصل معنا لأي استفسار', 'text', 2);
+        await insertContent('contact', 'email', 'البريد الإلكتروني', 'contact@uema-dz.org', 'text', 3);
+        await insertContent('contact', 'phone', 'الهاتف', '+213 XX XX XX XX', 'text', 4);
+        await insertContent('contact', 'address', 'العنوان', 'الجزائر العاصمة، الجزائر', 'text', 5);
+        await insertContent('contact', 'hours', 'ساعات العمل', 'السبت - الخميس: 9:00 - 17:00', 'text', 6);
+        await insertContent('contact', 'emergency_info', 'معلومات الطوارئ', `<h4 class="info-box__title">للحالات الطارئة</h4>
 <p class="mb-0">في حالات الطوارئ، يمكنك الاتصال مباشرة بـ:</p>
 <ul class="mb-0">
     <li>السفارة الموريتانية: +213 XX XX XX XX</li>
     <li>الطوارئ الجزائرية: 14</li>
 </ul>`, 'html', 7);
 
-        saveDatabase();
         console.log('Default page content initialized!');
     }
 }
 
 // ==========================================
-// DATABASE HELPER FUNCTIONS (sync-like API)
+// DATABASE HELPER FUNCTIONS (async API)
 // ==========================================
 
-/**
- * Prepare and execute a statement
- */
 const dbHelpers = {
     /**
      * Get one row
      */
-    get(sql, params = []) {
-        const stmt = db.prepare(sql);
-        stmt.bind(params);
-        if (stmt.step()) {
-            const row = stmt.getAsObject();
-            stmt.free();
-            return row;
-        }
-        stmt.free();
-        return null;
+    async get(sql, params = []) {
+        const [rows] = await pool.execute(sql, params);
+        return rows[0] || null;
     },
 
     /**
      * Get all rows
      */
-    all(sql, params = []) {
-        const stmt = db.prepare(sql);
-        stmt.bind(params);
-        const results = [];
-        while (stmt.step()) {
-            results.push(stmt.getAsObject());
-        }
-        stmt.free();
-        return results;
+    async all(sql, params = []) {
+        const [rows] = await pool.execute(sql, params);
+        return rows;
     },
 
     /**
      * Run a statement (INSERT, UPDATE, DELETE)
      */
-    run(sql, params = []) {
-        db.run(sql, params);
-        saveDatabase();
+    async run(sql, params = []) {
+        const [result] = await pool.execute(sql, params);
         return {
-            lastInsertRowid: db.exec("SELECT last_insert_rowid()")[0]?.values[0]?.[0] || 0,
-            changes: db.getRowsModified()
+            lastInsertRowid: result.insertId,
+            changes: result.affectedRows
         };
     },
 
     /**
      * Execute raw SQL
      */
-    exec(sql) {
-        db.exec(sql);
-        saveDatabase();
+    async exec(sql) {
+        await pool.execute(sql);
     }
 };
 
 module.exports = {
     initializeDatabase,
-    getDb,
-    saveDatabase,
     db: dbHelpers
 };

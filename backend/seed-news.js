@@ -2,6 +2,7 @@
  * Seed Script - Add sample news articles
  */
 
+require('dotenv').config();
 const { initializeDatabase, db } = require('./models/database');
 
 const sampleNews = [
@@ -56,21 +57,23 @@ async function seedNews() {
 
         console.log('\nAdding sample news articles...\n');
 
-        sampleNews.forEach((news, index) => {
-            db.run(
+        for (const [index, news] of sampleNews.entries()) {
+            await db.run(
                 'INSERT INTO news (title, content, category, location, published) VALUES (?, ?, ?, ?, ?)',
                 [news.title, news.content, news.category, news.location, news.published]
             );
             console.log(`${index + 1}. ${news.title.substring(0, 50)}...`);
-        });
+        }
 
         console.log(`\nDone! Added ${sampleNews.length} news articles.`);
         console.log('\nYou can view them at:');
         console.log('- Website: http://localhost:3000/news');
         console.log('- Admin: http://localhost:3000/admin/news.html');
 
+        process.exit(0);
     } catch (error) {
         console.error('Error seeding news:', error);
+        process.exit(1);
     }
 }
 

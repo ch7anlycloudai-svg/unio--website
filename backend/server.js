@@ -134,42 +134,61 @@ app.use((err, req, res, next) => {
 });
 
 // ======================
+// DIAGNOSTIC ENDPOINT
+// ======================
+
+let dbStatus = { connected: false, error: null, timestamp: null };
+
+app.get('/api/health', (req, res) => {
+    res.json({
+        server: 'running',
+        timestamp: new Date().toISOString(),
+        node_version: process.version,
+        env: process.env.NODE_ENV || 'development',
+        cwd: process.cwd(),
+        dirname: __dirname,
+        db: dbStatus,
+        env_loaded: {
+            DB_HOST: process.env.DB_HOST ? 'set' : 'NOT SET',
+            DB_PORT: process.env.DB_PORT ? 'set' : 'NOT SET',
+            DB_NAME: process.env.DB_NAME ? 'set' : 'NOT SET',
+            DB_USER: process.env.DB_USER ? 'set' : 'NOT SET',
+            DB_PASSWORD: process.env.DB_PASSWORD ? 'set (hidden)' : 'NOT SET',
+            SESSION_SECRET: process.env.SESSION_SECRET ? 'set' : 'NOT SET'
+        },
+        mysql2_installed: (() => {
+            try { require.resolve('mysql2'); return true; } catch(e) { return false; }
+        })()
+    });
+});
+
+// ======================
 // START SERVER
 // ======================
 
 const PORT = process.env.PORT || 3000;
 
-// Initialize database then start server
-async function startServer() {
-    try {
-        console.log('Starting server...');
-        console.log('Environment:', process.env.NODE_ENV || 'development');
-        console.log('Working directory:', process.cwd());
+// Start server FIRST, then try database
+app.listen(PORT, '0.0.0.0', () => {
+    console.log('='.repeat(50));
+    console.log('  Mauritanian Students Union Website');
+    console.log('='.repeat(50));
+    console.log(`  Server running on port: ${PORT}`);
+    console.log(`  Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log('='.repeat(50));
 
-        await initializeDatabase();
-        console.log('Database initialized successfully');
-
-        app.listen(PORT, '0.0.0.0', () => {
-            console.log('='.repeat(50));
-            console.log('  Mauritanian Students Union Website');
-            console.log('='.repeat(50));
-            console.log(`  Server running on port: ${PORT}`);
-            console.log(`  Environment: ${process.env.NODE_ENV || 'development'}`);
-            console.log('='.repeat(50));
-            if (process.env.NODE_ENV !== 'production') {
-                console.log('  Default admin credentials:');
-                console.log('  Username: admin');
-                console.log('  Password: admin123');
-                console.log('  (Please change after first login!)');
-                console.log('='.repeat(50));
-            }
+    // Now try to connect to database
+    initializeDatabase()
+        .then(() => {
+            dbStatus = { connected: true, error: null, timestamp: new Date().toISOString() };
+            console.log('Database initialized successfully');
+        })
+        .catch((error) => {
+            dbStatus = { connected: false, error: error.message, stack: error.stack, timestamp: new Date().toISOString() };
+            console.error('Database initialization failed:', error.message);
+            console.error('Server is running but database is not connected.');
+            console.error('Visit /api/health to see diagnostics.');
         });
-    } catch (error) {
-        console.error('Failed to start server:', error.stack || error);
-        process.exit(1);
-    }
-}
-
-startServer();
+});
 
 module.exports = app;

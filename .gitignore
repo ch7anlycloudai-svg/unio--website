@@ -1,16 +1,12 @@
 # Dependencies
 node_modules/
-package-lock.json
 
-# Environment variables (contains secrets)
-.env
+# Environment variables (local overrides only)
 .env.local
-.env.production
 
-# Database files (SQLite)
+# Database files (SQLite - no longer used)
 *.sqlite
 *.sqlite3
-database.sqlite
 backend/data/
 
 # Logs

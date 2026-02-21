@@ -14,7 +14,7 @@ let pool = null;
  * @returns {Promise<void>}
  */
 async function initializeDatabase() {
-    pool = mysql.createPool({
+    const dbConfig = {
         host: process.env.DB_HOST || 'localhost',
         port: parseInt(process.env.DB_PORT) || 3306,
         database: process.env.DB_NAME || 'u666876119_abdo',
@@ -24,7 +24,11 @@ async function initializeDatabase() {
         connectionLimit: 10,
         queueLimit: 0,
         charset: 'utf8mb4'
-    });
+    };
+
+    console.log('Connecting to MySQL:', dbConfig.host + ':' + dbConfig.port, 'database:', dbConfig.database, 'user:', dbConfig.user);
+
+    pool = mysql.createPool(dbConfig);
 
     // Test connection
     const connection = await pool.getConnection();

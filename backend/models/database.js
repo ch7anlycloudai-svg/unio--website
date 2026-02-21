@@ -3,7 +3,14 @@
  * This file sets up the database connection pool and creates all necessary tables
  */
 
-const mysql = require('mysql2/promise');
+let mysql;
+try {
+    mysql = require('mysql2/promise');
+} catch (e) {
+    console.error('CRITICAL: mysql2 module not found! Run: npm install mysql2');
+    console.error(e.message);
+}
+
 const bcrypt = require('bcryptjs');
 
 // MySQL connection pool
@@ -14,6 +21,10 @@ let pool = null;
  * @returns {Promise<void>}
  */
 async function initializeDatabase() {
+    if (!mysql) {
+        throw new Error('mysql2 module is not installed. Run: npm install');
+    }
+
     const dbConfig = {
         host: process.env.DB_HOST || 'localhost',
         port: parseInt(process.env.DB_PORT) || 3306,

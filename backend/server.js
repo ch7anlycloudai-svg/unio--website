@@ -115,25 +115,6 @@ app.get('/', (req, res) => {
 });
 
 // ======================
-// ERROR HANDLING
-// ======================
-
-app.use((req, res, next) => {
-    if (req.path.startsWith('/api/')) {
-        return res.status(404).json({ success: false, message: 'API endpoint not found' });
-    }
-    res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
-});
-
-app.use((err, req, res, next) => {
-    console.error('Server Error:', err.stack || err);
-    const message = process.env.NODE_ENV === 'production'
-        ? 'Internal server error'
-        : err.message || 'Internal server error';
-    res.status(500).json({ success: false, message });
-});
-
-// ======================
 // DIAGNOSTIC ENDPOINT
 // ======================
 
@@ -160,6 +141,25 @@ app.get('/api/health', (req, res) => {
             try { require.resolve('mysql2'); return true; } catch(e) { return false; }
         })()
     });
+});
+
+// ======================
+// ERROR HANDLING
+// ======================
+
+app.use((req, res, next) => {
+    if (req.path.startsWith('/api/')) {
+        return res.status(404).json({ success: false, message: 'API endpoint not found' });
+    }
+    res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
+});
+
+app.use((err, req, res, next) => {
+    console.error('Server Error:', err.stack || err);
+    const message = process.env.NODE_ENV === 'production'
+        ? 'Internal server error'
+        : err.message || 'Internal server error';
+    res.status(500).json({ success: false, message });
 });
 
 // ======================

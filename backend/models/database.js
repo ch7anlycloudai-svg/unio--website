@@ -26,7 +26,7 @@ async function initializeDatabase() {
     }
 
     const dbConfig = {
-        host: process.env.DB_HOST || 'localhost',
+        host: process.env.DB_HOST || '127.0.0.1',
         port: parseInt(process.env.DB_PORT) || 3306,
         database: process.env.DB_NAME || 'u666876119_abdo',
         user: process.env.DB_USER || 'u666876119_lightgreenlap',

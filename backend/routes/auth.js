@@ -51,7 +51,10 @@ router.post('/login', isNotAuthenticated, async (req, res) => {
         });
     } catch (error) {
         console.error('Login error:', error);
-        res.status(500).json({ success: false, message: 'Server error during login' });
+        const message = error.message && error.message.includes('Database not connected')
+            ? 'Database is still starting up. Please try again in a few seconds.'
+            : 'Server error during login';
+        res.status(500).json({ success: false, message });
     }
 });
 

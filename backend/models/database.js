@@ -563,11 +563,21 @@ async function initializeDefaultContent() {
 // DATABASE HELPER FUNCTIONS (async API)
 // ==========================================
 
+/**
+ * Ensure pool is initialized before any query
+ */
+function ensurePool() {
+    if (!pool) {
+        throw new Error('Database not connected yet. Please try again in a moment.');
+    }
+}
+
 const dbHelpers = {
     /**
      * Get one row
      */
     async get(sql, params = []) {
+        ensurePool();
         const [rows] = await pool.execute(sql, params);
         return rows[0] || null;
     },
@@ -576,6 +586,7 @@ const dbHelpers = {
      * Get all rows
      */
     async all(sql, params = []) {
+        ensurePool();
         const [rows] = await pool.execute(sql, params);
         return rows;
     },
@@ -584,6 +595,7 @@ const dbHelpers = {
      * Run a statement (INSERT, UPDATE, DELETE)
      */
     async run(sql, params = []) {
+        ensurePool();
         const [result] = await pool.execute(sql, params);
         return {
             lastInsertRowid: result.insertId,
@@ -595,6 +607,7 @@ const dbHelpers = {
      * Execute raw SQL
      */
     async exec(sql) {
+        ensurePool();
         await pool.execute(sql);
     }
 };

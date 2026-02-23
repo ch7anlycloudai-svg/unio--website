@@ -49,23 +49,23 @@ app.use(express.urlencoded({ extended: true }));
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+// Trust proxy MUST be set BEFORE session middleware (Hostinger uses reverse proxy)
+if (isProduction) {
+    app.set('trust proxy', 1);
+}
+
 app.use(session({
     secret: process.env.SESSION_SECRET || 'mauritania-union-secret-key-change-in-production',
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: isProduction, // Use secure cookies in production (HTTPS)
+        secure: false, // Hostinger shared hosting may not forward HTTPS properly — keep false
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
-        sameSite: isProduction ? 'strict' : 'lax'
+        sameSite: 'lax' // 'strict' can block cookies on cross-origin redirects
     },
     proxy: isProduction // Trust the reverse proxy in production
 }));
-
-// Trust proxy in production (Hostinger uses reverse proxy)
-if (isProduction) {
-    app.set('trust proxy', 1);
-}
 
 // ======================
 // STATIC FILES

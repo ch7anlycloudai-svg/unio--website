@@ -1052,10 +1052,13 @@
                     hiddenInput.value = data.data.url;
                     showToast('تم رفع الصورة بنجاح', 'success');
                 } else {
-                    showToast(data.message || 'خطأ في رفع الصورة', 'error');
+                    const errMsg = data.error ? (data.message + ': ' + data.error) : (data.message || 'خطأ في رفع الصورة');
+                    console.error('Upload failed:', data);
+                    showToast(errMsg, 'error');
                 }
             } catch (error) {
-                showToast('خطأ في رفع الصورة', 'error');
+                console.error('Upload exception:', error);
+                showToast('خطأ في رفع الصورة: ' + error.message, 'error');
             }
         }
 

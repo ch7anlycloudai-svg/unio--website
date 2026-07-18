@@ -449,11 +449,13 @@
                     newsImageInput.value = data.data.url;
                     alert('تم رفع الصورة بنجاح');
                 } else {
-                    alert(data.message || 'خطأ في رفع الصورة');
+                    const errMsg = data.error ? (data.message + ': ' + data.error) : (data.message || 'خطأ في رفع الصورة');
+                    console.error('Upload failed:', data);
+                    alert(errMsg);
                 }
             } catch (error) {
                 console.error('Error uploading image:', error);
-                alert('خطأ في رفع الصورة');
+                alert('خطأ في رفع الصورة: ' + error.message);
             }
         }
     </script>

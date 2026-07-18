@@ -423,15 +423,27 @@ router.post('/upload/:type', requireAuth, upload.single('image'), async (req, re
         const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1E9) + ext;
         const storagePath = `${type}/${uniqueName}`;
 
+        console.log('[Upload] file:', req.file.originalname, 'size:', req.file.size, 'mime:', req.file.mimetype, 'path:', storagePath);
+
         const supabase = getClient();
-        const { error: uploadError } = await supabase.storage
+        const { data: uploadData, error: uploadError } = await supabase.storage
             .from('uploads')
             .upload(storagePath, req.file.buffer, {
                 contentType: req.file.mimetype,
                 upsert: false
             });
 
-        if (uploadError) throw uploadError;
+        if (uploadError) {
+            console.error('[Upload] Supabase Storage error:', JSON.stringify(uploadError));
+            return res.status(500).json({
+                success: false,
+                message: 'فشل رفع الملف إلى التخزين',
+                error: uploadError.message || JSON.stringify(uploadError),
+                statusCode: uploadError.statusCode || uploadError.status
+            });
+        }
+
+        console.log('[Upload] Success:', uploadData);
 
         const { data: urlData } = supabase.storage
             .from('uploads')
@@ -447,8 +459,12 @@ router.post('/upload/:type', requireAuth, upload.single('image'), async (req, re
             }
         });
     } catch (error) {
-        console.error('Error uploading file:', error);
-        res.status(500).json({ success: false, message: 'خطأ في رفع الملف' });
+        console.error('[Upload] Exception:', error.message, error.stack);
+        res.status(500).json({
+            success: false,
+            message: 'خطأ في رفع الملف',
+            error: error.message
+        });
     }
 });
 

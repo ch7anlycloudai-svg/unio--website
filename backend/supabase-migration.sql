@@ -5,15 +5,33 @@
 -- ============================================
 
 -- ============================================
--- STORAGE BUCKET (auto-created by server)
+-- STORAGE BUCKET & POLICIES
 -- ============================================
--- The server automatically creates a public "uploads" bucket on startup.
--- If you need to create it manually in the Supabase dashboard:
--- 1. Go to Storage in your Supabase project
--- 2. Create a new bucket named "uploads"
--- 3. Set it as Public
--- 4. Set file size limit to 5MB
--- 5. Allowed MIME types: image/jpeg, image/png, image/gif, image/webp
+-- The server auto-creates a public "uploads" bucket on startup.
+-- However, you MUST run these storage policies in the SQL Editor
+-- to allow uploads and deletions via the service role:
+-- ============================================
+
+-- Allow public read access (anyone can view uploaded images)
+CREATE POLICY "Public read access on uploads"
+ON storage.objects FOR SELECT
+USING (bucket_id = 'uploads');
+
+-- Allow authenticated inserts (service role uploads)
+CREATE POLICY "Service role insert on uploads"
+ON storage.objects FOR INSERT
+WITH CHECK (bucket_id = 'uploads');
+
+-- Allow authenticated updates
+CREATE POLICY "Service role update on uploads"
+ON storage.objects FOR UPDATE
+USING (bucket_id = 'uploads');
+
+-- Allow authenticated deletes
+CREATE POLICY "Service role delete on uploads"
+ON storage.objects FOR DELETE
+USING (bucket_id = 'uploads');
+
 -- ============================================
 
 -- ============================================

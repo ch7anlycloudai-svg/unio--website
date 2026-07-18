@@ -162,6 +162,46 @@ app.get('/api/health', async (req, res) => {
     });
 });
 
+// Storage diagnostic endpoint
+app.get('/api/storage-check', async (req, res) => {
+    try {
+        const { getClient } = require('./models/database');
+        const supabase = getClient();
+
+        // List buckets
+        const { data: buckets, error: bucketsErr } = await supabase.storage.listBuckets();
+        if (bucketsErr) {
+            return res.json({ success: false, error: 'listBuckets failed: ' + bucketsErr.message });
+        }
+
+        const uploadsBucket = buckets.find(b => b.name === 'uploads');
+
+        // Try test upload
+        let testUpload = { success: false };
+        if (uploadsBucket) {
+            const testPath = '_test/diag-' + Date.now() + '.txt';
+            const { error: upErr } = await supabase.storage
+                .from('uploads')
+                .upload(testPath, Buffer.from('test'), { contentType: 'text/plain', upsert: true });
+            if (upErr) {
+                testUpload = { success: false, error: upErr.message, statusCode: upErr.statusCode, details: JSON.stringify(upErr) };
+            } else {
+                const { data: urlData } = supabase.storage.from('uploads').getPublicUrl(testPath);
+                await supabase.storage.from('uploads').remove([testPath]);
+                testUpload = { success: true, publicUrl: urlData.publicUrl };
+            }
+        }
+
+        res.json({
+            buckets: buckets.map(b => ({ name: b.name, public: b.public, created_at: b.created_at })),
+            uploadsBucket: uploadsBucket ? { exists: true, public: uploadsBucket.public, file_size_limit: uploadsBucket.file_size_limit, allowed_mime_types: uploadsBucket.allowed_mime_types } : { exists: false },
+            testUpload
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message, stack: error.stack });
+    }
+});
+
 // Force re-seed endpoint (creates admin + default content if missing)
 app.get('/api/reseed', async (req, res) => {
     try {

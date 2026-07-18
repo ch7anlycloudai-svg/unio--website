@@ -466,14 +466,14 @@ async function initializeDefaultContent() {
 }
 
 /**
- * Ensure the Supabase Storage bucket exists for file uploads
+ * Ensure the Supabase Storage bucket exists and is correctly configured
  */
 async function ensureStorageBucket() {
     const { data: buckets, error: listError } = await supabase.storage.listBuckets();
     if (listError) throw new Error('Failed to list storage buckets: ' + listError.message);
 
-    const exists = buckets.some(b => b.name === 'uploads');
-    if (!exists) {
+    const existing = buckets.find(b => b.name === 'uploads');
+    if (!existing) {
         const { error: createError } = await supabase.storage.createBucket('uploads', {
             public: true,
             fileSizeLimit: 5 * 1024 * 1024,
@@ -482,7 +482,35 @@ async function ensureStorageBucket() {
         if (createError) throw new Error('Failed to create storage bucket: ' + createError.message);
         console.log('Storage bucket "uploads" created (public)');
     } else {
-        console.log('Storage bucket "uploads" already exists');
+        // Update bucket to ensure it's public with correct settings
+        const { error: updateError } = await supabase.storage.updateBucket('uploads', {
+            public: true,
+            fileSizeLimit: 5 * 1024 * 1024,
+            allowedMimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+        });
+        if (updateError) {
+            console.warn('Could not update bucket settings:', updateError.message);
+        } else {
+            console.log('Storage bucket "uploads" verified and updated (public: true)');
+        }
+    }
+
+    // Test upload to verify storage works
+    try {
+        const testPath = '_test/ping.txt';
+        const { error: testUploadErr } = await supabase.storage
+            .from('uploads')
+            .upload(testPath, Buffer.from('ok'), { contentType: 'text/plain', upsert: true });
+        if (testUploadErr) {
+            console.error('Storage test upload FAILED:', JSON.stringify(testUploadErr));
+            console.error('Uploads will not work. Check Supabase Storage policies.');
+        } else {
+            // Clean up test file
+            await supabase.storage.from('uploads').remove([testPath]);
+            console.log('Storage test upload OK — uploads are working');
+        }
+    } catch (testErr) {
+        console.error('Storage test exception:', testErr.message);
     }
 }
 

@@ -107,7 +107,7 @@
             <article class="card" data-category="${news.category}">
                 ${news.image_url ? `
                     <div class="card__image">
-                        <img src="${escapeHtml(news.image_url)}" alt="${escapeHtml(news.title)}">
+                        <img src="${sanitizeUrl(news.image_url)}" alt="${escapeHtml(news.title)}">
                     </div>
                 ` : ''}
                 <div class="card__body">
@@ -157,6 +157,13 @@
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    };
+
+    const sanitizeUrl = (url) => {
+        if (!url) return '';
+        // Only allow http(s) and relative URLs - block javascript: etc.
+        if (/^(https?:\/\/|\/)/i.test(url)) return url;
+        return '';
     };
 
     const formatDate = (dateString) => {
@@ -555,14 +562,14 @@
                 slideEl.dataset.slide = index;
 
                 slideEl.innerHTML = `
-                    ${slide.image_url ? `<img src="${escapeHtml(slide.image_url)}" alt="${escapeHtml(slide.title || '')}" class="hero-carousel__image" loading="${index === 0 ? 'eager' : 'lazy'}">` : ''}
+                    ${slide.image_url ? `<img src="${sanitizeUrl(slide.image_url)}" alt="${escapeHtml(slide.title || '')}" class="hero-carousel__image" loading="${index === 0 ? 'eager' : 'lazy'}">` : ''}
                     <div class="hero-carousel__overlay">
                         <div class="hero-carousel__content">
                             ${slide.title ? `<h1 class="hero-carousel__title">${escapeHtml(slide.title)}</h1>` : ''}
                             ${slide.subtitle ? `<p class="hero-carousel__subtitle">${escapeHtml(slide.subtitle)}</p>` : ''}
                             ${slide.link_url ? `
                                 <div class="btn-group btn-group--center">
-                                    <a href="${escapeHtml(slide.link_url)}" class="btn btn--secondary btn--lg">${escapeHtml(slide.link_text || 'المزيد')}</a>
+                                    <a href="${sanitizeUrl(slide.link_url)}" class="btn btn--secondary btn--lg">${escapeHtml(slide.link_text || 'المزيد')}</a>
                                 </div>
                             ` : ''}
                         </div>
@@ -676,7 +683,7 @@
 
                 card.innerHTML = `
                     ${spec.image_url
-                        ? `<img src="${escapeHtml(spec.image_url)}" alt="${escapeHtml(spec.name_ar)}" class="specialty-card__image" loading="lazy">`
+                        ? `<img src="${sanitizeUrl(spec.image_url)}" alt="${escapeHtml(spec.name_ar)}" class="specialty-card__image" loading="lazy">`
                         : `<div class="specialty-card__placeholder">${escapeHtml(spec.icon || '📚')}</div>`
                     }
                     <div class="specialty-card__body">
@@ -689,7 +696,7 @@
                         ` : ''}
                         ${spec.duration ? `<p class="specialty-card__duration">مدة الدراسة: ${escapeHtml(spec.duration)}</p>` : ''}
                         ${spec.video_url ? `
-                            <button class="specialty-card__video-btn" data-video="${escapeHtml(spec.video_url)}" data-type="${escapeHtml(spec.video_type || 'youtube')}">
+                            <button class="specialty-card__video-btn" data-video="${sanitizeUrl(spec.video_url)}" data-type="${escapeHtml(spec.video_type || 'youtube')}">
                                 ▶️ شاهد فيديو تعريفي
                             </button>
                         ` : ''}

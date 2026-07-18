@@ -667,7 +667,7 @@
             grid.innerHTML = heroSlides.map(slide => `
                 <div class="media-card">
                     ${slide.image_url
-                        ? `<img src="${escapeHtml(slide.image_url)}" class="media-card__image" alt="">`
+                        ? `<img src="${sanitizeUrl(slide.image_url)}" class="media-card__image" alt="">`
                         : '<div class="media-card__placeholder">🖼️</div>'
                     }
                     <div class="media-card__body">
@@ -700,7 +700,7 @@
             grid.innerHTML = specialties.map(spec => `
                 <div class="media-card">
                     ${spec.image_url
-                        ? `<img src="${escapeHtml(spec.image_url)}" class="media-card__image" alt="">`
+                        ? `<img src="${sanitizeUrl(spec.image_url)}" class="media-card__image" alt="">`
                         : `<div class="media-card__placeholder">${escapeHtml(spec.icon || '📚')}</div>`
                     }
                     <div class="media-card__body">

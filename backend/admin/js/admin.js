@@ -67,6 +67,12 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+function sanitizeUrl(url) {
+    if (!url) return '';
+    if (/^(https?:\/\/|\/)/i.test(url)) return url;
+    return '';
+}
+
 /**
  * Format date to Arabic format
  * @param {string} dateString

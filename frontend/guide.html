@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="دليل شامل للطلبة الموريتانيين الجدد في الجزائر - السكن، البنوك، المواصلات، والمزيد">
+    <title>دليل الطالب - اتحاد الطلبة الموريتانيين بالجزائر</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header__container">
+            <a href="index.html" class="header__logo">
+                <img src="assets/images/logo.png" alt="شعار اتحاد الطلبة الموريتانيين"
+                    onerror="this.style.display='none'">
+                <span class="header__logo-text">اتحاد الطلبة الموريتانيين</span>
+            </a>
+
+            <nav class="nav" id="mainNav">
+                <button class="nav__toggle" id="navToggle" aria-label="القائمة" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link">الرئيسية</a></li>
+                    <li><a href="about.html" class="nav__link">من نحن</a></li>
+                    <li><a href="news.html" class="nav__link">الأخبار</a></li>
+                    <li><a href="guide.html" class="nav__link nav__link--active">دليل الطالب</a></li>
+                    <li><a href="programs.html" class="nav__link">البرامج الأكاديمية</a></li>
+                    <li><a href="services.html" class="nav__link">الخدمات</a></li>
+                    <li><a href="contact.html" class="nav__link">اتصل بنا</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- Nav Backdrop -->
+    <div class="nav__backdrop" id="navBackdrop"></div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-header__title">دليل الطالب</h1>
+                <p class="page-header__breadcrumb">
+                    <a href="index.html">الرئيسية</a> / دليل الطالب
+                </p>
+            </div>
+        </section>
+
+        <!-- Introduction -->
+        <section class="section section--white">
+            <div class="container">
+                <div class="info-box info-box--primary reveal">
+                    <h3 class="info-box__title">مرحباً بك في الجزائر!</h3>
+                    <p class="mb-0">
+                        هذا الدليل مخصص للطلاب الموريتانيين الجدد في الجزائر. ستجد هنا جميع المعلومات الضرورية لبدء
+                        حياتك الجامعية بنجاح، من فتح حساب بنكي إلى إيجاد السكن المناسب.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guide Sections -->
+        <section class="section section--alt">
+            <div class="container">
+                <!-- Accordion -->
+                <div class="accordion reveal" id="guideAccordion" data-page="guide" data-dynamic="accordion">
+
+                    <!-- Bank Account -->
+                    <div class="accordion__item accordion__item--active" id="bank" data-accordion-item="bank">
+                        <button class="accordion__header" data-content="accordion_bank_title">
+                            🏦 فتح حساب بنكي
+                            <span class="accordion__icon">+</span>
+                        </button>
+                        <div class="accordion__body" data-content="accordion_bank">
+                            <h4>الوثائق المطلوبة:</h4>
+                            <ul>
+                                <li>جواز السفر ساري المفعول</li>
+                                <li>شهادة الإقامة أو عقد الإيجار</li>
+                                <li>شهادة التسجيل الجامعي</li>
+                                <li>صورتان شمسيتان</li>
+                                <li>نسخة من بطاقة الطالب</li>
+                            </ul>
+
+                            <h4>البنوك الموصى بها:</h4>
+                            <ul>
+                                <li><strong>بريد الجزائر (CCP):</strong> الأسهل للفتح والأكثر انتشاراً</li>
+                                <li><strong>البنك الوطني الجزائري (BNA):</strong> خدمات جيدة للطلاب</li>
+                                <li><strong>بنك التنمية المحلية (BDL):</strong> فروع في معظم المدن</li>
+                            </ul>
+
+                            <div class="info-box info-box--warning">
+                                <p class="mb-0"><strong>نصيحة:</strong> حساب البريد (CCP) هو الأسرع في الفتح ويقبل
+                                    التحويلات الدولية عبر Western Union.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transportation -->
+                    <div class="accordion__item" id="transport" data-accordion-item="transport">
+                        <button class="accordion__header" data-content="accordion_transport_title">
+                            🚌 المواصلات والتنقل
+                            <span class="accordion__icon">+</span>
+                        </button>
+                        <div class="accordion__body" data-content="accordion_transport">
+                            <h4>وسائل النقل في المدن:</h4>
+                            <ul>
+                                <li><strong>المترو:</strong> متوفر في الجزائر العاصمة (خطان)</li>
+                                <li><strong>الترامواي:</strong> متوفر في عدة مدن (الجزائر، وهران، قسنطينة)</li>
+                                <li><strong>الحافلات:</strong> شبكة واسعة تغطي معظم الأحياء</li>
+                                <li><strong>سيارات الأجرة:</strong> متوفرة بكثرة (تفاوض على السعر قبل الركوب)</li>
+                            </ul>
+
+                            <h4>التنقل بين الولايات:</h4>
+                            <ul>
+                                <li><strong>الحافلات الكبيرة:</strong> وسيلة اقتصادية ومريحة (SNTV وشركات خاصة)</li>
+                                <li><strong>القطار:</strong> شبكة تربط المدن الرئيسية (SNTF)</li>
+                                <li><strong>الطائرة:</strong> للمسافات البعيدة (Air Algérie)</li>
+                            </ul>
+
+                            <h4>بطاقة النقل الجامعي:</h4>
+                            <p>يمكنك الحصول على بطاقة نقل جامعي مخفضة من مصلحة النشاطات الجامعية. تتيح لك خصماً على
+                                وسائل النقل العام.</p>
+                        </div>
+                    </div>
+
+                    <!-- University Housing -->
+                    <div class="accordion__item" id="housing" data-accordion-item="housing">
+                        <button class="accordion__header" data-content="accordion_housing_title">
+                            🏠 السكن الجامعي
+                            <span class="accordion__icon">+</span>
+                        </button>
+                        <div class="accordion__body" data-content="accordion_housing">
+                            <h4>أنواع السكن:</h4>
+
+                            <h5>1. الإقامة الجامعية (الحي الجامعي):</h5>
+                            <ul>
+                                <li>سكن مدعوم من الدولة</li>
+                                <li>يشمل عادة الوجبات</li>
+                                <li>رسوم رمزية جداً</li>
+                                <li>الأماكن محدودة - قدم طلبك مبكراً</li>
+                            </ul>
+
+                            <h5>2. السكن الخاص:</h5>
+                            <ul>
+                                <li>غرف أو شقق للإيجار</li>
+                                <li>مرونة أكبر في الاختيار</li>
+                                <li>تكلفة أعلى من الإقامة الجامعية</li>
+                                <li>ابحث في المناطق القريبة من الجامعة</li>
+                            </ul>
+
+                            <h4>إجراءات الحصول على سكن جامعي:</h4>
+                            <ol>
+                                <li>الحصول على شهادة التسجيل من الجامعة</li>
+                                <li>تقديم ملف كامل لإدارة الإقامة الجامعية</li>
+                                <li>انتظار الرد (قد يستغرق أسابيع)</li>
+                            </ol>
+
+                            <div class="info-box info-box--primary">
+                                <p class="mb-0"><strong>نصيحة:</strong> تواصل مع الاتحاد للحصول على معلومات عن السكن
+                                    المتاح والتوصيات.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Required Documents -->
+                    <div class="accordion__item" id="documents" data-accordion-item="documents">
+                        <button class="accordion__header" data-content="accordion_documents_title">
+                            📋 الوثائق المطلوبة
+                            <span class="accordion__icon">+</span>
+                        </button>
+                        <div class="accordion__body" data-content="accordion_documents">
+                            <h4>الوثائق الأساسية:</h4>
+                            <ul>
+                                <li>جواز السفر ساري المفعول (+ نسخ)</li>
+                                <li>شهادة البكالوريا مصدقة ومترجمة</li>
+                                <li>كشف النقاط مصدق ومترجم</li>
+                                <li>شهادة الميلاد مصدقة</li>
+                                <li>صور شمسية (10 صور على الأقل)</li>
+                                <li>شهادة طبية</li>
+                                <li>شهادة حسن السيرة والسلوك</li>
+                            </ul>
+
+                            <h4>للتسجيل الجامعي:</h4>
+                            <ul>
+                                <li>استمارة التسجيل المسبق</li>
+                                <li>رسالة القبول من الجامعة</li>
+                                <li>إثبات الكفاءة اللغوية (إن وجد)</li>
+                                <li>شهادة المعادلة (إن طُلبت)</li>
+                            </ul>
+
+                            <h4>للإقامة:</h4>
+                            <ul>
+                                <li>تأشيرة دخول سارية</li>
+                                <li>بطاقة الإقامة (تُستخرج بعد الوصول)</li>
+                            </ul>
+
+                            <div class="info-box info-box--warning">
+                                <p class="mb-0"><strong>مهم:</strong> احرص على تصديق جميع الوثائق من وزارة الخارجية
+                                    الموريتانية والسفارة الجزائرية قبل السفر.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daily Life Tips -->
+                    <div class="accordion__item" id="tips" data-accordion-item="tips">
+                        <button class="accordion__header" data-content="accordion_tips_title">
+                            💡 نصائح للحياة اليومية
+                            <span class="accordion__icon">+</span>
+                        </button>
+                        <div class="accordion__body" data-content="accordion_tips">
+                            <h4>الاتصالات:</h4>
+                            <ul>
+                                <li>شركات الاتصال الرئيسية: Djezzy, Mobilis, Ooredoo</li>
+                                <li>يمكنك شراء شريحة بجواز السفر فقط</li>
+                                <li>عروض خاصة للطلاب متوفرة</li>
+                            </ul>
+
+                            <h4>التسوق والطعام:</h4>
+                            <ul>
+                                <li>الأسواق الشعبية أرخص من المتاجر الكبرى</li>
+                                <li>المطاعم الجامعية توفر وجبات بأسعار مخفضة</li>
+                                <li>تتوفر منتجات حلال في كل مكان</li>
+                            </ul>
+
+                            <h4>الصحة:</h4>
+                            <ul>
+                                <li>التأمين الصحي الجامعي يغطي الخدمات الأساسية</li>
+                                <li>المستشفيات الجامعية تقدم خدمات مجانية للطلاب</li>
+                                <li>احتفظ بنسخة من سجلك الطبي</li>
+                            </ul>
+
+                            <h4>نصائح عامة:</h4>
+                            <ul>
+                                <li>تعلم بعض الكلمات بالدارجة الجزائرية</li>
+                                <li>احترم العادات والتقاليد المحلية</li>
+                                <li>احتفظ بنسخ من جميع وثائقك المهمة</li>
+                                <li>سجل رقم هاتف السفارة الموريتانية</li>
+                                <li>انضم لمجموعات الطلاب الموريتانيين على وسائل التواصل</li>
+                            </ul>
+
+                            <h4>أرقام مهمة:</h4>
+                            <ul>
+                                <li>الطوارئ: 14</li>
+                                <li>الإسعاف: 14</li>
+                                <li>الشرطة: 17</li>
+                                <li>الحماية المدنية: 14</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Culture -->
+                    <div class="accordion__item" id="culture" data-accordion-item="culture">
+                        <button class="accordion__header" data-content="accordion_culture_title">
+                            🌍 الثقافة والاندماج
+                            <span class="accordion__icon">+</span>
+                        </button>
+                        <div class="accordion__body" data-content="accordion_culture">
+                            <h4>عن الجزائر:</h4>
+                            <p>الجزائر بلد عربي إسلامي يتميز بتنوع ثقافي غني. الشعب الجزائري معروف بكرمه وحسن ضيافته،
+                                وستجد ترحيباً حاراً كطالب موريتاني.</p>
+
+                            <h4>اللغة:</h4>
+                            <ul>
+                                <li>اللغة الرسمية: العربية والأمازيغية</li>
+                                <li>اللغة الفرنسية مستخدمة بشكل واسع</li>
+                                <li>الدارجة الجزائرية هي لغة التواصل اليومي</li>
+                            </ul>
+
+                            <h4>نصائح للاندماج:</h4>
+                            <ul>
+                                <li>شارك في الأنشطة الجامعية والطلابية</li>
+                                <li>تعرف على زملائك الجزائريين</li>
+                                <li>استكشف المدينة والأماكن السياحية</li>
+                                <li>شارك في فعاليات اتحاد الطلبة الموريتانيين</li>
+                                <li>كن منفتحاً على تجارب جديدة</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Download Section -->
+        <section class="section section--white">
+            <div class="container text-center reveal">
+                <h2>تحميل الدليل</h2>
+                <p class="text-muted mb-4">يمكنك تحميل نسخة PDF من دليل الطالب للاطلاع عليها بدون اتصال بالإنترنت</p>
+                <a href="#" class="btn btn--primary btn--lg">📥 تحميل دليل الطالب (PDF)</a>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="section section--primary">
+            <div class="container text-center reveal">
+                <h2 style="color: var(--color-white);">هل لديك أسئلة؟</h2>
+                <p style="color: rgba(255,255,255,0.9); margin-bottom: var(--space-xl);">
+                    لا تتردد في التواصل معنا. نحن هنا لمساعدتك!
+                </p>
+                <a href="contact.html" class="btn btn--secondary btn--lg">تواصل معنا</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__section">
+                    <h4>اتحاد الطلبة الموريتانيين</h4>
+                    <p>منظمة طلابية تهدف لخدمة ودعم الطلبة الموريتانيين في الجزائر.</p>
+                    <div class="footer__social">
+                        <a href="#" class="footer__social-link" aria-label="فيسبوك">📘</a>
+                        <a href="#" class="footer__social-link" aria-label="انستغرام">📷</a>
+                        <a href="#" class="footer__social-link" aria-label="تويتر">🐦</a>
+                    </div>
+                </div>
+
+                <div class="footer__section">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="about.html">من نحن</a></li>
+                        <li><a href="guide.html">دليل الطالب</a></li>
+                        <li><a href="programs.html">البرامج الأكاديمية</a></li>
+                        <li><a href="services.html">الخدمات</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__section">
+                    <h4>تواصل معنا</h4>
+                    <ul>
+                        <li>📧 contact@uema-dz.org</li>
+                        <li>📱 +213 XX XX XX XX</li>
+                        <li>📍 الجزائر العاصمة، الجزائر</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <p>© 2026 اتحاد الطلبة الموريتانيين بالجزائر. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4l-8 8h5v8h6v-8h5z"/></svg>
+    </button>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

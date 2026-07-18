@@ -202,6 +202,32 @@ app.get('/api/storage-check', async (req, res) => {
     }
 });
 
+// Force bucket to public
+app.get('/api/fix-bucket', async (req, res) => {
+    try {
+        const { getClient } = require('./models/database');
+        const supabase = getClient();
+
+        const { error } = await supabase.storage.updateBucket('uploads', {
+            public: true,
+            fileSizeLimit: 5 * 1024 * 1024,
+            allowedMimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+        });
+
+        if (error) {
+            return res.json({ success: false, error: error.message, details: JSON.stringify(error) });
+        }
+
+        // Verify
+        const { data: buckets } = await supabase.storage.listBuckets();
+        const bucket = buckets.find(b => b.name === 'uploads');
+
+        res.json({ success: true, message: 'Bucket updated to public', bucket: { public: bucket.public, file_size_limit: bucket.file_size_limit, allowed_mime_types: bucket.allowed_mime_types } });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 // Force re-seed endpoint (creates admin + default content if missing)
 app.get('/api/reseed', async (req, res) => {
     try {

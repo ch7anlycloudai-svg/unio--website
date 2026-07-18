@@ -486,16 +486,17 @@ async function ensureStorageBucket() {
         if (createError) throw new Error('Failed to create storage bucket: ' + createError.message);
         console.log('Storage bucket "uploads" created (public)');
     } else {
-        // Update bucket to ensure it's public with correct settings
+        console.log('Storage bucket "uploads" exists. public:', existing.public);
+        // Always update bucket to ensure it's public
         const { error: updateError } = await supabase.storage.updateBucket('uploads', {
             public: true,
             fileSizeLimit: 5 * 1024 * 1024,
             allowedMimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
         });
         if (updateError) {
-            console.warn('Could not update bucket settings:', updateError.message);
+            console.error('FAILED to update bucket to public:', JSON.stringify(updateError));
         } else {
-            console.log('Storage bucket "uploads" verified and updated (public: true)');
+            console.log('Storage bucket "uploads" updated to public: true');
         }
     }
 

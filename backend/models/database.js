@@ -45,8 +45,12 @@ async function initializeDatabase() {
 
     console.log('Connected to Supabase successfully — schema verified');
 
-    // Ensure storage bucket exists
-    await ensureStorageBucket();
+    // Ensure storage bucket exists (non-fatal — server works without it)
+    try {
+        await ensureStorageBucket();
+    } catch (err) {
+        console.error('Storage bucket setup failed (non-fatal):', err.message);
+    }
 
     // Seed default data
     try {
@@ -497,10 +501,10 @@ async function ensureStorageBucket() {
 
     // Test upload to verify storage works
     try {
-        const testPath = '_test/ping.txt';
+        const testPath = '_test/ping.png';
         const { error: testUploadErr } = await supabase.storage
             .from('uploads')
-            .upload(testPath, Buffer.from('ok'), { contentType: 'text/plain', upsert: true });
+            .upload(testPath, Buffer.from('ok'), { contentType: 'image/png', upsert: true });
         if (testUploadErr) {
             console.error('Storage test upload FAILED:', JSON.stringify(testUploadErr));
             console.error('Uploads will not work. Check Supabase Storage policies.');

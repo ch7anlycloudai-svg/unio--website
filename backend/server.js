@@ -80,6 +80,17 @@ app.use(session({
 // STATIC FILES
 // ======================
 
+// Redirect legacy /assets/uploads/* URLs to Supabase Storage
+app.get('/assets/uploads/*', (req, res) => {
+    const storagePath = req.path.replace('/assets/uploads/', '');
+    const supabaseUrl = process.env.SUPABASE_URL;
+    if (supabaseUrl) {
+        res.redirect(301, `${supabaseUrl}/storage/v1/object/public/uploads/${storagePath}`);
+    } else {
+        res.status(404).json({ success: false, message: 'File not found' });
+    }
+});
+
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
 app.use('/admin', express.static(path.join(__dirname, 'admin')));
 

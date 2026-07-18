@@ -45,6 +45,9 @@ async function initializeDatabase() {
 
     console.log('Connected to Supabase successfully — schema verified');
 
+    // Ensure storage bucket exists
+    await ensureStorageBucket();
+
     // Seed default data
     try {
         await createDefaultAdmin();
@@ -459,6 +462,27 @@ async function initializeDefaultContent() {
         }
 
         console.log('Default page content initialized!');
+    }
+}
+
+/**
+ * Ensure the Supabase Storage bucket exists for file uploads
+ */
+async function ensureStorageBucket() {
+    const { data: buckets, error: listError } = await supabase.storage.listBuckets();
+    if (listError) throw new Error('Failed to list storage buckets: ' + listError.message);
+
+    const exists = buckets.some(b => b.name === 'uploads');
+    if (!exists) {
+        const { error: createError } = await supabase.storage.createBucket('uploads', {
+            public: true,
+            fileSizeLimit: 5 * 1024 * 1024,
+            allowedMimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+        });
+        if (createError) throw new Error('Failed to create storage bucket: ' + createError.message);
+        console.log('Storage bucket "uploads" created (public)');
+    } else {
+        console.log('Storage bucket "uploads" already exists');
     }
 }
 

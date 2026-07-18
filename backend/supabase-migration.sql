@@ -5,6 +5,18 @@
 -- ============================================
 
 -- ============================================
+-- STORAGE BUCKET (auto-created by server)
+-- ============================================
+-- The server automatically creates a public "uploads" bucket on startup.
+-- If you need to create it manually in the Supabase dashboard:
+-- 1. Go to Storage in your Supabase project
+-- 2. Create a new bucket named "uploads"
+-- 3. Set it as Public
+-- 4. Set file size limit to 5MB
+-- 5. Allowed MIME types: image/jpeg, image/png, image/gif, image/webp
+-- ============================================
+
+-- ============================================
 -- Auto-bootstrap function
 -- Called by the Node.js server on every startup.
 -- Creates all tables, RLS policies, and indexes if missing.

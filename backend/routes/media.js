@@ -1,6 +1,8 @@
 /**
  * Media Routes - Hero Slides & Specialties Management
  * Mauritanian Students Union Website
+ *
+ * All file uploads are stored in Supabase Storage (bucket: "uploads").
  */
 
 const express = require('express');
@@ -9,36 +11,13 @@ const { getClient } = require('../models/database');
 const { isAuthenticated: requireAuth } = require('../middleware/auth');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
 
 // ========================================
-// MULTER CONFIGURATION FOR FILE UPLOADS
+// MULTER CONFIGURATION (memory storage)
 // ========================================
 
-// Ensure uploads directory exists
-const uploadsDir = path.join(__dirname, '..', '..', 'frontend', 'assets', 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-}
+const storage = multer.memoryStorage();
 
-// Configure multer storage
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const type = req.params.type || 'general';
-        const typeDir = path.join(uploadsDir, type);
-        if (!fs.existsSync(typeDir)) {
-            fs.mkdirSync(typeDir, { recursive: true });
-        }
-        cb(null, typeDir);
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const ext = path.extname(file.originalname).toLowerCase();
-        cb(null, uniqueSuffix + ext);
-    }
-});
-
-// File filter for images only
 const imageFilter = (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif|webp/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
@@ -58,6 +37,32 @@ const upload = multer({
         fileSize: 5 * 1024 * 1024 // 5MB limit
     }
 });
+
+// ========================================
+// STORAGE HELPERS
+// ========================================
+
+/**
+ * Extract the storage path from a Supabase public URL or legacy relative path.
+ * Returns the path inside the "uploads" bucket, e.g. "hero/12345.jpg"
+ */
+function extractStoragePath(url) {
+    if (!url) return null;
+
+    // Supabase public URL
+    const supabaseMarker = '/storage/v1/object/public/uploads/';
+    const idx = url.indexOf(supabaseMarker);
+    if (idx !== -1) {
+        return url.substring(idx + supabaseMarker.length);
+    }
+
+    // Legacy relative path
+    if (url.startsWith('/assets/uploads/')) {
+        return url.replace('/assets/uploads/', '');
+    }
+
+    return null;
+}
 
 // ========================================
 // HERO SLIDES ROUTES
@@ -188,11 +193,11 @@ router.delete('/hero/:id', requireAuth, async (req, res) => {
         const { error } = await supabase.from('hero_slides').delete().eq('id', id);
         if (error) throw error;
 
-        // Delete image file if it's a local upload
-        if (slide && slide.image_url && slide.image_url.startsWith('/assets/uploads/')) {
-            const imagePath = path.join(__dirname, '..', '..', 'frontend', slide.image_url);
-            if (fs.existsSync(imagePath)) {
-                fs.unlinkSync(imagePath);
+        // Delete image from Supabase Storage
+        if (slide && slide.image_url) {
+            const storagePath = extractStoragePath(slide.image_url);
+            if (storagePath) {
+                await supabase.storage.from('uploads').remove([storagePath]);
             }
         }
 
@@ -384,11 +389,11 @@ router.delete('/specialties/:id', requireAuth, async (req, res) => {
         const { error } = await supabase.from('specialties').delete().eq('id', id);
         if (error) throw error;
 
-        // Delete image file if it's a local upload
-        if (specialty && specialty.image_url && specialty.image_url.startsWith('/assets/uploads/')) {
-            const imagePath = path.join(__dirname, '..', '..', 'frontend', specialty.image_url);
-            if (fs.existsSync(imagePath)) {
-                fs.unlinkSync(imagePath);
+        // Delete image from Supabase Storage
+        if (specialty && specialty.image_url) {
+            const storagePath = extractStoragePath(specialty.image_url);
+            if (storagePath) {
+                await supabase.storage.from('uploads').remove([storagePath]);
             }
         }
 
@@ -400,28 +405,44 @@ router.delete('/specialties/:id', requireAuth, async (req, res) => {
 });
 
 // ========================================
-// FILE UPLOAD ROUTES
+// FILE UPLOAD ROUTES (Supabase Storage)
 // ========================================
 
 /**
- * POST /api/media/upload/:type - Upload image (admin)
- * type can be: hero, specialties, general
+ * POST /api/media/upload/:type - Upload image to Supabase Storage (admin)
+ * type can be: hero, specialties, news, general
  */
-router.post('/upload/:type', requireAuth, upload.single('image'), (req, res) => {
+router.post('/upload/:type', requireAuth, upload.single('image'), async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ success: false, message: 'لم يتم تحميل أي ملف' });
         }
 
         const type = req.params.type || 'general';
-        const imageUrl = `/assets/uploads/${type}/${req.file.filename}`;
+        const ext = path.extname(req.file.originalname).toLowerCase();
+        const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1E9) + ext;
+        const storagePath = `${type}/${uniqueName}`;
+
+        const supabase = getClient();
+        const { error: uploadError } = await supabase.storage
+            .from('uploads')
+            .upload(storagePath, req.file.buffer, {
+                contentType: req.file.mimetype,
+                upsert: false
+            });
+
+        if (uploadError) throw uploadError;
+
+        const { data: urlData } = supabase.storage
+            .from('uploads')
+            .getPublicUrl(storagePath);
 
         res.json({
             success: true,
             message: 'تم رفع الصورة بنجاح',
             data: {
-                url: imageUrl,
-                filename: req.file.filename,
+                url: urlData.publicUrl,
+                filename: uniqueName,
                 size: req.file.size
             }
         });
@@ -432,24 +453,29 @@ router.post('/upload/:type', requireAuth, upload.single('image'), (req, res) => 
 });
 
 /**
- * DELETE /api/media/upload - Delete uploaded file (admin)
+ * DELETE /api/media/upload - Delete uploaded file from Supabase Storage (admin)
  */
-router.delete('/upload', requireAuth, (req, res) => {
+router.delete('/upload', requireAuth, async (req, res) => {
     try {
         const { url } = req.body;
 
-        if (!url || !url.startsWith('/assets/uploads/')) {
+        if (!url) {
             return res.status(400).json({ success: false, message: 'رابط الملف غير صالح' });
         }
 
-        const filePath = path.join(__dirname, '..', '..', 'frontend', url);
-
-        if (fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath);
-            res.json({ success: true, message: 'تم حذف الملف بنجاح' });
-        } else {
-            res.status(404).json({ success: false, message: 'الملف غير موجود' });
+        const storagePath = extractStoragePath(url);
+        if (!storagePath) {
+            return res.status(400).json({ success: false, message: 'رابط الملف غير صالح' });
         }
+
+        const supabase = getClient();
+        const { error } = await supabase.storage
+            .from('uploads')
+            .remove([storagePath]);
+
+        if (error) throw error;
+
+        res.json({ success: true, message: 'تم حذف الملف بنجاح' });
     } catch (error) {
         console.error('Error deleting file:', error);
         res.status(500).json({ success: false, message: 'خطأ في حذف الملف' });
@@ -484,9 +510,6 @@ router.post('/parse-video', (req, res) => {
     }
 });
 
-/**
- * Parse video URL and extract type and ID
- */
 function parseVideoUrl(url) {
     // YouTube
     const youtubeMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);

@@ -129,6 +129,11 @@
     const renderLatestNews = (container, newsItems) => {
         container.innerHTML = newsItems.map(news => `
             <article class="card">
+                ${news.image_url ? `
+                    <div class="card__image">
+                        <img src="${sanitizeUrl(news.image_url)}" alt="${escapeHtml(news.title)}">
+                    </div>
+                ` : ''}
                 <div class="card__body">
                     <span class="tag tag--${getCategoryClass(news.category)}">${getCategoryLabel(news.category)}</span>
                     <h3 class="card__title">${escapeHtml(news.title)}</h3>

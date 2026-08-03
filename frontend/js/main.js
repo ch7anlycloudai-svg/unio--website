@@ -1,119 +1,248 @@
 /**
  * Mauritanian Students' Union Website
- * Main JavaScript File
+ * Main JavaScript File - Bilingual (Arabic / French)
  */
 
 (function() {
     'use strict';
 
-
-    // ========================================
-    // API Configuration
-    // ========================================
     const API_BASE = '/api';
 
     // ========================================
-    // Dynamic Content Loading
+    // INTERNATIONALIZATION (i18n)
     // ========================================
 
-    /**
-     * Load page content from API and update DOM
-     * @param {string} pageName - Name of the page (home, about, etc.)
-     */
+    const SUPPORTED_LANGS = ['ar', 'fr'];
+    const DEFAULT_LANG = 'ar';
+
+    /** Get current language from localStorage */
+    const getLang = () => {
+        const stored = localStorage.getItem('lang');
+        return SUPPORTED_LANGS.includes(stored) ? stored : DEFAULT_LANG;
+    };
+
+    /** Set language and reload page */
+    const setLang = (lang) => {
+        if (!SUPPORTED_LANGS.includes(lang)) return;
+        localStorage.setItem('lang', lang);
+        applyLanguage(lang);
+    };
+
+    /** Apply language to the document */
+    const applyLanguage = (lang) => {
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+        // Update all static translatable elements
+        document.querySelectorAll('[data-ar][data-fr]').forEach(el => {
+            const text = el.getAttribute(`data-${lang}`);
+            if (!text) return;
+
+            // Check if the translation contains HTML tags
+            if (text.includes('<')) {
+                el.innerHTML = text;
+                return;
+            }
+
+            // Preserve child elements (e.g. SVGs inside buttons)
+            const childElements = Array.from(el.children);
+            if (childElements.length > 0) {
+                // Find the text node and update it, keeping child elements
+                let hasTextNode = false;
+                for (const node of el.childNodes) {
+                    if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+                        node.textContent = text;
+                        hasTextNode = true;
+                        break;
+                    }
+                }
+                if (!hasTextNode) {
+                    // Insert text before first child
+                    el.insertBefore(document.createTextNode(text), el.firstChild);
+                }
+            } else {
+                el.textContent = text;
+            }
+        });
+
+        // Update placeholders for inputs/textareas
+        document.querySelectorAll(`[data-${lang}-placeholder]`).forEach(el => {
+            el.placeholder = el.getAttribute(`data-${lang}-placeholder`);
+        });
+
+        // Update language switcher active state
+        const switcher = document.getElementById('langSwitcher');
+        if (switcher) {
+            switcher.querySelectorAll('.lang-switcher__btn').forEach(btn => {
+                btn.classList.toggle('lang-switcher__btn--active', btn.dataset.lang === lang);
+            });
+        }
+
+        // Reload dynamic content for the new language
+        const currentPage = detectCurrentPage();
+        if (currentPage) loadPageContent(currentPage);
+        if (currentPage === 'home') {
+            loadNews();
+            loadHeroSlides();
+            loadHomepageSpecialties();
+        }
+        if (currentPage === 'news') loadNews();
+        if (currentPage === 'programs') loadSpecialties();
+    };
+
+    /** Get localized field from an object: t(obj, 'title') returns obj.title_ar or obj.title_fr */
+    const t = (obj, field) => {
+        const lang = getLang();
+        return obj[`${field}_${lang}`] || obj[`${field}_ar`] || '';
+    };
+
+    // ========================================
+    // Static UI translations
+    // ========================================
+    const UI = {
+        ar: {
+            read_more: '\u0627\u0642\u0631\u0623 \u0627\u0644\u0645\u0632\u064a\u062f',
+            loading: '\u062c\u0627\u0631\u064a \u0627\u0644\u062a\u062d\u0645\u064a\u0644...',
+            no_more: '\u0644\u0627 \u064a\u0648\u062c\u062f \u0627\u0644\u0645\u0632\u064a\u062f',
+            sending: '\u062c\u0627\u0631\u064a \u0627\u0644\u0625\u0631\u0633\u0627\u0644...',
+            field_required: '\u0647\u0630\u0627 \u0627\u0644\u062d\u0642\u0644 \u0645\u0637\u0644\u0648\u0628',
+            invalid_email: '\u0627\u0644\u0628\u0631\u064a\u062f \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a \u063a\u064a\u0631 \u0635\u0627\u0644\u062d',
+            send_error: '\u062d\u062f\u062b \u062e\u0637\u0623 \u0641\u064a \u0627\u0644\u0627\u062a\u0635\u0627\u0644 \u0628\u0627\u0644\u062e\u0627\u062f\u0645',
+            cat_news: '\u0623\u062e\u0628\u0627\u0631',
+            cat_event: '\u0641\u0639\u0627\u0644\u064a\u0627\u062a',
+            cat_announcement: '\u0625\u0639\u0644\u0627\u0646\u0627\u062a',
+            know_us: '\u062a\u0639\u0631\u0641 \u0639\u0644\u064a\u0646\u0627',
+            student_guide: '\u062f\u0644\u064a\u0644 \u0627\u0644\u0637\u0627\u0644\u0628',
+            study_duration: '\u0645\u062f\u0629 \u0627\u0644\u062f\u0631\u0627\u0633\u0629',
+            watch_video: '\u25b6\ufe0f \u0634\u0627\u0647\u062f \u0641\u064a\u062f\u064a\u0648 \u062a\u0639\u0631\u064a\u0641\u064a',
+            slide_label: '\u0627\u0644\u0634\u0631\u064a\u062d\u0629'
+        },
+        fr: {
+            read_more: 'Lire la suite',
+            loading: 'Chargement...',
+            no_more: 'Plus de r\u00e9sultats',
+            sending: 'Envoi en cours...',
+            field_required: 'Ce champ est requis',
+            invalid_email: 'Email invalide',
+            send_error: 'Erreur de connexion au serveur',
+            cat_news: 'Actualit\u00e9s',
+            cat_event: '\u00c9v\u00e9nements',
+            cat_announcement: 'Annonces',
+            know_us: 'D\u00e9couvrez-nous',
+            student_guide: 'Guide \u00e9tudiant',
+            study_duration: 'Dur\u00e9e des \u00e9tudes',
+            watch_video: '\u25b6\ufe0f Voir la vid\u00e9o',
+            slide_label: 'Diapositive'
+        }
+    };
+
+    const ui = (key) => {
+        const lang = getLang();
+        return (UI[lang] && UI[lang][key]) || UI.ar[key] || key;
+    };
+
+    // ========================================
+    // Language Switcher Init
+    // ========================================
+    const initLanguageSwitcher = () => {
+        const switcher = document.getElementById('langSwitcher');
+        if (!switcher) return;
+
+        const lang = getLang();
+
+        // Set initial active state
+        switcher.querySelectorAll('.lang-switcher__btn').forEach(btn => {
+            btn.classList.toggle('lang-switcher__btn--active', btn.dataset.lang === lang);
+
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.lang;
+                if (target !== getLang()) {
+                    setLang(target);
+                }
+            });
+        });
+    };
+
+    // ========================================
+    // Dynamic Content Loading (bilingual)
+    // ========================================
+
     const loadPageContent = async (pageName) => {
         try {
             const response = await fetch(`${API_BASE}/pages/${pageName}`);
             const data = await response.json();
-
-            if (data.success) {
-                updatePageContent(data.data);
-            }
+            if (data.success) updatePageContent(data.data);
         } catch (error) {
             console.log('Using static content (API not available)');
         }
     };
 
-    /**
-     * Update DOM elements with content from API
-     * @param {Object} content - Content object with section_id as keys
-     */
     const updatePageContent = (content) => {
+        const lang = getLang();
         Object.entries(content).forEach(([sectionId, sectionData]) => {
-            // Try to find element by data-content attribute
             const element = document.querySelector(`[data-content="${sectionId}"]`);
+            if (!element) return;
 
-            if (element) {
-                if (sectionData.type === 'html') {
-                    element.innerHTML = sectionData.content;
-                } else {
-                    // For accordion headers, preserve the icon span
-                    if (element.classList.contains('accordion__header')) {
-                        const iconSpan = element.querySelector('.accordion__icon');
-                        element.innerHTML = sectionData.content;
-                        if (iconSpan) {
-                            element.appendChild(iconSpan);
-                        } else {
-                            const newIcon = document.createElement('span');
-                            newIcon.className = 'accordion__icon';
-                            newIcon.textContent = '+';
-                            element.appendChild(newIcon);
-                        }
+            const text = sectionData[`content_${lang}`] || sectionData.content_ar || '';
+
+            if (sectionData.type === 'html') {
+                element.innerHTML = text;
+            } else {
+                if (element.classList.contains('accordion__header')) {
+                    const iconSpan = element.querySelector('.accordion__icon');
+                    element.innerHTML = text;
+                    if (iconSpan) {
+                        element.appendChild(iconSpan);
                     } else {
-                        element.textContent = sectionData.content;
+                        const newIcon = document.createElement('span');
+                        newIcon.className = 'accordion__icon';
+                        newIcon.textContent = '+';
+                        element.appendChild(newIcon);
                     }
+                } else {
+                    element.textContent = text;
                 }
             }
         });
     };
 
-    /**
-     * Load news from API
-     * @param {number} limit - Number of news items to load
-     * @param {string} category - Category filter (optional)
-     */
+    // ========================================
+    // News (bilingual)
+    // ========================================
+
     const loadNews = async (limit = 10, category = 'all') => {
         const newsGrid = document.getElementById('newsGrid');
         const latestNews = document.getElementById('latestNews');
-
         if (!newsGrid && !latestNews) return;
 
         try {
             let url = `${API_BASE}/news?limit=${limit}`;
-            if (category && category !== 'all') {
-                url += `&category=${category}`;
-            }
+            if (category && category !== 'all') url += `&category=${category}`;
 
             const response = await fetch(url);
             const data = await response.json();
 
             if (data.success && data.data.length > 0) {
-                if (newsGrid) {
-                    renderNewsGrid(newsGrid, data.data);
-                }
-                if (latestNews) {
-                    renderLatestNews(latestNews, data.data.slice(0, 3));
-                }
+                if (newsGrid) renderNewsGrid(newsGrid, data.data);
+                if (latestNews) renderLatestNews(latestNews, data.data.slice(0, 3));
             }
         } catch (error) {
             console.log('Using static news (API not available)');
         }
     };
 
-    /**
-     * Render news items to grid
-     */
     const renderNewsGrid = (container, newsItems) => {
         container.innerHTML = newsItems.map(news => `
             <article class="card" data-category="${news.category}">
                 ${news.image_url ? `
                     <div class="card__image">
-                        <img src="${sanitizeUrl(news.image_url)}" alt="${escapeHtml(news.title)}">
+                        <img src="${sanitizeUrl(news.image_url)}" alt="${escapeHtml(t(news, 'title'))}">
                     </div>
                 ` : ''}
                 <div class="card__body">
                     <span class="tag tag--${getCategoryClass(news.category)}">${getCategoryLabel(news.category)}</span>
-                    <h3 class="card__title">${escapeHtml(news.title)}</h3>
-                    <p class="card__text">${escapeHtml(news.content.substring(0, 150))}...</p>
+                    <h3 class="card__title">${escapeHtml(t(news, 'title'))}</h3>
+                    <p class="card__text">${escapeHtml(t(news, 'content').substring(0, 150))}...</p>
                     <div class="card__meta">
                         <span>${formatDate(news.created_at)}</span>
                         ${news.location ? `<span>${escapeHtml(news.location)}</span>` : ''}
@@ -123,28 +252,39 @@
         `).join('');
     };
 
-    /**
-     * Render latest news section (home page)
-     */
     const renderLatestNews = (container, newsItems) => {
-        container.innerHTML = newsItems.map(news => `
-            <article class="card">
-                <div class="card__body">
-                    <span class="tag tag--${getCategoryClass(news.category)}">${getCategoryLabel(news.category)}</span>
-                    <h3 class="card__title">${escapeHtml(news.title)}</h3>
-                    <p class="card__text">${escapeHtml(news.content.substring(0, 100))}...</p>
-                    <div class="card__meta">
-                        <span>${formatDate(news.created_at)}</span>
+        container.innerHTML = newsItems.map((news, index) => `
+            <article class="news-card" data-aos="fade-up" data-aos-delay="${index * 100}">
+                ${news.image_url ? `
+                    <div class="news-card__image">
+                        <img src="${sanitizeUrl(news.image_url)}" alt="${escapeHtml(t(news, 'title'))}" loading="lazy">
+                    </div>
+                ` : ''}
+                <div class="news-card__body">
+                    <div class="news-card__date">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        ${formatDate(news.created_at)}
+                    </div>
+                    <span class="news-card__tag news-card__tag--${getCategoryClass(news.category)}">${getCategoryLabel(news.category)}</span>
+                    <h3 class="news-card__title">${escapeHtml(t(news, 'title'))}</h3>
+                    <p class="news-card__text">${escapeHtml(t(news, 'content').substring(0, 120))}...</p>
+                    <div class="news-card__footer">
+                        <span class="news-card__meta">${news.location ? escapeHtml(news.location) : ''}</span>
+                        <a href="news.html" class="news-card__link">
+                            ${ui('read_more')}
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                        </a>
                     </div>
                 </div>
             </article>
         `).join('');
+
+        if (typeof AOS !== 'undefined') AOS.refresh();
     };
 
-    // Helper functions for news
     const getCategoryLabel = (category) => {
-        const labels = { 'news': 'أخبار', 'event': 'فعاليات', 'announcement': 'إعلانات' };
-        return labels[category] || category;
+        const key = 'cat_' + category;
+        return ui(key) || category;
     };
 
     const getCategoryClass = (category) => {
@@ -161,7 +301,6 @@
 
     const sanitizeUrl = (url) => {
         if (!url) return '';
-        // Only allow http(s) and relative URLs - block javascript: etc.
         if (/^(https?:\/\/|\/)/i.test(url)) return url;
         return '';
     };
@@ -169,62 +308,42 @@
     const formatDate = (dateString) => {
         if (!dateString) return '';
         const date = new Date(dateString);
-        return date.toLocaleDateString('ar-DZ', { year: 'numeric', month: 'short', day: 'numeric' });
+        const lang = getLang();
+        const locale = lang === 'fr' ? 'fr-FR' : 'ar-DZ';
+        return date.toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
     };
 
     // ========================================
-    // Mobile Navigation with Backdrop
+    // Mobile Navigation
     // ========================================
     const initMobileNav = () => {
         const navToggle = document.getElementById('navToggle');
         const mainNav = document.getElementById('mainNav');
         const backdrop = document.getElementById('navBackdrop');
-
         if (!navToggle || !mainNav) return;
 
         const openMenu = () => {
             mainNav.classList.add('nav--open');
             navToggle.setAttribute('aria-expanded', 'true');
             document.body.classList.add('menu-open');
-            if (backdrop) {
-                backdrop.classList.add('nav__backdrop--visible');
-            }
+            if (backdrop) backdrop.classList.add('nav__backdrop--visible');
         };
 
         const closeMenu = () => {
             mainNav.classList.remove('nav--open');
             navToggle.setAttribute('aria-expanded', 'false');
             document.body.classList.remove('menu-open');
-            if (backdrop) {
-                backdrop.classList.remove('nav__backdrop--visible');
-            }
+            if (backdrop) backdrop.classList.remove('nav__backdrop--visible');
         };
 
         navToggle.addEventListener('click', () => {
-            const isOpen = mainNav.classList.contains('nav--open');
-            if (isOpen) {
-                closeMenu();
-            } else {
-                openMenu();
-            }
+            mainNav.classList.contains('nav--open') ? closeMenu() : openMenu();
         });
 
-        // Close menu when clicking on a link
-        const navLinks = mainNav.querySelectorAll('.nav__link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', closeMenu);
-        });
-
-        // Close menu when clicking backdrop
-        if (backdrop) {
-            backdrop.addEventListener('click', closeMenu);
-        }
-
-        // Close menu when clicking outside
+        mainNav.querySelectorAll('.nav__link').forEach(link => link.addEventListener('click', closeMenu));
+        if (backdrop) backdrop.addEventListener('click', closeMenu);
         document.addEventListener('click', (e) => {
-            if (!mainNav.contains(e.target) && mainNav.classList.contains('nav--open')) {
-                closeMenu();
-            }
+            if (!mainNav.contains(e.target) && mainNav.classList.contains('nav--open')) closeMenu();
         });
     };
 
@@ -232,26 +351,11 @@
     // Accordion
     // ========================================
     const initAccordions = () => {
-        const accordions = document.querySelectorAll('.accordion');
-
-        accordions.forEach(accordion => {
-            const items = accordion.querySelectorAll('.accordion__item');
-
-            items.forEach(item => {
+        document.querySelectorAll('.accordion').forEach(accordion => {
+            accordion.querySelectorAll('.accordion__item').forEach(item => {
                 const header = item.querySelector('.accordion__header');
-
                 if (!header) return;
-
-                header.addEventListener('click', () => {
-                    const isActive = item.classList.contains('accordion__item--active');
-
-                    // Toggle current item
-                    if (isActive) {
-                        item.classList.remove('accordion__item--active');
-                    } else {
-                        item.classList.add('accordion__item--active');
-                    }
-                });
+                header.addEventListener('click', () => item.classList.toggle('accordion__item--active'));
             });
         });
     };
@@ -262,455 +366,399 @@
     const initNewsFilter = () => {
         const filterContainer = document.getElementById('newsFilter');
         const newsGrid = document.getElementById('newsGrid');
-
         if (!filterContainer || !newsGrid) return;
 
-        const filterTabs = filterContainer.querySelectorAll('.filter-tab');
-        const newsItems = newsGrid.querySelectorAll('.card');
-
-        filterTabs.forEach(tab => {
+        filterContainer.querySelectorAll('.filter-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 const filter = tab.dataset.filter;
-
-                // Update active tab
-                filterTabs.forEach(t => t.classList.remove('filter-tab--active'));
+                filterContainer.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('filter-tab--active'));
                 tab.classList.add('filter-tab--active');
-
-                // Filter items (no animation)
-                newsItems.forEach(item => {
-                    const category = item.dataset.category;
-                    item.style.display = (filter === 'all' || category === filter) ? '' : 'none';
+                newsGrid.querySelectorAll('.card').forEach(item => {
+                    item.style.display = (filter === 'all' || item.dataset.category === filter) ? '' : 'none';
                 });
             });
         });
     };
 
     // ========================================
-    // Form Handling (Connected to API)
+    // Form Handling
     // ========================================
     const initForms = () => {
-        // Contact Form
         const contactForm = document.getElementById('contactForm');
         const contactSuccess = document.getElementById('contactSuccess');
+        if (!contactForm) return;
 
-        if (contactForm) {
-            contactForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!validateForm(contactForm)) return;
 
-                // Basic validation
-                if (!validateForm(contactForm)) return;
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = ui('sending');
+            submitBtn.disabled = true;
 
-                const submitBtn = contactForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.textContent;
-                submitBtn.textContent = 'جاري الإرسال...';
-                submitBtn.disabled = true;
+            const formData = {
+                name: contactForm.querySelector('#name')?.value || contactForm.querySelector('[name="name"]')?.value,
+                email: contactForm.querySelector('#email')?.value || contactForm.querySelector('[name="email"]')?.value,
+                phone: contactForm.querySelector('#phone')?.value || contactForm.querySelector('[name="phone"]')?.value,
+                subject: contactForm.querySelector('#subject')?.value || contactForm.querySelector('[name="subject"]')?.value,
+                message: contactForm.querySelector('#message')?.value || contactForm.querySelector('[name="message"]')?.value
+            };
 
-                // Collect form data
-                const formData = {
-                    name: contactForm.querySelector('#name')?.value || contactForm.querySelector('[name="name"]')?.value,
-                    email: contactForm.querySelector('#email')?.value || contactForm.querySelector('[name="email"]')?.value,
-                    phone: contactForm.querySelector('#phone')?.value || contactForm.querySelector('[name="phone"]')?.value,
-                    subject: contactForm.querySelector('#subject')?.value || contactForm.querySelector('[name="subject"]')?.value,
-                    message: contactForm.querySelector('#message')?.value || contactForm.querySelector('[name="message"]')?.value
-                };
-
-                try {
-                    const response = await fetch(`${API_BASE}/messages`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formData)
-                    });
-
-                    const data = await response.json();
-
-                    if (data.success) {
-                        contactForm.reset();
-                        contactSuccess.style.display = 'block';
-                        setTimeout(() => { contactSuccess.style.display = 'none'; }, 5000);
-                    } else {
-                        alert(data.message || 'حدث خطأ في إرسال الرسالة');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('حدث خطأ في الاتصال بالخادم');
+            try {
+                const response = await fetch(`${API_BASE}/messages`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                const data = await response.json();
+                if (data.success) {
+                    contactForm.reset();
+                    contactSuccess.style.display = 'block';
+                    setTimeout(() => { contactSuccess.style.display = 'none'; }, 5000);
+                } else {
+                    alert(data.message || ui('send_error'));
                 }
+            } catch (error) {
+                alert(ui('send_error'));
+            }
 
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            });
-        }
-
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        });
     };
 
-    // Form Validation
     const validateForm = (form) => {
         let isValid = true;
-        const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
-
-        // Remove previous error states
         form.querySelectorAll('.form-error').forEach(el => el.remove());
         form.querySelectorAll('.form-input--error, .form-textarea--error').forEach(el => {
             el.classList.remove('form-input--error', 'form-textarea--error');
         });
 
-        inputs.forEach(input => {
+        form.querySelectorAll('input[required], select[required], textarea[required]').forEach(input => {
             if (!input.value.trim()) {
                 isValid = false;
-                showError(input, 'هذا الحقل مطلوب');
-            } else if (input.type === 'email' && !isValidEmail(input.value)) {
+                showError(input, ui('field_required'));
+            } else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
                 isValid = false;
-                showError(input, 'البريد الإلكتروني غير صالح');
+                showError(input, ui('invalid_email'));
             }
         });
-
         return isValid;
     };
 
     const showError = (input, message) => {
         input.classList.add(input.tagName === 'TEXTAREA' ? 'form-textarea--error' : 'form-input--error');
-
         const error = document.createElement('span');
         error.className = 'form-error';
         error.textContent = message;
         input.parentNode.appendChild(error);
     };
 
-    const isValidEmail = (email) => {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    };
-
     // ========================================
-    // Smooth Scroll
+    // Smooth Scroll, Header, Back to Top
     // ========================================
     const initSmoothScroll = () => {
-        const links = document.querySelectorAll('a[href^="#"]');
-
-        links.forEach(link => {
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
             link.addEventListener('click', (e) => {
                 const targetId = link.getAttribute('href');
-
                 if (targetId === '#') return;
-
                 const target = document.querySelector(targetId);
-
                 if (target) {
                     e.preventDefault();
-                    const headerOffset = 100;
-                    const elementPosition = target.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
+                    window.scrollTo({ top: target.getBoundingClientRect().top + window.pageYOffset - 100, behavior: 'smooth' });
                 }
             });
         });
     };
 
-    // ========================================
-    // Glassmorphism Header with Shrink
-    // ========================================
     const initHeaderScroll = () => {
         const header = document.querySelector('.header');
-
         if (!header) return;
-
         let ticking = false;
-
         const onScroll = () => {
-            const currentScroll = window.pageYOffset;
-
-            if (currentScroll > 50) {
-                header.classList.add('header--scrolled');
-            } else {
-                header.classList.remove('header--scrolled');
-            }
-
+            header.classList.toggle('header--scrolled', window.pageYOffset > 80);
             ticking = false;
         };
-
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(onScroll);
-                ticking = true;
-            }
-        }, { passive: true });
+        onScroll();
+        window.addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(onScroll); ticking = true; } }, { passive: true });
     };
 
-    // ========================================
-    // Make Reveal Elements Visible (no animation)
-    // ========================================
     const initScrollReveal = () => {
-        // Make all elements visible immediately without animation
-        document.querySelectorAll('.reveal').forEach(el => {
-            el.classList.add('reveal--visible');
-        });
-        document.querySelectorAll('.reveal-stagger').forEach(el => {
-            el.classList.add('reveal-stagger--visible');
-        });
+        document.querySelectorAll('.reveal').forEach(el => el.classList.add('reveal--visible'));
+        document.querySelectorAll('.reveal-stagger').forEach(el => el.classList.add('reveal-stagger--visible'));
     };
 
-    // ========================================
-    // Stats Counter (show values immediately)
-    // ========================================
     const initStatsCounter = () => {
-        const statNumbers = document.querySelectorAll('.stat__number[data-target]');
-        statNumbers.forEach(el => {
+        const statNumbers = document.querySelectorAll('.stat-card__number[data-target], .stat__number[data-target]');
+        if (statNumbers.length === 0) return;
+
+        const animateCounter = (el) => {
             const target = parseInt(el.dataset.target, 10);
             const suffix = el.dataset.suffix || '';
-            el.textContent = target + suffix;
-        });
-    };
-
-    // ========================================
-    // Back to Top Button
-    // ========================================
-    const initBackToTop = () => {
-        const btn = document.getElementById('backToTop');
-
-        if (!btn) return;
-
-        let ticking = false;
-
-        const onScroll = () => {
-            if (window.pageYOffset > 400) {
-                btn.classList.add('back-to-top--visible');
-            } else {
-                btn.classList.remove('back-to-top--visible');
-            }
-            ticking = false;
+            const duration = 2000;
+            const startTime = performance.now();
+            const update = (currentTime) => {
+                const progress = Math.min((currentTime - startTime) / duration, 1);
+                el.textContent = Math.round((1 - Math.pow(1 - progress, 3)) * target) + suffix;
+                if (progress < 1) requestAnimationFrame(update);
+            };
+            requestAnimationFrame(update);
         };
 
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { animateCounter(entry.target); observer.unobserve(entry.target); }
+            });
+        }, { threshold: 0.5 });
+        statNumbers.forEach(el => observer.observe(el));
+    };
+
+    const initBackToTop = () => {
+        const btn = document.getElementById('backToTop');
+        if (!btn) return;
+        let ticking = false;
         window.addEventListener('scroll', () => {
             if (!ticking) {
-                requestAnimationFrame(onScroll);
+                requestAnimationFrame(() => {
+                    btn.classList.toggle('back-to-top--visible', window.pageYOffset > 400);
+                    ticking = false;
+                });
                 ticking = true;
             }
         }, { passive: true });
-
-        btn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
+        btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     };
 
-
-    // ========================================
-    // Load More (News page)
-    // ========================================
     const initLoadMore = () => {
         const loadMoreBtn = document.getElementById('loadMore');
-
         if (!loadMoreBtn) return;
-
         loadMoreBtn.addEventListener('click', () => {
-            // Simulate loading more content
-            loadMoreBtn.textContent = 'جاري التحميل...';
+            loadMoreBtn.textContent = ui('loading');
             loadMoreBtn.disabled = true;
-
             setTimeout(() => {
-                loadMoreBtn.textContent = 'لا يوجد المزيد';
-                loadMoreBtn.disabled = true;
+                loadMoreBtn.textContent = ui('no_more');
                 loadMoreBtn.style.opacity = '0.5';
             }, 1000);
         });
     };
 
     // ========================================
-    // Hero Carousel
+    // Hero Carousel (bilingual)
     // ========================================
+    let loadHeroSlides; // forward declaration for language switch
+
     const initHeroCarousel = () => {
         const carousel = document.getElementById('heroCarousel');
         const slidesContainer = document.getElementById('heroSlides');
         const dotsContainer = document.getElementById('heroDots');
         const prevBtn = document.getElementById('heroPrev');
         const nextBtn = document.getElementById('heroNext');
-
         if (!carousel || !slidesContainer) return;
 
         let currentSlide = 0;
         let slides = [];
         let autoplayInterval = null;
 
-        // Load slides from API
-        const loadSlides = async () => {
+        loadHeroSlides = async () => {
             try {
                 const response = await fetch(`${API_BASE}/media/hero`);
                 const data = await response.json();
-
-                if (data.success && data.data.length > 0) {
-                    renderSlides(data.data);
-                }
+                if (data.success && data.data.length > 0) renderSlides(data.data);
             } catch (error) {
                 console.log('Using default hero slide');
             }
         };
 
-        // Render slides
         const renderSlides = (slidesData) => {
-            // Clear existing slides
             slidesContainer.innerHTML = '';
             dotsContainer.innerHTML = '';
 
             slidesData.forEach((slide, index) => {
-                // Create slide
                 const slideEl = document.createElement('div');
                 slideEl.className = `hero-carousel__slide ${index === 0 ? 'hero-carousel__slide--active' : ''}`;
                 slideEl.dataset.slide = index;
 
+                const title = t(slide, 'title');
+                const subtitle = t(slide, 'subtitle');
+                const btnText = t(slide, 'button_text');
+
                 slideEl.innerHTML = `
-                    ${slide.image_url ? `<img src="${sanitizeUrl(slide.image_url)}" alt="${escapeHtml(slide.title || '')}" class="hero-carousel__image" loading="${index === 0 ? 'eager' : 'lazy'}">` : ''}
+                    ${slide.image_url ? `<img src="${sanitizeUrl(slide.image_url)}" alt="${escapeHtml(title)}" class="hero-carousel__image" loading="${index === 0 ? 'eager' : 'lazy'}">` : ''}
                     <div class="hero-carousel__overlay">
                         <div class="hero-carousel__content">
-                            ${slide.title ? `<h1 class="hero-carousel__title">${escapeHtml(slide.title)}</h1>` : ''}
-                            ${slide.subtitle ? `<p class="hero-carousel__subtitle">${escapeHtml(slide.subtitle)}</p>` : ''}
-                            ${slide.link_url ? `
-                                <div class="btn-group btn-group--center">
-                                    <a href="${sanitizeUrl(slide.link_url)}" class="btn btn--secondary btn--lg">${escapeHtml(slide.link_text || 'المزيد')}</a>
-                                </div>
-                            ` : ''}
+                            ${title ? `<h1 class="hero-carousel__title animate-fade-up">${escapeHtml(title)}</h1>` : ''}
+                            ${subtitle ? `<p class="hero-carousel__subtitle animate-fade-up animate-delay-1">${escapeHtml(subtitle)}</p>` : ''}
+                            <div class="btn-group btn-group--center animate-fade-up animate-delay-2">
+                                <a href="about.html" class="btn btn--gold btn--lg">${ui('know_us')}</a>
+                                <a href="guide.html" class="btn btn--outline-white btn--lg">${ui('student_guide')}</a>
+                            </div>
                         </div>
                     </div>
                 `;
-
                 slidesContainer.appendChild(slideEl);
 
-                // Create dot
                 const dot = document.createElement('button');
                 dot.className = `hero-carousel__dot ${index === 0 ? 'hero-carousel__dot--active' : ''}`;
                 dot.dataset.slide = index;
-                dot.setAttribute('aria-label', `الشريحة ${index + 1}`);
+                dot.setAttribute('aria-label', `${ui('slide_label')} ${index + 1}`);
                 dotsContainer.appendChild(dot);
             });
 
-            // Update slides array
             slides = slidesContainer.querySelectorAll('.hero-carousel__slide');
 
-            // Show navigation if more than 1 slide
             if (slides.length > 1) {
                 prevBtn.style.display = 'flex';
                 nextBtn.style.display = 'flex';
                 startAutoplay();
             }
 
-            // Add dot click handlers
             dotsContainer.querySelectorAll('.hero-carousel__dot').forEach(dot => {
-                dot.addEventListener('click', () => {
-                    goToSlide(parseInt(dot.dataset.slide));
-                });
+                dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.slide)));
             });
         };
 
-        // Go to specific slide
         const goToSlide = (index) => {
             if (slides.length === 0) return;
-
             slides[currentSlide].classList.remove('hero-carousel__slide--active');
             dotsContainer.children[currentSlide]?.classList.remove('hero-carousel__dot--active');
-
             currentSlide = (index + slides.length) % slides.length;
-
             slides[currentSlide].classList.add('hero-carousel__slide--active');
             dotsContainer.children[currentSlide]?.classList.add('hero-carousel__dot--active');
         };
 
-        // Next slide
         const nextSlide = () => goToSlide(currentSlide + 1);
-
-        // Previous slide
         const prevSlide = () => goToSlide(currentSlide - 1);
+        const startAutoplay = () => { stopAutoplay(); autoplayInterval = setInterval(nextSlide, 5000); };
+        const stopAutoplay = () => { if (autoplayInterval) { clearInterval(autoplayInterval); autoplayInterval = null; } };
 
-        // Autoplay
-        const startAutoplay = () => {
-            stopAutoplay();
-            autoplayInterval = setInterval(nextSlide, 5000);
-        };
-
-        const stopAutoplay = () => {
-            if (autoplayInterval) {
-                clearInterval(autoplayInterval);
-                autoplayInterval = null;
-            }
-        };
-
-        // Event listeners
         if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); startAutoplay(); });
         if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); startAutoplay(); });
-
-        // Pause autoplay on hover
         carousel.addEventListener('mouseenter', stopAutoplay);
-        carousel.addEventListener('mouseleave', () => {
-            if (slides.length > 1) startAutoplay();
-        });
+        carousel.addEventListener('mouseleave', () => { if (slides.length > 1) startAutoplay(); });
 
-        // Load slides
-        loadSlides();
+        loadHeroSlides();
     };
 
     // ========================================
-    // Specialties Loading
+    // Specialties - Homepage (bilingual)
     // ========================================
+    let loadHomepageSpecialties;
+
+    const initHomepageSpecialties = () => {
+        const grid = document.getElementById('specialtiesGrid');
+        if (!grid) return;
+
+        loadHomepageSpecialties = async () => {
+            try {
+                const response = await fetch(`${API_BASE}/media/specialties`);
+                const data = await response.json();
+                if (data.success && data.data.length > 0) renderHomepageSpecialties(grid, data.data);
+            } catch (error) {
+                console.log('Using static specialties');
+            }
+        };
+
+        const renderHomepageSpecialties = (container, specialties) => {
+            container.querySelectorAll('[data-fallback="true"]').forEach(el => el.remove());
+            // Clear any previously rendered cards
+            container.querySelectorAll('.specialty-card-new:not([data-fallback])').forEach(el => el.remove());
+
+            specialties.forEach((spec, index) => {
+                const card = document.createElement('div');
+                card.className = 'specialty-card-new';
+                card.dataset.id = spec.id;
+                card.setAttribute('data-aos', 'fade-up');
+                card.setAttribute('data-aos-delay', (index * 100).toString());
+
+                const name = t(spec, 'name');
+                const desc = t(spec, 'description');
+
+                card.innerHTML = `
+                    <div class="specialty-card-new__image-wrap">
+                        ${spec.image_url
+                            ? `<img src="${sanitizeUrl(spec.image_url)}" alt="${escapeHtml(name)}" loading="lazy">`
+                            : `<div class="specialty-card-new__placeholder">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 10 3 12 0v-5"/></svg>
+                               </div>`
+                        }
+                    </div>
+                    <div class="specialty-card-new__body">
+                        <h3 class="specialty-card-new__title">${escapeHtml(spec.icon || '')} ${escapeHtml(name)}</h3>
+                        ${desc ? `<p class="specialty-card-new__desc">${escapeHtml(desc)}</p>` : ''}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            if (typeof AOS !== 'undefined') AOS.refresh();
+        };
+
+        loadHomepageSpecialties();
+    };
+
+    // ========================================
+    // Specialties - Programs page (bilingual)
+    // ========================================
+    let loadSpecialties;
+
     const initSpecialties = () => {
         const grid = document.getElementById('specialtiesGrid');
         if (!grid) return;
 
-        const loadSpecialties = async () => {
+        loadSpecialties = async () => {
             try {
                 const response = await fetch(`${API_BASE}/media/specialties`);
                 const data = await response.json();
-
-                if (data.success && data.data.length > 0) {
-                    renderSpecialties(data.data);
-                }
+                if (data.success && data.data.length > 0) renderSpecialties(data.data);
             } catch (error) {
                 console.log('Using static specialties');
             }
         };
 
         const renderSpecialties = (specialties) => {
-            // Remove fallback cards
             grid.querySelectorAll('[data-fallback="true"]').forEach(el => el.remove());
+            grid.querySelectorAll('.specialty-card').forEach(el => el.remove());
+
+            const lang = getLang();
 
             specialties.forEach(spec => {
                 const card = document.createElement('div');
                 card.className = 'specialty-card';
                 card.dataset.id = spec.id;
 
-                const items = Array.isArray(spec.items) ? spec.items : [];
+                const name = t(spec, 'name');
+                const desc = t(spec, 'description');
+                const duration = t(spec, 'duration');
+                const items = lang === 'fr' ? (spec.items_fr || []) : (spec.items_ar || []);
+                const itemsList = Array.isArray(items) ? items : [];
 
                 card.innerHTML = `
                     ${spec.image_url
-                        ? `<img src="${sanitizeUrl(spec.image_url)}" alt="${escapeHtml(spec.name_ar)}" class="specialty-card__image" loading="lazy">`
-                        : `<div class="specialty-card__placeholder">${escapeHtml(spec.icon || '📚')}</div>`
+                        ? `<img src="${sanitizeUrl(spec.image_url)}" alt="${escapeHtml(name)}" class="specialty-card__image" loading="lazy">`
+                        : `<div class="specialty-card__placeholder">${escapeHtml(spec.icon || '')}</div>`
                     }
                     <div class="specialty-card__body">
-                        <h3 class="specialty-card__title">${escapeHtml(spec.icon || '')} ${escapeHtml(spec.name_ar)}</h3>
-                        ${spec.description ? `<p class="specialty-card__description">${escapeHtml(spec.description)}</p>` : ''}
-                        ${items.length > 0 ? `
+                        <h3 class="specialty-card__title">${escapeHtml(spec.icon || '')} ${escapeHtml(name)}</h3>
+                        ${desc ? `<p class="specialty-card__description">${escapeHtml(desc)}</p>` : ''}
+                        ${itemsList.length > 0 ? `
                             <ul class="specialty-card__items">
-                                ${items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}
+                                ${itemsList.map(item => `<li>${escapeHtml(item)}</li>`).join('')}
                             </ul>
                         ` : ''}
-                        ${spec.duration ? `<p class="specialty-card__duration">مدة الدراسة: ${escapeHtml(spec.duration)}</p>` : ''}
+                        ${duration ? `<p class="specialty-card__duration">${ui('study_duration')}: ${escapeHtml(duration)}</p>` : ''}
                         ${spec.video_url ? `
                             <button class="specialty-card__video-btn" data-video="${sanitizeUrl(spec.video_url)}" data-type="${escapeHtml(spec.video_type || 'youtube')}">
-                                ▶️ شاهد فيديو تعريفي
+                                ${ui('watch_video')}
                             </button>
                         ` : ''}
                     </div>
                 `;
-
                 grid.appendChild(card);
             });
 
-            // Add video button handlers
             grid.querySelectorAll('.specialty-card__video-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    openVideoModal(btn.dataset.video, btn.dataset.type);
-                });
+                btn.addEventListener('click', () => openVideoModal(btn.dataset.video, btn.dataset.type));
             });
         };
 
@@ -724,36 +772,16 @@
         const modal = document.getElementById('videoModal');
         const closeBtn = document.getElementById('videoModalClose');
         const iframe = document.getElementById('videoFrame');
-
         if (!modal) return;
 
-        // Close modal
-        const closeModal = () => {
-            modal.classList.remove('video-modal--open');
-            if (iframe) iframe.src = '';
-        };
-
+        const closeModal = () => { modal.classList.remove('video-modal--open'); if (iframe) iframe.src = ''; };
         if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('video-modal--open')) closeModal(); });
 
-        // Close on backdrop click
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-
-        // Close on ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('video-modal--open')) {
-                closeModal();
-            }
-        });
-
-        // Make openVideoModal available globally
         window.openVideoModal = (url, type) => {
             if (!iframe) return;
-
             let embedUrl = url;
-
-            // Parse URL based on type
             if (type === 'youtube' || url.includes('youtube.com') || url.includes('youtu.be')) {
                 const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
                 if (match) embedUrl = `https://www.youtube.com/embed/${match[1]}`;
@@ -764,24 +792,38 @@
                 const match = url.match(/(?:drive\.google\.com\/file\/d\/)([a-zA-Z0-9_-]+)/);
                 if (match) embedUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
             }
-
             iframe.src = embedUrl;
             modal.classList.add('video-modal--open');
         };
     };
 
-    // Helper function for openVideoModal (accessible outside IIFE)
     function openVideoModal(url, type) {
-        if (window.openVideoModal) {
-            window.openVideoModal(url, type);
-        }
+        if (window.openVideoModal) window.openVideoModal(url, type);
     }
+
+    // ========================================
+    // AOS
+    // ========================================
+    const initAOS = () => {
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 800, easing: 'ease-out-cubic', once: true, offset: 50,
+                disable: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            });
+        }
+    };
 
     // ========================================
     // Initialize Everything
     // ========================================
     const init = () => {
-        // Initialize UI components
+        // Apply stored language first
+        const lang = getLang();
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+        initAOS();
+        initLanguageSwitcher();
         initMobileNav();
         initAccordions();
         initNewsFilter();
@@ -794,99 +836,30 @@
         initBackToTop();
         initVideoModal();
 
-        // Load dynamic content based on current page
         const currentPage = detectCurrentPage();
-        if (currentPage) {
-            loadPageContent(currentPage);
-        }
+        if (currentPage) loadPageContent(currentPage);
 
-        // Page-specific initializations
         if (currentPage === 'home') {
             initHeroCarousel();
             loadNews();
+            initHomepageSpecialties();
         }
+        if (currentPage === 'news') loadNews();
+        if (currentPage === 'programs') initSpecialties();
+        if (currentPage === 'guide') loadPageContent('guide');
+        if (currentPage === 'services') loadPageContent('services');
+        if (currentPage === 'contact') loadPageContent('contact');
 
-        if (currentPage === 'news') {
-            loadNews();
-        }
+        // Update static translatable elements
+        document.querySelectorAll('[data-ar][data-fr]').forEach(el => {
+            el.textContent = el.getAttribute(`data-${lang}`);
+        });
 
-        if (currentPage === 'programs') {
-            initSpecialties();
-        }
-
-        // Guide page - load accordion content dynamically
-        if (currentPage === 'guide') {
-            loadGuideAccordionContent();
-        }
-
-        // Services page - load services and FAQ dynamically
-        if (currentPage === 'services') {
-            loadServicesContent();
-        }
-
-        // Contact page - load contact info dynamically
-        if (currentPage === 'contact') {
-            loadContactContent();
-        }
-
-        console.log('Website initialized successfully');
+        console.log('Website initialized (lang: ' + lang + ')');
     };
 
-    /**
-     * Load guide page accordion content from API
-     */
-    const loadGuideAccordionContent = async () => {
-        try {
-            const response = await fetch(`${API_BASE}/pages/guide`);
-            const data = await response.json();
-
-            if (data.success) {
-                updatePageContent(data.data);
-            }
-        } catch (error) {
-            console.log('Using static guide content (API not available)');
-        }
-    };
-
-    /**
-     * Load services page content (service cards and FAQ) from API
-     */
-    const loadServicesContent = async () => {
-        try {
-            const response = await fetch(`${API_BASE}/pages/services`);
-            const data = await response.json();
-
-            if (data.success) {
-                updatePageContent(data.data);
-            }
-        } catch (error) {
-            console.log('Using static services content (API not available)');
-        }
-    };
-
-    /**
-     * Load contact page content from API
-     */
-    const loadContactContent = async () => {
-        try {
-            const response = await fetch(`${API_BASE}/pages/contact`);
-            const data = await response.json();
-
-            if (data.success) {
-                updatePageContent(data.data);
-            }
-        } catch (error) {
-            console.log('Using static contact content (API not available)');
-        }
-    };
-
-    /**
-     * Detect current page from URL
-     * @returns {string} Page name
-     */
     const detectCurrentPage = () => {
         const path = window.location.pathname;
-
         if (path === '/' || path === '/index.html') return 'home';
         if (path.includes('about')) return 'about';
         if (path.includes('news')) return 'news';
@@ -894,11 +867,9 @@
         if (path.includes('programs')) return 'programs';
         if (path.includes('services')) return 'services';
         if (path.includes('contact')) return 'contact';
-
         return 'home';
     };
 
-    // Run when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {

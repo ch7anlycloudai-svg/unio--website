@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="آخر أخبار وفعاليات اتحاد الطلبة الموريتانيين بالجزائر">
-    <title>الأخبار والفعاليات - اتحاد الطلبة الموريتانيين بالجزائر</title>
+    <title data-ar="الأخبار والفعاليات - اتحاد الطلبة الموريتانيين بالجزائر" data-fr="Actualités et Événements - Union des Étudiants Mauritaniens en Algérie">الأخبار والفعاليات - اتحاد الطلبة الموريتانيين بالجزائر</title>
 
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
@@ -17,7 +17,7 @@
         <div class="container header__container">
             <a href="index.html" class="header__logo">
                 <img src="assets/images/logo.png" alt="شعار اتحاد الطلبة الموريتانيين" onerror="this.style.display='none'">
-                <span class="header__logo-text">اتحاد الطلبة الموريتانيين</span>
+                <span class="header__logo-text" data-ar="اتحاد الطلبة والمتدربين الموريتانيين بالجزائر" data-fr="Union des Étudiants et Stagiaires Mauritaniens en Algérie">اتحاد الطلبة الموريتانيين</span>
             </a>
 
             <nav class="nav" id="mainNav">
@@ -27,13 +27,20 @@
                     <span></span>
                 </button>
                 <ul class="nav__list">
-                    <li><a href="index.html" class="nav__link">الرئيسية</a></li>
-                    <li><a href="about.html" class="nav__link">من نحن</a></li>
-                    <li><a href="news.html" class="nav__link nav__link--active">الأخبار</a></li>
-                    <li><a href="guide.html" class="nav__link">دليل الطالب</a></li>
-                    <li><a href="programs.html" class="nav__link">البرامج الأكاديمية</a></li>
-                    <li><a href="services.html" class="nav__link">الخدمات</a></li>
-                    <li><a href="contact.html" class="nav__link">اتصل بنا</a></li>
+                    <li><a href="index.html" class="nav__link" data-ar="الرئيسية" data-fr="Accueil">الرئيسية</a></li>
+                    <li><a href="about.html" class="nav__link" data-ar="من نحن" data-fr="À propos">من نحن</a></li>
+                    <li><a href="news.html" class="nav__link nav__link--active" data-ar="الأخبار" data-fr="Actualités">الأخبار</a></li>
+                    <li><a href="guide.html" class="nav__link" data-ar="دليل الطالب" data-fr="Guide étudiant">دليل الطالب</a></li>
+                    <li><a href="programs.html" class="nav__link" data-ar="البرامج الأكاديمية" data-fr="Programmes académiques">البرامج الأكاديمية</a></li>
+                    <li><a href="services.html" class="nav__link" data-ar="الخدمات" data-fr="Services">الخدمات</a></li>
+                    <li><a href="contact.html" class="nav__link" data-ar="اتصل بنا" data-fr="Contact">اتصل بنا</a></li>
+                    <li class="nav__lang-item">
+                        <div class="lang-switcher" id="langSwitcher">
+                            <button class="lang-switcher__btn lang-switcher__btn--active" data-lang="ar">AR</button>
+                            <span class="lang-switcher__sep">|</span>
+                            <button class="lang-switcher__btn" data-lang="fr">FR</button>
+                        </div>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -46,9 +53,9 @@
         <!-- Page Header -->
         <section class="page-header">
             <div class="container">
-                <h1 class="page-header__title">الأخبار والفعاليات</h1>
+                <h1 class="page-header__title" data-ar="الأخبار والفعاليات" data-fr="Actualités et Événements">الأخبار والفعاليات</h1>
                 <p class="page-header__breadcrumb">
-                    <a href="index.html">الرئيسية</a> / الأخبار والفعاليات
+                    <a href="index.html" data-ar="الرئيسية" data-fr="Accueil">الرئيسية</a> / <span data-ar="الأخبار والفعاليات" data-fr="Actualités et Événements">الأخبار والفعاليات</span>
                 </p>
             </div>
         </section>
@@ -58,10 +65,10 @@
             <div class="container">
                 <!-- Filter Tabs -->
                 <div class="filter-tabs" id="newsFilter">
-                    <button class="filter-tab filter-tab--active" data-filter="all">الكل</button>
-                    <button class="filter-tab" data-filter="news">أخبار</button>
-                    <button class="filter-tab" data-filter="events">فعاليات</button>
-                    <button class="filter-tab" data-filter="announcements">إعلانات</button>
+                    <button class="filter-tab filter-tab--active" data-filter="all" data-ar="الكل" data-fr="Tout">الكل</button>
+                    <button class="filter-tab" data-filter="news" data-ar="أخبار" data-fr="Actualités">أخبار</button>
+                    <button class="filter-tab" data-filter="events" data-ar="فعاليات" data-fr="Événements">فعاليات</button>
+                    <button class="filter-tab" data-filter="announcements" data-ar="إعلانات" data-fr="Annonces">إعلانات</button>
                 </div>
 
                 <!-- News Grid -->
@@ -69,14 +76,14 @@
                     <!-- News Item 1 -->
                     <article class="card" data-category="news">
                         <div class="card__body">
-                            <span class="card__tag">أخبار</span>
-                            <h3 class="card__title">اجتماع الجمعية العامة السنوي</h3>
-                            <p class="card__text">
+                            <span class="card__tag" data-ar="أخبار" data-fr="Actualités">أخبار</span>
+                            <h3 class="card__title" data-ar="اجتماع الجمعية العامة السنوي" data-fr="Réunion annuelle de l'Assemblée Générale">اجتماع الجمعية العامة السنوي</h3>
+                            <p class="card__text" data-ar="يسر اتحاد الطلبة الموريتانيين دعوتكم لحضور الاجتماع السنوي للجمعية العامة الذي سيعقد في قاعة المحاضرات الكبرى بجامعة الجزائر. سيتم خلال هذا الاجتماع مناقشة التقرير السنوي وانتخاب المكتب التنفيذي الجديد." data-fr="L'Union des Étudiants Mauritaniens a le plaisir de vous inviter à l'assemblée générale annuelle qui se tiendra dans le grand amphithéâtre de l'Université d'Alger. Cette réunion sera consacrée à la discussion du rapport annuel et à l'élection du nouveau bureau exécutif.">
                                 يسر اتحاد الطلبة الموريتانيين دعوتكم لحضور الاجتماع السنوي للجمعية العامة الذي سيعقد في قاعة المحاضرات الكبرى بجامعة الجزائر. سيتم خلال هذا الاجتماع مناقشة التقرير السنوي وانتخاب المكتب التنفيذي الجديد.
                             </p>
                             <div class="card__meta">
-                                <span>📅 10 يناير 2026</span>
-                                <span>📍 جامعة الجزائر</span>
+                                <span data-ar="📅 10 يناير 2026" data-fr="📅 10 janvier 2026">📅 10 يناير 2026</span>
+                                <span data-ar="📍 جامعة الجزائر" data-fr="📍 Université d'Alger">📍 جامعة الجزائر</span>
                             </div>
                         </div>
                     </article>
@@ -84,14 +91,14 @@
                     <!-- News Item 2 -->
                     <article class="card" data-category="events">
                         <div class="card__body">
-                            <span class="card__tag" style="background-color: var(--color-accent); color: var(--color-text-dark);">فعاليات</span>
-                            <h3 class="card__title">ورشة عمل: التسجيل الجامعي للطلاب الجدد</h3>
-                            <p class="card__text">
+                            <span class="card__tag" style="background-color: var(--color-accent); color: var(--color-text-dark);" data-ar="فعاليات" data-fr="Événements">فعاليات</span>
+                            <h3 class="card__title" data-ar="ورشة عمل: التسجيل الجامعي للطلاب الجدد" data-fr="Atelier : Inscription universitaire pour les nouveaux étudiants">ورشة عمل: التسجيل الجامعي للطلاب الجدد</h3>
+                            <p class="card__text" data-ar="ورشة عمل توجيهية للطلاب الجدد حول إجراءات التسجيل والوثائق المطلوبة للالتحاق بالجامعات الجزائرية. سيقدم الورشة طلاب سابقون ذوو خبرة في هذا المجال." data-fr="Atelier d'orientation pour les nouveaux étudiants sur les procédures d'inscription et les documents requis pour intégrer les universités algériennes. L'atelier sera animé par d'anciens étudiants expérimentés dans ce domaine.">
                                 ورشة عمل توجيهية للطلاب الجدد حول إجراءات التسجيل والوثائق المطلوبة للالتحاق بالجامعات الجزائرية. سيقدم الورشة طلاب سابقون ذوو خبرة في هذا المجال.
                             </p>
                             <div class="card__meta">
-                                <span>📅 5 يناير 2026</span>
-                                <span>📍 عبر الإنترنت</span>
+                                <span data-ar="📅 5 يناير 2026" data-fr="📅 5 janvier 2026">📅 5 يناير 2026</span>
+                                <span data-ar="📍 عبر الإنترنت" data-fr="📍 En ligne">📍 عبر الإنترنت</span>
                             </div>
                         </div>
                     </article>
@@ -99,13 +106,13 @@
                     <!-- News Item 3 -->
                     <article class="card" data-category="announcements">
                         <div class="card__body">
-                            <span class="card__tag" style="background-color: var(--color-secondary);">إعلان</span>
-                            <h3 class="card__title">فتح باب التسجيل للعضوية</h3>
-                            <p class="card__text">
+                            <span class="card__tag" style="background-color: var(--color-secondary);" data-ar="إعلان" data-fr="Annonce">إعلان</span>
+                            <h3 class="card__title" data-ar="فتح باب التسجيل للعضوية" data-fr="Ouverture des inscriptions aux adhésions">فتح باب التسجيل للعضوية</h3>
+                            <p class="card__text" data-ar="نعلن عن فتح باب التسجيل للعضوية في اتحاد الطلبة الموريتانيين للعام الدراسي الجديد. العضوية مجانية ومتاحة لجميع الطلبة الموريتانيين المسجلين في الجامعات الجزائرية." data-fr="Nous annonçons l'ouverture des inscriptions pour adhérer à l'Union des Étudiants Mauritaniens pour la nouvelle année académique. L'adhésion est gratuite et ouverte à tous les étudiants mauritaniens inscrits dans les universités algériennes.">
                                 نعلن عن فتح باب التسجيل للعضوية في اتحاد الطلبة الموريتانيين للعام الدراسي الجديد. العضوية مجانية ومتاحة لجميع الطلبة الموريتانيين المسجلين في الجامعات الجزائرية.
                             </p>
                             <div class="card__meta">
-                                <span>📅 1 يناير 2026</span>
+                                <span data-ar="📅 1 يناير 2026" data-fr="📅 1 janvier 2026">📅 1 يناير 2026</span>
                             </div>
                         </div>
                     </article>
@@ -113,14 +120,14 @@
                     <!-- News Item 4 -->
                     <article class="card" data-category="events">
                         <div class="card__body">
-                            <span class="card__tag" style="background-color: var(--color-accent); color: var(--color-text-dark);">فعاليات</span>
-                            <h3 class="card__title">حفل استقبال الطلاب الجدد</h3>
-                            <p class="card__text">
+                            <span class="card__tag" style="background-color: var(--color-accent); color: var(--color-text-dark);" data-ar="فعاليات" data-fr="Événements">فعاليات</span>
+                            <h3 class="card__title" data-ar="حفل استقبال الطلاب الجدد" data-fr="Cérémonie d'accueil des nouveaux étudiants">حفل استقبال الطلاب الجدد</h3>
+                            <p class="card__text" data-ar="ينظم الاتحاد حفل استقبال للطلاب الموريتانيين الجدد القادمين للدراسة في الجزائر. فرصة للتعارف وبناء علاقات جديدة والحصول على معلومات مفيدة." data-fr="L'Union organise une cérémonie d'accueil pour les nouveaux étudiants mauritaniens venant étudier en Algérie. C'est une occasion de faire connaissance, de tisser de nouveaux liens et d'obtenir des informations utiles.">
                                 ينظم الاتحاد حفل استقبال للطلاب الموريتانيين الجدد القادمين للدراسة في الجزائر. فرصة للتعارف وبناء علاقات جديدة والحصول على معلومات مفيدة.
                             </p>
                             <div class="card__meta">
-                                <span>📅 15 ديسمبر 2025</span>
-                                <span>📍 قاعة الشباب، الجزائر العاصمة</span>
+                                <span data-ar="📅 15 ديسمبر 2025" data-fr="📅 15 décembre 2025">📅 15 ديسمبر 2025</span>
+                                <span data-ar="📍 قاعة الشباب، الجزائر العاصمة" data-fr="📍 Maison des Jeunes, Alger">📍 قاعة الشباب، الجزائر العاصمة</span>
                             </div>
                         </div>
                     </article>
@@ -128,13 +135,13 @@
                     <!-- News Item 5 -->
                     <article class="card" data-category="news">
                         <div class="card__body">
-                            <span class="card__tag">أخبار</span>
-                            <h3 class="card__title">توقيع اتفاقية تعاون مع السفارة الموريتانية</h3>
-                            <p class="card__text">
+                            <span class="card__tag" data-ar="أخبار" data-fr="Actualités">أخبار</span>
+                            <h3 class="card__title" data-ar="توقيع اتفاقية تعاون مع السفارة الموريتانية" data-fr="Signature d'un accord de coopération avec l'Ambassade mauritanienne">توقيع اتفاقية تعاون مع السفارة الموريتانية</h3>
+                            <p class="card__text" data-ar="وقع اتحاد الطلبة الموريتانيين اتفاقية تعاون مع السفارة الموريتانية بالجزائر لتسهيل الإجراءات الإدارية للطلبة وتوفير الدعم اللازم لهم." data-fr="L'Union des Étudiants Mauritaniens a signé un accord de coopération avec l'Ambassade mauritanienne en Algérie afin de faciliter les démarches administratives des étudiants et de leur apporter le soutien nécessaire.">
                                 وقع اتحاد الطلبة الموريتانيين اتفاقية تعاون مع السفارة الموريتانية بالجزائر لتسهيل الإجراءات الإدارية للطلبة وتوفير الدعم اللازم لهم.
                             </p>
                             <div class="card__meta">
-                                <span>📅 10 ديسمبر 2025</span>
+                                <span data-ar="📅 10 ديسمبر 2025" data-fr="📅 10 décembre 2025">📅 10 ديسمبر 2025</span>
                             </div>
                         </div>
                     </article>
@@ -142,13 +149,13 @@
                     <!-- News Item 6 -->
                     <article class="card" data-category="announcements">
                         <div class="card__body">
-                            <span class="card__tag" style="background-color: var(--color-secondary);">إعلان</span>
-                            <h3 class="card__title">منح دراسية متاحة</h3>
-                            <p class="card__text">
+                            <span class="card__tag" style="background-color: var(--color-secondary);" data-ar="إعلان" data-fr="Annonce">إعلان</span>
+                            <h3 class="card__title" data-ar="منح دراسية متاحة" data-fr="Bourses d'études disponibles">منح دراسية متاحة</h3>
+                            <p class="card__text" data-ar="نعلن عن توفر منح دراسية للطلبة المتفوقين في مختلف التخصصات. للمزيد من المعلومات والتقديم، يرجى التواصل مع مكتب الاتحاد." data-fr="Nous annonçons la disponibilité de bourses d'études pour les étudiants excellents dans diverses spécialités. Pour plus d'informations et pour postuler, veuillez contacter le bureau de l'Union.">
                                 نعلن عن توفر منح دراسية للطلبة المتفوقين في مختلف التخصصات. للمزيد من المعلومات والتقديم، يرجى التواصل مع مكتب الاتحاد.
                             </p>
                             <div class="card__meta">
-                                <span>📅 1 ديسمبر 2025</span>
+                                <span data-ar="📅 1 ديسمبر 2025" data-fr="📅 1 décembre 2025">📅 1 ديسمبر 2025</span>
                             </div>
                         </div>
                     </article>
@@ -156,7 +163,7 @@
 
                 <!-- Load More Button -->
                 <div class="text-center mt-4">
-                    <button class="btn btn--outline" id="loadMore">تحميل المزيد</button>
+                    <button class="btn btn--outline" id="loadMore" data-ar="تحميل المزيد" data-fr="Charger plus">تحميل المزيد</button>
                 </div>
             </div>
         </section>
@@ -164,13 +171,13 @@
         <!-- Newsletter Signup -->
         <section class="section section--primary">
             <div class="container text-center reveal">
-                <h2 style="color: var(--color-white);">ابق على اطلاع</h2>
-                <p style="color: rgba(255,255,255,0.9); max-width: 500px; margin-inline: auto; margin-bottom: var(--space-xl);">
+                <h2 style="color: var(--color-white);" data-ar="ابق على اطلاع" data-fr="Restez informé">ابق على اطلاع</h2>
+                <p style="color: rgba(255,255,255,0.9); max-width: 500px; margin-inline: auto; margin-bottom: var(--space-xl);" data-ar="اشترك في قائمتنا البريدية لتصلك آخر الأخبار والإعلانات مباشرة على بريدك الإلكتروني." data-fr="Abonnez-vous à notre liste de diffusion pour recevoir les dernières actualités et annonces directement dans votre boîte mail.">
                     اشترك في قائمتنا البريدية لتصلك آخر الأخبار والإعلانات مباشرة على بريدك الإلكتروني.
                 </p>
                 <form class="newsletter-form" style="display: flex; gap: var(--space-md); max-width: 500px; margin-inline: auto; flex-wrap: wrap; justify-content: center;">
-                    <input type="email" class="form-input" placeholder="بريدك الإلكتروني" style="flex: 1; min-width: 250px;">
-                    <button type="submit" class="btn btn--secondary">اشتراك</button>
+                    <input type="email" class="form-input" placeholder="بريدك الإلكتروني" data-ar-placeholder="بريدك الإلكتروني" data-fr-placeholder="Votre adresse e-mail" style="flex: 1; min-width: 250px;">
+                    <button type="submit" class="btn btn--secondary" data-ar="اشتراك" data-fr="S'abonner">اشتراك</button>
                 </form>
             </div>
         </section>
@@ -181,8 +188,8 @@
         <div class="container">
             <div class="footer__grid">
                 <div class="footer__section">
-                    <h4>اتحاد الطلبة الموريتانيين</h4>
-                    <p>منظمة طلابية تهدف لخدمة ودعم الطلبة الموريتانيين في الجزائر.</p>
+                    <h4 data-ar="اتحاد الطلبة الموريتانيين" data-fr="Union des Étudiants Mauritaniens">اتحاد الطلبة الموريتانيين</h4>
+                    <p data-ar="منظمة طلابية تهدف لخدمة ودعم الطلبة الموريتانيين في الجزائر." data-fr="Une organisation étudiante visant à servir et soutenir les étudiants mauritaniens en Algérie.">منظمة طلابية تهدف لخدمة ودعم الطلبة الموريتانيين في الجزائر.</p>
                     <div class="footer__social">
                         <a href="#" class="footer__social-link" aria-label="فيسبوك">📘</a>
                         <a href="#" class="footer__social-link" aria-label="انستغرام">📷</a>
@@ -191,27 +198,27 @@
                 </div>
 
                 <div class="footer__section">
-                    <h4>روابط سريعة</h4>
+                    <h4 data-ar="روابط سريعة" data-fr="Liens rapides">روابط سريعة</h4>
                     <ul>
-                        <li><a href="about.html">من نحن</a></li>
-                        <li><a href="guide.html">دليل الطالب</a></li>
-                        <li><a href="programs.html">البرامج الأكاديمية</a></li>
-                        <li><a href="services.html">الخدمات</a></li>
+                        <li><a href="about.html" data-ar="من نحن" data-fr="À propos">من نحن</a></li>
+                        <li><a href="guide.html" data-ar="دليل الطالب" data-fr="Guide étudiant">دليل الطالب</a></li>
+                        <li><a href="programs.html" data-ar="البرامج الأكاديمية" data-fr="Programmes académiques">البرامج الأكاديمية</a></li>
+                        <li><a href="services.html" data-ar="الخدمات" data-fr="Services">الخدمات</a></li>
                     </ul>
                 </div>
 
                 <div class="footer__section">
-                    <h4>تواصل معنا</h4>
+                    <h4 data-ar="تواصل معنا" data-fr="Contactez-nous">تواصل معنا</h4>
                     <ul>
                         <li>📧 contact@uema-dz.org</li>
                         <li>📱 +213 XX XX XX XX</li>
-                        <li>📍 الجزائر العاصمة، الجزائر</li>
+                        <li data-ar="📍 الجزائر العاصمة، الجزائر" data-fr="📍 Alger, Algérie">📍 الجزائر العاصمة، الجزائر</li>
                     </ul>
                 </div>
             </div>
 
             <div class="footer__bottom">
-                <p>© 2026 اتحاد الطلبة الموريتانيين بالجزائر. جميع الحقوق محفوظة.</p>
+                <p data-ar="© 2026 اتحاد الطلبة الموريتانيين بالجزائر. جميع الحقوق محفوظة." data-fr="© 2026 Union des Étudiants Mauritaniens en Algérie. Tous droits réservés.">© 2026 اتحاد الطلبة الموريتانيين بالجزائر. جميع الحقوق محفوظة.</p>
             </div>
         </div>
     </footer>

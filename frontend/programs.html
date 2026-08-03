@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="البرامج الأكاديمية والتخصصات المتاحة للطلاب الموريتانيين في الجزائر">
-    <title>البرامج الأكاديمية - اتحاد الطلبة الموريتانيين بالجزائر</title>
+    <title data-ar="البرامج الأكاديمية - اتحاد الطلبة الموريتانيين بالجزائر" data-fr="Programmes Académiques - Union des Étudiants Mauritaniens en Algérie">البرامج الأكاديمية - اتحاد الطلبة الموريتانيين بالجزائر</title>
 
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
@@ -20,7 +20,7 @@
             <a href="index.html" class="header__logo">
                 <img src="assets/images/logo.png" alt="شعار اتحاد الطلبة الموريتانيين"
                     onerror="this.style.display='none'">
-                <span class="header__logo-text">اتحاد الطلبة الموريتانيين</span>
+                <span class="header__logo-text" data-ar="اتحاد الطلبة والمتدربين الموريتانيين بالجزائر" data-fr="Union des Étudiants et Stagiaires Mauritaniens en Algérie">اتحاد الطلبة الموريتانيين</span>
             </a>
 
             <nav class="nav" id="mainNav">
@@ -30,13 +30,20 @@
                     <span></span>
                 </button>
                 <ul class="nav__list">
-                    <li><a href="index.html" class="nav__link">الرئيسية</a></li>
-                    <li><a href="about.html" class="nav__link">من نحن</a></li>
-                    <li><a href="news.html" class="nav__link">الأخبار</a></li>
-                    <li><a href="guide.html" class="nav__link">دليل الطالب</a></li>
-                    <li><a href="programs.html" class="nav__link nav__link--active">البرامج الأكاديمية</a></li>
-                    <li><a href="services.html" class="nav__link">الخدمات</a></li>
-                    <li><a href="contact.html" class="nav__link">اتصل بنا</a></li>
+                    <li><a href="index.html" class="nav__link" data-ar="الرئيسية" data-fr="Accueil">الرئيسية</a></li>
+                    <li><a href="about.html" class="nav__link" data-ar="من نحن" data-fr="À propos">من نحن</a></li>
+                    <li><a href="news.html" class="nav__link" data-ar="الأخبار" data-fr="Actualités">الأخبار</a></li>
+                    <li><a href="guide.html" class="nav__link" data-ar="دليل الطالب" data-fr="Guide étudiant">دليل الطالب</a></li>
+                    <li><a href="programs.html" class="nav__link nav__link--active" data-ar="البرامج الأكاديمية" data-fr="Programmes académiques">البرامج الأكاديمية</a></li>
+                    <li><a href="services.html" class="nav__link" data-ar="الخدمات" data-fr="Services">الخدمات</a></li>
+                    <li><a href="contact.html" class="nav__link" data-ar="اتصل بنا" data-fr="Contact">اتصل بنا</a></li>
+                    <li class="nav__lang-item">
+                        <div class="lang-switcher" id="langSwitcher">
+                            <button class="lang-switcher__btn lang-switcher__btn--active" data-lang="ar">AR</button>
+                            <span class="lang-switcher__sep">|</span>
+                            <button class="lang-switcher__btn" data-lang="fr">FR</button>
+                        </div>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -49,9 +56,9 @@
         <!-- Page Header -->
         <section class="page-header">
             <div class="container">
-                <h1 class="page-header__title">البرامج الأكاديمية</h1>
+                <h1 class="page-header__title" data-ar="البرامج الأكاديمية" data-fr="Programmes Académiques">البرامج الأكاديمية</h1>
                 <p class="page-header__breadcrumb">
-                    <a href="index.html">الرئيسية</a> / البرامج الأكاديمية
+                    <a href="index.html" data-ar="الرئيسية" data-fr="Accueil">الرئيسية</a> / <span data-ar="البرامج الأكاديمية" data-fr="Programmes Académiques">البرامج الأكاديمية</span>
                 </p>
             </div>
         </section>
@@ -60,8 +67,8 @@
         <section class="section section--white">
             <div class="container">
                 <div class="text-center mb-4 reveal">
-                    <h2>التخصصات المتاحة</h2>
-                    <p class="text-muted">تخصصات متنوعة في الجامعات الجزائرية</p>
+                    <h2 data-ar="التخصصات المتاحة" data-fr="Spécialités Disponibles">التخصصات المتاحة</h2>
+                    <p class="text-muted" data-ar="تخصصات متنوعة في الجامعات الجزائرية" data-fr="Spécialités variées dans les universités algériennes">تخصصات متنوعة في الجامعات الجزائرية</p>
                 </div>
 
                 <div class="card-grid reveal-stagger" id="specialtiesGrid">
@@ -70,95 +77,95 @@
                     <div class="specialty-card" data-fallback="true">
                         <div class="specialty-card__placeholder">🏥</div>
                         <div class="specialty-card__body">
-                            <h3 class="specialty-card__title">🏥 العلوم الطبية</h3>
-                            <p class="specialty-card__description">تشمل تخصصات الطب العام وطب الأسنان والصيدلة</p>
+                            <h3 class="specialty-card__title" data-ar="🏥 العلوم الطبية" data-fr="🏥 Sciences Médicales">🏥 العلوم الطبية</h3>
+                            <p class="specialty-card__description" data-ar="تشمل تخصصات الطب العام وطب الأسنان والصيدلة" data-fr="Comprend la médecine générale, la dentisterie et la pharmacie">تشمل تخصصات الطب العام وطب الأسنان والصيدلة</p>
                             <ul class="specialty-card__items">
-                                <li>الطب العام</li>
-                                <li>طب الأسنان</li>
-                                <li>الصيدلة</li>
-                                <li>التمريض</li>
-                                <li>العلوم البيطرية</li>
+                                <li data-ar="الطب العام" data-fr="Médecine générale">الطب العام</li>
+                                <li data-ar="طب الأسنان" data-fr="Dentisterie">طب الأسنان</li>
+                                <li data-ar="الصيدلة" data-fr="Pharmacie">الصيدلة</li>
+                                <li data-ar="التمريض" data-fr="Sciences infirmières">التمريض</li>
+                                <li data-ar="العلوم البيطرية" data-fr="Sciences vétérinaires">العلوم البيطرية</li>
                             </ul>
-                            <p class="specialty-card__duration">مدة الدراسة: 5-7 سنوات</p>
+                            <p class="specialty-card__duration" data-ar="مدة الدراسة: 5-7 سنوات" data-fr="Durée des études : 5-7 ans">مدة الدراسة: 5-7 سنوات</p>
                         </div>
                     </div>
 
                     <div class="specialty-card" data-fallback="true">
                         <div class="specialty-card__placeholder">⚙️</div>
                         <div class="specialty-card__body">
-                            <h3 class="specialty-card__title">⚙️ الهندسة والتقنية</h3>
-                            <p class="specialty-card__description">تخصصات هندسية متنوعة في أفضل الجامعات</p>
+                            <h3 class="specialty-card__title" data-ar="⚙️ الهندسة والتقنية" data-fr="⚙️ Ingénierie et Technologie">⚙️ الهندسة والتقنية</h3>
+                            <p class="specialty-card__description" data-ar="تخصصات هندسية متنوعة في أفضل الجامعات" data-fr="Spécialités d'ingénierie variées dans les meilleures universités">تخصصات هندسية متنوعة في أفضل الجامعات</p>
                             <ul class="specialty-card__items">
-                                <li>الهندسة المدنية</li>
-                                <li>الهندسة الكهربائية</li>
-                                <li>الهندسة الميكانيكية</li>
-                                <li>هندسة الحاسوب</li>
-                                <li>الهندسة المعمارية</li>
+                                <li data-ar="الهندسة المدنية" data-fr="Génie civil">الهندسة المدنية</li>
+                                <li data-ar="الهندسة الكهربائية" data-fr="Génie électrique">الهندسة الكهربائية</li>
+                                <li data-ar="الهندسة الميكانيكية" data-fr="Génie mécanique">الهندسة الميكانيكية</li>
+                                <li data-ar="هندسة الحاسوب" data-fr="Génie informatique">هندسة الحاسوب</li>
+                                <li data-ar="الهندسة المعمارية" data-fr="Architecture">الهندسة المعمارية</li>
                             </ul>
-                            <p class="specialty-card__duration">مدة الدراسة: 5 سنوات</p>
+                            <p class="specialty-card__duration" data-ar="مدة الدراسة: 5 سنوات" data-fr="Durée des études : 5 ans">مدة الدراسة: 5 سنوات</p>
                         </div>
                     </div>
 
                     <div class="specialty-card" data-fallback="true">
                         <div class="specialty-card__placeholder">🔬</div>
                         <div class="specialty-card__body">
-                            <h3 class="specialty-card__title">🔬 العلوم الطبيعية</h3>
-                            <p class="specialty-card__description">العلوم الأساسية والتطبيقية</p>
+                            <h3 class="specialty-card__title" data-ar="🔬 العلوم الطبيعية" data-fr="🔬 Sciences Naturelles">🔬 العلوم الطبيعية</h3>
+                            <p class="specialty-card__description" data-ar="العلوم الأساسية والتطبيقية" data-fr="Sciences fondamentales et appliquées">العلوم الأساسية والتطبيقية</p>
                             <ul class="specialty-card__items">
-                                <li>الرياضيات</li>
-                                <li>الفيزياء</li>
-                                <li>الكيمياء</li>
-                                <li>البيولوجيا</li>
-                                <li>علوم الأرض</li>
-                                <li>المحروقات</li>
+                                <li data-ar="الرياضيات" data-fr="Mathématiques">الرياضيات</li>
+                                <li data-ar="الفيزياء" data-fr="Physique">الفيزياء</li>
+                                <li data-ar="الكيمياء" data-fr="Chimie">الكيمياء</li>
+                                <li data-ar="البيولوجيا" data-fr="Biologie">البيولوجيا</li>
+                                <li data-ar="علوم الأرض" data-fr="Sciences de la Terre">علوم الأرض</li>
+                                <li data-ar="المحروقات" data-fr="Hydrocarbures">المحروقات</li>
                             </ul>
-                            <p class="specialty-card__duration">نظام LMD</p>
+                            <p class="specialty-card__duration" data-ar="نظام LMD" data-fr="Système LMD">نظام LMD</p>
                         </div>
                     </div>
 
                     <div class="specialty-card" data-fallback="true">
                         <div class="specialty-card__placeholder">📚</div>
                         <div class="specialty-card__body">
-                            <h3 class="specialty-card__title">📚 العلوم الإنسانية</h3>
-                            <p class="specialty-card__description">تخصصات الآداب والعلوم الإنسانية</p>
+                            <h3 class="specialty-card__title" data-ar="📚 العلوم الإنسانية" data-fr="📚 Sciences Humaines">📚 العلوم الإنسانية</h3>
+                            <p class="specialty-card__description" data-ar="تخصصات الآداب والعلوم الإنسانية" data-fr="Spécialités en lettres et sciences humaines">تخصصات الآداب والعلوم الإنسانية</p>
                             <ul class="specialty-card__items">
-                                <li>الأدب العربي</li>
-                                <li>التاريخ</li>
-                                <li>الفلسفة</li>
-                                <li>علم النفس</li>
-                                <li>علم الاجتماع</li>
+                                <li data-ar="الأدب العربي" data-fr="Littérature arabe">الأدب العربي</li>
+                                <li data-ar="التاريخ" data-fr="Histoire">التاريخ</li>
+                                <li data-ar="الفلسفة" data-fr="Philosophie">الفلسفة</li>
+                                <li data-ar="علم النفس" data-fr="Psychologie">علم النفس</li>
+                                <li data-ar="علم الاجتماع" data-fr="Sociologie">علم الاجتماع</li>
                             </ul>
-                            <p class="specialty-card__duration">نظام LMD</p>
+                            <p class="specialty-card__duration" data-ar="نظام LMD" data-fr="Système LMD">نظام LMD</p>
                         </div>
                     </div>
 
                     <div class="specialty-card" data-fallback="true">
                         <div class="specialty-card__placeholder">⚖️</div>
                         <div class="specialty-card__body">
-                            <h3 class="specialty-card__title">⚖️ القانون والعلوم السياسية</h3>
-                            <p class="specialty-card__description">القانون والعلاقات الدولية</p>
+                            <h3 class="specialty-card__title" data-ar="⚖️ القانون والعلوم السياسية" data-fr="⚖️ Droit et Sciences Politiques">⚖️ القانون والعلوم السياسية</h3>
+                            <p class="specialty-card__description" data-ar="القانون والعلاقات الدولية" data-fr="Droit et relations internationales">القانون والعلاقات الدولية</p>
                             <ul class="specialty-card__items">
-                                <li>القانون العام</li>
-                                <li>القانون الخاص</li>
-                                <li>العلوم السياسية</li>
-                                <li>العلاقات الدولية</li>
+                                <li data-ar="القانون العام" data-fr="Droit public">القانون العام</li>
+                                <li data-ar="القانون الخاص" data-fr="Droit privé">القانون الخاص</li>
+                                <li data-ar="العلوم السياسية" data-fr="Sciences politiques">العلوم السياسية</li>
+                                <li data-ar="العلاقات الدولية" data-fr="Relations internationales">العلاقات الدولية</li>
                             </ul>
-                            <p class="specialty-card__duration">نظام LMD</p>
+                            <p class="specialty-card__duration" data-ar="نظام LMD" data-fr="Système LMD">نظام LMD</p>
                         </div>
                     </div>
 
                     <div class="specialty-card" data-fallback="true">
                         <div class="specialty-card__placeholder">💼</div>
                         <div class="specialty-card__body">
-                            <h3 class="specialty-card__title">💼 الاقتصاد والتجارة</h3>
-                            <p class="specialty-card__description">العلوم الاقتصادية والتجارية</p>
+                            <h3 class="specialty-card__title" data-ar="💼 الاقتصاد والتجارة" data-fr="💼 Économie et Commerce">💼 الاقتصاد والتجارة</h3>
+                            <p class="specialty-card__description" data-ar="العلوم الاقتصادية والتجارية" data-fr="Sciences économiques et commerciales">العلوم الاقتصادية والتجارية</p>
                             <ul class="specialty-card__items">
-                                <li>العلوم الاقتصادية</li>
-                                <li>العلوم التجارية</li>
-                                <li>علوم التسيير</li>
-                                <li>المحاسبة والمالية</li>
+                                <li data-ar="العلوم الاقتصادية" data-fr="Sciences économiques">العلوم الاقتصادية</li>
+                                <li data-ar="العلوم التجارية" data-fr="Sciences commerciales">العلوم التجارية</li>
+                                <li data-ar="علوم التسيير" data-fr="Sciences de gestion">علوم التسيير</li>
+                                <li data-ar="المحاسبة والمالية" data-fr="Comptabilité et finance">المحاسبة والمالية</li>
                             </ul>
-                            <p class="specialty-card__duration">نظام LMD</p>
+                            <p class="specialty-card__duration" data-ar="نظام LMD" data-fr="Système LMD">نظام LMD</p>
                         </div>
                     </div>
                 </div>
@@ -177,16 +184,16 @@
         <section class="section section--alt">
             <div class="container">
                 <div class="text-center mb-4 reveal">
-                    <h2>خطوات التسجيل</h2>
-                    <p class="text-muted">الإجراءات المطلوبة للتسجيل في الجامعات الجزائرية</p>
+                    <h2 data-ar="خطوات التسجيل" data-fr="Étapes d'Inscription">خطوات التسجيل</h2>
+                    <p class="text-muted" data-ar="الإجراءات المطلوبة للتسجيل في الجامعات الجزائرية" data-fr="Les procédures requises pour l'inscription dans les universités algériennes">الإجراءات المطلوبة للتسجيل في الجامعات الجزائرية</p>
                 </div>
 
                 <div class="timeline">
                     <div class="timeline__item reveal">
                         <div class="timeline__marker">1</div>
                         <div class="timeline__content">
-                            <h4 class="timeline__title">التسجيل المسبق</h4>
-                            <p>قم بالتسجيل المسبق عبر منصة التسجيل الإلكترونية للطلاب الأجانب التابعة لوزارة التعليم
+                            <h4 class="timeline__title" data-ar="التسجيل المسبق" data-fr="Pré-inscription">التسجيل المسبق</h4>
+                            <p data-ar="قم بالتسجيل المسبق عبر منصة التسجيل الإلكترونية للطلاب الأجانب التابعة لوزارة التعليم العالي الجزائرية. ستحتاج لإنشاء حساب وتعبئة استمارة التسجيل." data-fr="Effectuez votre pré-inscription via la plateforme d'inscription électronique pour étudiants étrangers du ministère algérien de l'Enseignement supérieur. Vous devrez créer un compte et remplir le formulaire d'inscription.">قم بالتسجيل المسبق عبر منصة التسجيل الإلكترونية للطلاب الأجانب التابعة لوزارة التعليم
                                 العالي الجزائرية. ستحتاج لإنشاء حساب وتعبئة استمارة التسجيل.</p>
                         </div>
                     </div>
@@ -194,8 +201,8 @@
                     <div class="timeline__item reveal">
                         <div class="timeline__marker">2</div>
                         <div class="timeline__content">
-                            <h4 class="timeline__title">تجهيز الملف</h4>
-                            <p>جهز جميع الوثائق المطلوبة: شهادة البكالوريا مصدقة ومترجمة، كشف النقاط، شهادة الميلاد،
+                            <h4 class="timeline__title" data-ar="تجهيز الملف" data-fr="Préparation du Dossier">تجهيز الملف</h4>
+                            <p data-ar="جهز جميع الوثائق المطلوبة: شهادة البكالوريا مصدقة ومترجمة، كشف النقاط، شهادة الميلاد، جواز السفر، وصور شخصية. تأكد من تصديق جميع الوثائق." data-fr="Préparez tous les documents requis : baccalauréat légalisé et traduit, relevé de notes, acte de naissance, passeport et photos d'identité. Assurez-vous que tous les documents sont légalisés.">جهز جميع الوثائق المطلوبة: شهادة البكالوريا مصدقة ومترجمة، كشف النقاط، شهادة الميلاد،
                                 جواز السفر، وصور شخصية. تأكد من تصديق جميع الوثائق.</p>
                         </div>
                     </div>
@@ -203,8 +210,8 @@
                     <div class="timeline__item reveal">
                         <div class="timeline__marker">3</div>
                         <div class="timeline__content">
-                            <h4 class="timeline__title">رسالة القبول</h4>
-                            <p>بعد دراسة ملفك، ستتلقى رسالة القبول المبدئي من الجامعة. هذه الرسالة ضرورية للحصول على
+                            <h4 class="timeline__title" data-ar="رسالة القبول" data-fr="Lettre d'Admission">رسالة القبول</h4>
+                            <p data-ar="بعد دراسة ملفك، ستتلقى رسالة القبول المبدئي من الجامعة. هذه الرسالة ضرورية للحصول على التأشيرة الدراسية." data-fr="Après étude de votre dossier, vous recevrez une lettre d'admission préliminaire de l'université. Cette lettre est indispensable pour obtenir le visa étudiant.">بعد دراسة ملفك، ستتلقى رسالة القبول المبدئي من الجامعة. هذه الرسالة ضرورية للحصول على
                                 التأشيرة الدراسية.</p>
                         </div>
                     </div>
@@ -212,8 +219,8 @@
                     <div class="timeline__item reveal">
                         <div class="timeline__marker">4</div>
                         <div class="timeline__content">
-                            <h4 class="timeline__title">الحصول على التأشيرة</h4>
-                            <p>قدم طلب التأشيرة الدراسية في السفارة أو القنصلية الجزائرية في موريتانيا. ستحتاج لرسالة
+                            <h4 class="timeline__title" data-ar="الحصول على التأشيرة" data-fr="Obtention du Visa">الحصول على التأشيرة</h4>
+                            <p data-ar="قدم طلب التأشيرة الدراسية في السفارة أو القنصلية الجزائرية في موريتانيا. ستحتاج لرسالة القبول وجميع الوثائق المطلوبة." data-fr="Déposez votre demande de visa étudiant à l'ambassade ou au consulat algérien en Mauritanie. Vous aurez besoin de la lettre d'admission et de tous les documents requis.">قدم طلب التأشيرة الدراسية في السفارة أو القنصلية الجزائرية في موريتانيا. ستحتاج لرسالة
                                 القبول وجميع الوثائق المطلوبة.</p>
                         </div>
                     </div>
@@ -221,8 +228,8 @@
                     <div class="timeline__item reveal">
                         <div class="timeline__marker">5</div>
                         <div class="timeline__content">
-                            <h4 class="timeline__title">التسجيل النهائي</h4>
-                            <p>بعد الوصول للجزائر، توجه للجامعة لإتمام التسجيل النهائي. ستحتاج لتقديم الملف الأصلي ودفع
+                            <h4 class="timeline__title" data-ar="التسجيل النهائي" data-fr="Inscription Définitive">التسجيل النهائي</h4>
+                            <p data-ar="بعد الوصول للجزائر، توجه للجامعة لإتمام التسجيل النهائي. ستحتاج لتقديم الملف الأصلي ودفع رسوم التسجيل." data-fr="Après votre arrivée en Algérie, rendez-vous à l'université pour finaliser votre inscription. Vous devrez présenter le dossier original et payer les frais d'inscription.">بعد الوصول للجزائر، توجه للجامعة لإتمام التسجيل النهائي. ستحتاج لتقديم الملف الأصلي ودفع
                                 رسوم التسجيل.</p>
                         </div>
                     </div>
@@ -230,8 +237,8 @@
                     <div class="timeline__item reveal">
                         <div class="timeline__marker">6</div>
                         <div class="timeline__content">
-                            <h4 class="timeline__title">استخراج بطاقة الطالب</h4>
-                            <p>بعد إتمام التسجيل، ستحصل على بطاقة الطالب التي تخولك الاستفادة من جميع الخدمات الجامعية.
+                            <h4 class="timeline__title" data-ar="استخراج بطاقة الطالب" data-fr="Obtention de la Carte Étudiante">استخراج بطاقة الطالب</h4>
+                            <p data-ar="بعد إتمام التسجيل، ستحصل على بطاقة الطالب التي تخولك الاستفادة من جميع الخدمات الجامعية." data-fr="Après la finalisation de votre inscription, vous obtiendrez la carte étudiante qui vous donnera accès à tous les services universitaires.">بعد إتمام التسجيل، ستحصل على بطاقة الطالب التي تخولك الاستفادة من جميع الخدمات الجامعية.
                             </p>
                         </div>
                     </div>
@@ -243,43 +250,43 @@
         <section class="section section--white">
             <div class="container">
                 <div class="text-center mb-4 reveal">
-                    <h2>المواعيد المهمة</h2>
-                    <p class="text-muted">تواريخ يجب مراعاتها</p>
+                    <h2 data-ar="المواعيد المهمة" data-fr="Dates Importantes">المواعيد المهمة</h2>
+                    <p class="text-muted" data-ar="تواريخ يجب مراعاتها" data-fr="Dates à respecter">تواريخ يجب مراعاتها</p>
                 </div>
 
                 <div class="card-grid reveal-stagger" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
                     <div class="card">
                         <div class="card__body text-center">
-                            <h4 style="color: var(--color-accent);">📅 يونيو - يوليو</h4>
-                            <p>فترة التسجيل المسبق عبر الإنترنت</p>
+                            <h4 style="color: var(--color-accent);" data-ar="📅 يونيو - يوليو" data-fr="📅 Juin - Juillet">📅 يونيو - يوليو</h4>
+                            <p data-ar="فترة التسجيل المسبق عبر الإنترنت" data-fr="Période de pré-inscription en ligne">فترة التسجيل المسبق عبر الإنترنت</p>
                         </div>
                     </div>
 
                     <div class="card">
                         <div class="card__body text-center">
-                            <h4 style="color: var(--color-accent);">📅 أغسطس</h4>
-                            <p>إعلان نتائج القبول المبدئي</p>
+                            <h4 style="color: var(--color-accent);" data-ar="📅 أغسطس" data-fr="📅 Août">📅 أغسطس</h4>
+                            <p data-ar="إعلان نتائج القبول المبدئي" data-fr="Annonce des résultats d'admission préliminaire">إعلان نتائج القبول المبدئي</p>
                         </div>
                     </div>
 
                     <div class="card">
                         <div class="card__body text-center">
-                            <h4 style="color: var(--color-accent);">📅 سبتمبر</h4>
-                            <p>بداية التسجيل النهائي</p>
+                            <h4 style="color: var(--color-accent);" data-ar="📅 سبتمبر" data-fr="📅 Septembre">📅 سبتمبر</h4>
+                            <p data-ar="بداية التسجيل النهائي" data-fr="Début de l'inscription définitive">بداية التسجيل النهائي</p>
                         </div>
                     </div>
 
                     <div class="card">
                         <div class="card__body text-center">
-                            <h4 style="color: var(--color-accent);">📅 أكتوبر</h4>
-                            <p>بداية السنة الدراسية</p>
+                            <h4 style="color: var(--color-accent);" data-ar="📅 أكتوبر" data-fr="📅 Octobre">📅 أكتوبر</h4>
+                            <p data-ar="بداية السنة الدراسية" data-fr="Début de l'année académique">بداية السنة الدراسية</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="info-box info-box--warning mt-4 reveal">
-                    <p class="mb-0"><strong>تنبيه:</strong> هذه تواريخ تقريبية وقد تتغير. تابع الموقع الرسمي لوزارة
-                        التعليم العالي الجزائرية للتواريخ الدقيقة.</p>
+                    <p class="mb-0"><strong data-ar="تنبيه:" data-fr="Attention :">تنبيه:</strong> <span data-ar="هذه تواريخ تقريبية وقد تتغير. تابع الموقع الرسمي لوزارة التعليم العالي الجزائرية للتواريخ الدقيقة." data-fr="Ces dates sont approximatives et peuvent changer. Consultez le site officiel du ministère algérien de l'Enseignement supérieur pour les dates exactes.">هذه تواريخ تقريبية وقد تتغير. تابع الموقع الرسمي لوزارة
+                        التعليم العالي الجزائرية للتواريخ الدقيقة.</span></p>
                 </div>
             </div>
         </section>
@@ -288,29 +295,29 @@
         <section class="section section--alt">
             <div class="container">
                 <div class="text-center mb-4 reveal">
-                    <h2>روابط مفيدة</h2>
-                    <p class="text-muted">مواقع رسمية للاطلاع</p>
+                    <h2 data-ar="روابط مفيدة" data-fr="Liens Utiles">روابط مفيدة</h2>
+                    <p class="text-muted" data-ar="مواقع رسمية للاطلاع" data-fr="Sites officiels de référence">مواقع رسمية للاطلاع</p>
                 </div>
 
                 <div class="quick-links reveal-stagger">
                     <a href="https://www.mesrs.dz" target="_blank" rel="noopener" class="quick-link">
                         <div class="quick-link__icon">🏛️</div>
-                        <span class="quick-link__text">وزارة التعليم العالي الجزائرية</span>
+                        <span class="quick-link__text" data-ar="وزارة التعليم العالي الجزائرية" data-fr="Ministère algérien de l'Enseignement supérieur">وزارة التعليم العالي الجزائرية</span>
                     </a>
 
                     <a href="https://progres.mesrs.dz" target="_blank" rel="noopener" class="quick-link">
                         <div class="quick-link__icon">💻</div>
-                        <span class="quick-link__text">منصة PROGRES للتسجيل</span>
+                        <span class="quick-link__text" data-ar="منصة PROGRES للتسجيل" data-fr="Plateforme PROGRES d'inscription">منصة PROGRES للتسجيل</span>
                     </a>
 
                     <a href="#" class="quick-link">
                         <div class="quick-link__icon">🇲🇷</div>
-                        <span class="quick-link__text">السفارة الموريتانية بالجزائر</span>
+                        <span class="quick-link__text" data-ar="السفارة الموريتانية بالجزائر" data-fr="Ambassade de Mauritanie en Algérie">السفارة الموريتانية بالجزائر</span>
                     </a>
 
                     <a href="#" class="quick-link">
                         <div class="quick-link__icon">📋</div>
-                        <span class="quick-link__text">دليل المعادلات</span>
+                        <span class="quick-link__text" data-ar="دليل المعادلات" data-fr="Guide des équivalences">دليل المعادلات</span>
                     </a>
                 </div>
             </div>
@@ -319,13 +326,13 @@
         <!-- CTA -->
         <section class="section section--primary">
             <div class="container text-center reveal">
-                <h2 style="color: var(--color-white);">هل تحتاج مساعدة في التسجيل؟</h2>
-                <p style="color: rgba(255,255,255,0.9); margin-bottom: var(--space-xl);">
+                <h2 style="color: var(--color-white);" data-ar="هل تحتاج مساعدة في التسجيل؟" data-fr="Besoin d'aide pour l'inscription ?">هل تحتاج مساعدة في التسجيل؟</h2>
+                <p style="color: rgba(255,255,255,0.9); margin-bottom: var(--space-xl);" data-ar="فريقنا جاهز لمساعدتك في جميع مراحل التسجيل" data-fr="Notre équipe est prête à vous aider à toutes les étapes de l'inscription">
                     فريقنا جاهز لمساعدتك في جميع مراحل التسجيل
                 </p>
                 <div class="btn-group btn-group--center">
-                    <a href="contact.html" class="btn btn--secondary btn--lg">تواصل معنا</a>
-                    <a href="services.html" class="btn btn--outline-white btn--lg">الخدمات المتاحة</a>
+                    <a href="contact.html" class="btn btn--secondary btn--lg" data-ar="تواصل معنا" data-fr="Contactez-nous">تواصل معنا</a>
+                    <a href="services.html" class="btn btn--outline-white btn--lg" data-ar="الخدمات المتاحة" data-fr="Services disponibles">الخدمات المتاحة</a>
                 </div>
             </div>
         </section>
@@ -336,8 +343,8 @@
         <div class="container">
             <div class="footer__grid">
                 <div class="footer__section">
-                    <h4>اتحاد الطلبة الموريتانيين</h4>
-                    <p>منظمة طلابية تهدف لخدمة ودعم الطلبة الموريتانيين في الجزائر.</p>
+                    <h4 data-ar="اتحاد الطلبة الموريتانيين" data-fr="Union des Étudiants Mauritaniens">اتحاد الطلبة الموريتانيين</h4>
+                    <p data-ar="منظمة طلابية تهدف لخدمة ودعم الطلبة الموريتانيين في الجزائر." data-fr="Organisation étudiante visant à servir et soutenir les étudiants mauritaniens en Algérie.">منظمة طلابية تهدف لخدمة ودعم الطلبة الموريتانيين في الجزائر.</p>
                     <div class="footer__social">
                         <a href="#" class="footer__social-link" aria-label="فيسبوك">📘</a>
                         <a href="#" class="footer__social-link" aria-label="انستغرام">📷</a>
@@ -346,27 +353,27 @@
                 </div>
 
                 <div class="footer__section">
-                    <h4>روابط سريعة</h4>
+                    <h4 data-ar="روابط سريعة" data-fr="Liens Rapides">روابط سريعة</h4>
                     <ul>
-                        <li><a href="about.html">من نحن</a></li>
-                        <li><a href="guide.html">دليل الطالب</a></li>
-                        <li><a href="programs.html">البرامج الأكاديمية</a></li>
-                        <li><a href="services.html">الخدمات</a></li>
+                        <li><a href="about.html" data-ar="من نحن" data-fr="À propos">من نحن</a></li>
+                        <li><a href="guide.html" data-ar="دليل الطالب" data-fr="Guide étudiant">دليل الطالب</a></li>
+                        <li><a href="programs.html" data-ar="البرامج الأكاديمية" data-fr="Programmes académiques">البرامج الأكاديمية</a></li>
+                        <li><a href="services.html" data-ar="الخدمات" data-fr="Services">الخدمات</a></li>
                     </ul>
                 </div>
 
                 <div class="footer__section">
-                    <h4>تواصل معنا</h4>
+                    <h4 data-ar="تواصل معنا" data-fr="Contactez-nous">تواصل معنا</h4>
                     <ul>
                         <li>📧 contact@uema-dz.org</li>
                         <li>📱 +213 XX XX XX XX</li>
-                        <li>📍 الجزائر العاصمة، الجزائر</li>
+                        <li data-ar="📍 الجزائر العاصمة، الجزائر" data-fr="📍 Alger, Algérie">📍 الجزائر العاصمة، الجزائر</li>
                     </ul>
                 </div>
             </div>
 
             <div class="footer__bottom">
-                <p>© 2026 اتحاد الطلبة الموريتانيين بالجزائر. جميع الحقوق محفوظة.</p>
+                <p data-ar="© 2026 اتحاد الطلبة الموريتانيين بالجزائر. جميع الحقوق محفوظة." data-fr="© 2026 Union des Étudiants Mauritaniens en Algérie. Tous droits réservés.">© 2026 اتحاد الطلبة الموريتانيين بالجزائر. جميع الحقوق محفوظة.</p>
             </div>
         </div>
     </footer>

@@ -1,6 +1,6 @@
 /* ========================================
    Mauritanian Students' Union - Responsive
-   Mobile First Approach
+   Premium Redesign - Mobile First
    ======================================== */
 
 /* ========================================
@@ -13,7 +13,8 @@
     }
 
     .header__logo-text {
-        font-size: var(--font-size-base);
+        font-size: var(--font-size-sm);
+        max-width: 200px;
     }
 
     /* Mobile Menu Toggle */
@@ -22,24 +23,20 @@
         z-index: 1001;
     }
 
-    /* Mobile Navigation
-       NOTE: backdrop-filter on .header creates a containing block for
-       fixed-position children, so .nav__list uses absolute positioning
-       relative to the header instead. */
+    /* Mobile Navigation */
     .nav__list {
-        position: absolute;
-        top: 100%;
+        position: fixed;
+        top: 0;
         left: 0;
         right: 0;
-        height: calc(100vh - var(--header-height));
-        height: calc(100dvh - var(--header-height));
+        bottom: 0;
         flex-direction: column;
         align-items: stretch;
         gap: 0;
-        background-color: var(--color-white);
-        padding: var(--space-lg);
+        background: linear-gradient(180deg, var(--color-white) 0%, var(--color-bg-light) 100%);
+        padding: calc(var(--header-height) + var(--space-xl)) var(--space-xl) var(--space-xl);
         transform: translateX(100%);
-        transition: transform var(--transition-base);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         overflow-y: auto;
         z-index: 1000;
     }
@@ -54,9 +51,17 @@
 
     .nav__link {
         display: block;
-        padding: var(--space-md);
+        padding: var(--space-lg) var(--space-md);
         border-bottom: 1px solid var(--color-border);
         border-radius: 0;
+        font-size: var(--font-size-lg);
+        color: var(--color-text-dark);
+    }
+
+    .nav__link:hover,
+    .nav__link--active {
+        color: var(--color-primary);
+        background: rgba(var(--color-primary-rgb), 0.05);
     }
 
     /* Mobile Menu Toggle Animation */
@@ -72,7 +77,11 @@
         transform: rotate(-45deg) translate(6px, -6px);
     }
 
-    /* Mobile Backdrop Overlay — toggled via JS .nav__backdrop--visible */
+    .nav--open .nav__toggle span {
+        background-color: var(--color-primary) !important;
+    }
+
+    /* Mobile Backdrop Overlay */
     .nav__backdrop--visible {
         display: block;
         background-color: rgba(0, 0, 0, 0.5);
@@ -83,12 +92,42 @@
         overflow: hidden;
     }
 
+    /* Language Switcher in Mobile Menu */
+    .nav__lang-item {
+        padding: var(--space-md);
+        border-bottom: none;
+        display: flex;
+        justify-content: center;
+    }
+
+    .lang-switcher {
+        background: rgba(var(--color-primary-rgb), 0.08);
+        border-color: rgba(var(--color-primary-rgb), 0.2);
+        padding: 6px 16px;
+        gap: 6px;
+    }
+
+    .lang-switcher__btn {
+        color: rgba(var(--color-primary-rgb), 0.5);
+        padding: 6px 12px;
+        font-size: 0.95rem;
+    }
+
+    .lang-switcher__btn--active {
+        color: #fff;
+        background: var(--color-primary);
+    }
+
+    .lang-switcher__sep {
+        color: rgba(var(--color-primary-rgb), 0.3);
+    }
+
     /* Back-to-top smaller on mobile */
     .back-to-top {
         bottom: var(--space-lg);
         right: var(--space-lg);
-        width: 42px;
-        height: 42px;
+        width: 46px;
+        height: 46px;
     }
 
     [dir="rtl"] .back-to-top {
@@ -103,32 +142,34 @@
 @media (max-width: 576px) {
     :root {
         --font-size-4xl: 2rem;
-        --font-size-5xl: 2.5rem;
+        --font-size-5xl: 2.25rem;
         --space-3xl: 3rem;
-        --space-4xl: 4rem;
+        --space-4xl: 3.5rem;
+        --space-5xl: 4rem;
     }
 
-    /* Hero */
-    .hero {
+    /* Section */
+    .section {
         padding-block: var(--space-3xl);
     }
 
-    .hero__title {
-        font-size: var(--font-size-3xl);
+    .section-header {
+        margin-bottom: var(--space-2xl);
     }
 
-    .hero__subtitle {
-        font-size: var(--font-size-base);
+    .section-header__title {
+        font-size: var(--font-size-2xl);
     }
 
     /* Hero Carousel */
     .hero-carousel {
-        height: 50vh;
-        min-height: 350px;
+        height: 85vh;
+        min-height: 500px;
     }
 
     .hero-carousel__title {
         font-size: var(--font-size-2xl);
+        line-height: 1.3;
     }
 
     .hero-carousel__subtitle {
@@ -136,9 +177,8 @@
     }
 
     .hero-carousel__nav {
-        width: 40px;
-        height: 40px;
-        font-size: var(--font-size-lg);
+        width: 42px;
+        height: 42px;
     }
 
     .hero-carousel__nav--prev {
@@ -159,24 +199,96 @@
         left: var(--space-sm);
     }
 
-    /* Specialty Cards */
-    .specialty-card__image,
-    .specialty-card__placeholder {
-        height: 150px;
+    /* Stats */
+    .stats-section {
+        margin-top: -40px;
+        padding-bottom: var(--space-xl);
     }
 
-    /* Video Modal */
-    .video-modal {
-        padding: var(--space-md);
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
     }
 
-    /* Cards */
-    .card-grid {
+    .stat-card {
+        padding: var(--space-lg) var(--space-md);
+    }
+
+    .stat-card__icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: var(--space-md);
+    }
+
+    .stat-card__icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .stat-card__number {
+        font-size: var(--font-size-3xl);
+    }
+
+    .stat-card__label {
+        font-size: var(--font-size-sm);
+    }
+
+    /* Services */
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+    }
+
+    .service-card {
+        padding: var(--space-xl);
+    }
+
+    /* Guide Section */
+    .guide-section {
+        grid-template-columns: 1fr;
+        gap: var(--space-2xl);
+    }
+
+    .guide-section__visual {
+        order: -1;
+    }
+
+    .guide-illustration {
+        width: 220px;
+        height: 220px;
+    }
+
+    .guide-illustration__icon {
+        width: 130px;
+        height: 130px;
+    }
+
+    .guide-illustration__icon svg {
+        width: 80px;
+        height: 80px;
+    }
+
+    .guide-glass-card {
+        padding: var(--space-xl);
+    }
+
+    .guide-section__features {
         grid-template-columns: 1fr;
     }
 
-    .card__body {
-        padding: var(--space-md);
+    /* Specialties */
+    .specialties-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* News */
+    .news-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* CTA */
+    .cta-content__title {
+        font-size: var(--font-size-2xl);
     }
 
     /* Buttons */
@@ -188,12 +300,16 @@
         width: 100%;
     }
 
-    /* Forms */
-    .form-group {
-        margin-bottom: var(--space-md);
+    /* Cards */
+    .card-grid {
+        grid-template-columns: 1fr;
     }
 
-    /* Stats */
+    .card__body {
+        padding: var(--space-lg);
+    }
+
+    /* Legacy Stats */
     .stats {
         grid-template-columns: repeat(2, 1fr);
         gap: var(--space-lg);
@@ -201,6 +317,57 @@
 
     .stat__number {
         font-size: var(--font-size-3xl);
+    }
+
+    /* Footer */
+    .footer-new__grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-2xl);
+        text-align: center;
+    }
+
+    .footer-new__brand {
+        max-width: 100%;
+    }
+
+    .footer-new__logo {
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-new__social {
+        justify-content: center;
+    }
+
+    .footer-new__links h4::after,
+    .footer-new__contact h4::after {
+        right: 50%;
+        transform: translateX(50%);
+    }
+
+    [dir="ltr"] .footer-new__links h4::after,
+    [dir="ltr"] .footer-new__contact h4::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .footer-contact-item {
+        justify-content: center;
+    }
+
+    .footer__grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .footer__social {
+        justify-content: center;
+    }
+
+    /* Forms */
+    .form-group {
+        margin-bottom: var(--space-md);
     }
 
     /* Team Grid */
@@ -217,16 +384,6 @@
     /* Quick Links */
     .quick-links {
         grid-template-columns: 1fr;
-    }
-
-    /* Footer */
-    .footer__grid {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-
-    .footer__social {
-        justify-content: center;
     }
 
     /* Timeline */
@@ -287,12 +444,48 @@
         height: 60px;
         font-size: var(--font-size-2xl);
     }
+
+    /* Video Modal */
+    .video-modal {
+        padding: var(--space-md);
+    }
+
+    /* Specialty Cards */
+    .specialty-card__image,
+    .specialty-card__placeholder {
+        height: 150px;
+    }
 }
 
 /* ========================================
    Small Tablets (577px - 768px)
    ======================================== */
 @media (min-width: 577px) and (max-width: 768px) {
+    /* Stats */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Services */
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Guide */
+    .guide-section {
+        grid-template-columns: 1fr;
+        gap: var(--space-2xl);
+    }
+
+    .guide-section__visual {
+        order: -1;
+    }
+
+    /* News */
+    .news-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     /* Cards */
     .card-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -303,12 +496,21 @@
         grid-template-columns: repeat(3, 1fr);
     }
 
-    /* Stats */
+    /* Legacy Stats */
     .stats {
         grid-template-columns: repeat(4, 1fr);
     }
 
     /* Footer */
+    .footer-new__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-new__brand {
+        grid-column: 1 / -1;
+        max-width: 100%;
+    }
+
     .footer__grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -322,6 +524,31 @@
         padding-inline: var(--space-xl);
     }
 
+    /* Stats */
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Services */
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Guide */
+    .guide-section {
+        gap: var(--space-2xl);
+    }
+
+    .guide-illustration {
+        width: 260px;
+        height: 260px;
+    }
+
+    /* News */
+    .news-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     /* Cards */
     .card-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -333,6 +560,10 @@
     }
 
     /* Footer */
+    .footer-new__grid {
+        grid-template-columns: 2fr 1fr 1fr;
+    }
+
     .footer__grid {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -408,6 +639,10 @@
     .hero__title {
         font-size: var(--font-size-5xl);
     }
+
+    .hero-carousel__title {
+        font-size: 3.5rem;
+    }
 }
 
 /* ========================================
@@ -416,9 +651,13 @@
 @media print {
     .header,
     .footer,
+    .footer-new,
     .nav,
     .btn,
-    .filter-tabs {
+    .filter-tabs,
+    .back-to-top,
+    .stats-section,
+    .cta-section {
         display: none !important;
     }
 
@@ -437,7 +676,7 @@
         text-decoration: underline;
     }
 
-    .card {
+    .card, .news-card, .service-card {
         box-shadow: none;
         border: 1px solid #ddd;
         break-inside: avoid;
@@ -455,7 +694,7 @@
 }
 
 /* ========================================
-   Reduced Motion (simplified - most animations already removed)
+   Reduced Motion
    ======================================== */
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -466,6 +705,12 @@
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
+
+    [data-aos] {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
 }
 
 /* ========================================
@@ -473,11 +718,11 @@
    ======================================== */
 @media (prefers-contrast: high) {
     :root {
-        --color-primary: #004d28;
+        --color-primary: #084d2a;
         --color-border: #333;
     }
 
-    .card {
+    .card, .news-card, .service-card, .stat-card {
         border: 2px solid var(--color-border);
     }
 

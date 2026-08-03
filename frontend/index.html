@@ -9,6 +9,11 @@
     <meta name="keywords" content="اتحاد الطلبة الموريتانيين, الجزائر, موريتانيا, طلاب, جامعة">
     <title>اتحاد الطلبة والمتدربين الموريتانيين بالجزائر</title>
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
@@ -22,7 +27,7 @@
 </head>
 
 <body>
-    <!-- Header -->
+    <!-- ============ HEADER ============ -->
     <header class="header header--transparent" id="siteHeader">
         <div class="container header__container">
             <a href="index.html" class="header__logo">
@@ -59,22 +64,26 @@
     <!-- Nav Backdrop -->
     <div class="nav__backdrop" id="navBackdrop"></div>
 
-    <!-- Main Content -->
+    <!-- ============ MAIN CONTENT ============ -->
     <main class="main main--no-margin">
-        <!-- Hero Carousel Section -->
+
+        <!-- ======== 1. HERO CAROUSEL ======== -->
         <section class="hero-carousel" id="heroCarousel">
             <div class="hero-carousel__slides" id="heroSlides">
-                <!-- Default slide (shown when no images from database) -->
                 <div class="hero-carousel__slide hero-carousel__slide--active" data-slide="0">
                     <div class="hero-carousel__overlay">
                         <div class="hero-carousel__content">
-                            <h1 class="hero-carousel__title animate-fade-up" data-ar="اتحاد الطلبة والمتدربين <span class='text-gold'>الموريتانيين</span> بالجزائر" data-fr="Union des Étudiants et Stagiaires <span class='text-gold'>Mauritaniens</span> en Algérie">
+                            <div class="hero-carousel__accent animate-fade-up">
+                                <span class="hero-carousel__accent-bar"></span>
+                                <span class="hero-carousel__accent-text" data-ar="أهلاً بكم في موقع الاتحاد" data-fr="Bienvenue sur le site de l'Union">أهلاً بكم في موقع الاتحاد</span>
+                            </div>
+                            <h1 class="hero-carousel__title animate-fade-up animate-delay-1" data-ar="اتحاد الطلبة والمتدربين <span class='text-gold'>الموريتانيين</span> بالجزائر" data-fr="Union des Étudiants et Stagiaires <span class='text-gold'>Mauritaniens</span> en Algérie">
                                 اتحاد الطلبة والمتدربين <span class="text-gold">الموريتانيين</span> بالجزائر
                             </h1>
-                            <p class="hero-carousel__subtitle animate-fade-up animate-delay-1" data-ar="نعمل معاً لدعم وخدمة الطلبة الموريتانيين في الجزائر وتوفير بيئة أكاديمية واجتماعية متميزة" data-fr="Nous travaillons ensemble pour soutenir les étudiants mauritaniens en Algérie et offrir un environnement académique et social de qualité">
+                            <p class="hero-carousel__subtitle animate-fade-up animate-delay-2" data-ar="نعمل معاً لدعم وخدمة الطلبة الموريتانيين في الجزائر وتوفير بيئة أكاديمية واجتماعية متميزة" data-fr="Nous travaillons ensemble pour soutenir les étudiants mauritaniens en Algérie et offrir un environnement académique et social de qualité">
                                 نعمل معاً لدعم وخدمة الطلبة الموريتانيين في الجزائر وتوفير بيئة أكاديمية واجتماعية متميزة
                             </p>
-                            <div class="btn-group btn-group--center animate-fade-up animate-delay-2">
+                            <div class="btn-group animate-fade-up animate-delay-3">
                                 <a href="about.html" class="btn btn--gold btn--lg" data-ar="تعرف علينا" data-fr="Découvrir">تعرف علينا</a>
                                 <a href="guide.html" class="btn btn--outline-white btn--lg" data-ar="دليل الطالب" data-fr="Guide étudiant">دليل الطالب</a>
                             </div>
@@ -84,51 +93,49 @@
             </div>
 
             <!-- Navigation Arrows -->
-            <button class="hero-carousel__nav hero-carousel__nav--prev" id="heroPrev" aria-label="السابق"
-                style="display: none;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
+            <button class="hero-carousel__nav hero-carousel__nav--prev" id="heroPrev" aria-label="السابق" style="display: none;">
+                <span class="hero-carousel__arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </span>
             </button>
-            <button class="hero-carousel__nav hero-carousel__nav--next" id="heroNext" aria-label="التالي"
-                style="display: none;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
+            <button class="hero-carousel__nav hero-carousel__nav--next" id="heroNext" aria-label="التالي" style="display: none;">
+                <span class="hero-carousel__arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </span>
             </button>
 
-            <!-- Dots Indicator -->
+            <!-- Dots -->
             <div class="hero-carousel__dots" id="heroDots"></div>
         </section>
 
-        <!-- Statistics Section -->
+        <!-- ======== 2. STATISTICS ======== -->
         <section class="stats-section">
             <div class="container">
                 <div class="stats-grid">
                     <div class="stat-card" data-aos="fade-up" data-aos-delay="0">
                         <div class="stat-card__icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                         </div>
                         <div class="stat-card__number" data-target="500" data-suffix="+">0</div>
                         <div class="stat-card__label" data-ar="طالب وطالبة" data-fr="Étudiants">طالب وطالبة</div>
                     </div>
                     <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
                         <div class="stat-card__icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                         </div>
                         <div class="stat-card__number" data-target="15" data-suffix="+">0</div>
                         <div class="stat-card__label" data-ar="ولاية جزائرية" data-fr="Wilayas algériennes">ولاية جزائرية</div>
                     </div>
                     <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
                         <div class="stat-card__icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 10 3 12 0v-5"/></svg>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 10 3 12 0v-5"/></svg>
                         </div>
                         <div class="stat-card__number" data-target="30" data-suffix="+">0</div>
                         <div class="stat-card__label" data-ar="تخصص جامعي" data-fr="Spécialités universitaires">تخصص جامعي</div>
                     </div>
                     <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
                         <div class="stat-card__icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                         </div>
                         <div class="stat-card__number" data-target="10" data-suffix="+">0</div>
                         <div class="stat-card__label" data-ar="سنوات من العطاء" data-fr="Années de service">سنوات من العطاء</div>
@@ -137,144 +144,163 @@
             </div>
         </section>
 
-        <!-- Services Section -->
-        <section class="section section--white" id="services">
+        <!-- ======== 3. ABOUT THE UNION ======== -->
+        <section class="section" id="aboutPreview">
+            <div class="container">
+                <div class="about-section">
+                    <div class="about-section__image" data-aos="fade-left">
+                        <img src="assets/images/logo.png" alt="اتحاد الطلبة الموريتانيين" style="object-fit: contain; background: linear-gradient(135deg, #EFF4F1, #F7FAF8);" onerror="this.parentElement.style.background='linear-gradient(135deg, #0A5C36, #084A2C)'; this.style.display='none';">
+                        <div class="about-section__badge-overlay" data-ar="منذ أكثر من 10 سنوات" data-fr="Depuis plus de 10 ans">منذ أكثر من 10 سنوات</div>
+                    </div>
+                    <div class="about-section__content" data-aos="fade-right">
+                        <span class="section-header__badge" data-ar="من نحن" data-fr="Qui sommes-nous">من نحن</span>
+                        <h2 class="about-section__title" data-ar="نعمل من أجل مستقبل أفضل لطلبتنا" data-fr="Nous travaillons pour un meilleur avenir de nos étudiants">نعمل من أجل مستقبل أفضل لطلبتنا</h2>
+                        <p class="about-section__text" data-ar="اتحاد الطلبة والمتدربين الموريتانيين بالجزائر هو منظمة طلابية تمثيلية تعمل على خدمة ودعم الطلبة الموريتانيين في الجزائر، من خلال توفير التوجيه الأكاديمي والمساعدة الإدارية وتنظيم الفعاليات الثقافية والاجتماعية." data-fr="L'Union des Étudiants et Stagiaires Mauritaniens en Algérie est une organisation étudiante représentative qui travaille à servir et soutenir les étudiants mauritaniens en Algérie, à travers l'orientation académique, l'assistance administrative et l'organisation d'activités culturelles et sociales.">
+                            اتحاد الطلبة والمتدربين الموريتانيين بالجزائر هو منظمة طلابية تمثيلية تعمل على خدمة ودعم الطلبة الموريتانيين في الجزائر، من خلال توفير التوجيه الأكاديمي والمساعدة الإدارية وتنظيم الفعاليات الثقافية والاجتماعية.
+                        </p>
+                        <div class="about-section__features">
+                            <div class="about-feature">
+                                <div class="about-feature__icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                </div>
+                                <span class="about-feature__text" data-ar="حماية حقوق الطلبة" data-fr="Protection des droits des étudiants">حماية حقوق الطلبة</span>
+                            </div>
+                            <div class="about-feature">
+                                <div class="about-feature__icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                </div>
+                                <span class="about-feature__text" data-ar="تمثيل رسمي" data-fr="Représentation officielle">تمثيل رسمي</span>
+                            </div>
+                            <div class="about-feature">
+                                <div class="about-feature__icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 10 3 12 0v-5"/></svg>
+                                </div>
+                                <span class="about-feature__text" data-ar="دعم أكاديمي" data-fr="Soutien académique">دعم أكاديمي</span>
+                            </div>
+                            <div class="about-feature">
+                                <div class="about-feature__icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                </div>
+                                <span class="about-feature__text" data-ar="أنشطة اجتماعية" data-fr="Activités sociales">أنشطة اجتماعية</span>
+                            </div>
+                        </div>
+                        <a href="about.html" class="btn btn--primary btn--lg" data-ar="اعرف المزيد" data-fr="En savoir plus">اعرف المزيد</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== 4. STUDENT GUIDE ======== -->
+        <section class="section section--alt" id="studentGuide">
+            <div class="container">
+                <div class="guide-section">
+                    <div class="guide-section__content" data-aos="fade-right">
+                        <span class="section-header__badge" data-ar="دليل شامل" data-fr="Guide complet">دليل شامل</span>
+                        <h2 class="guide-section__title" data-ar="دليل الطالب الموريتاني في الجزائر" data-fr="Guide de l'étudiant mauritanien en Algérie">دليل الطالب الموريتاني في الجزائر</h2>
+                        <p class="guide-section__text" data-ar="كل ما يحتاجه الطالب الموريتاني للدراسة في الجزائر في مكان واحد، ابتداءً من التسجيل وحتى الحياة الجامعية." data-fr="Tout ce dont l'étudiant mauritanien a besoin pour étudier en Algérie en un seul endroit, de l'inscription à la vie universitaire.">
+                            كل ما يحتاجه الطالب الموريتاني للدراسة في الجزائر في مكان واحد، ابتداءً من التسجيل وحتى الحياة الجامعية.
+                        </p>
+                        <div class="guide-features">
+                            <div class="guide-feature">
+                                <div class="guide-feature__icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="guide-feature__title" data-ar="إجراءات التسجيل" data-fr="Procédures d'inscription">إجراءات التسجيل</h4>
+                                    <p class="guide-feature__desc" data-ar="خطوات التسجيل والقبول في الجامعات الجزائرية" data-fr="Étapes d'inscription et d'admission dans les universités algériennes">خطوات التسجيل والقبول في الجامعات الجزائرية</p>
+                                </div>
+                            </div>
+                            <div class="guide-feature">
+                                <div class="guide-feature__icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="guide-feature__title" data-ar="السكن والإقامة" data-fr="Logement et résidence">السكن والإقامة</h4>
+                                    <p class="guide-feature__desc" data-ar="كل ما يتعلق بالسكن الجامعي والإقامة" data-fr="Tout sur le logement universitaire et la résidence">كل ما يتعلق بالسكن الجامعي والإقامة</p>
+                                </div>
+                            </div>
+                            <div class="guide-feature">
+                                <div class="guide-feature__icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                </div>
+                                <div>
+                                    <h4 class="guide-feature__title" data-ar="الحياة اليومية" data-fr="Vie quotidienne">الحياة اليومية</h4>
+                                    <p class="guide-feature__desc" data-ar="نصائح عملية للحياة اليومية في الجزائر" data-fr="Conseils pratiques pour la vie quotidienne en Algérie">نصائح عملية للحياة اليومية في الجزائر</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <a href="guide.html" class="btn btn--primary btn--lg" data-ar="اقرأ الدليل" data-fr="Lire le guide">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                اقرأ الدليل
+                            </a>
+                        </div>
+                    </div>
+                    <div class="guide-section__visual" data-aos="fade-left">
+                        <div class="guide-section__card">
+                            <h3 class="guide-section__card-title" data-ar="ماذا ستجد في الدليل؟" data-fr="Que trouverez-vous dans le guide ?">ماذا ستجد في الدليل؟</h3>
+                            <div class="guide-section__card-list">
+                                <div class="guide-section__card-item" data-ar="الحسابات البنكية والتحويلات" data-fr="Comptes bancaires et virements">الحسابات البنكية والتحويلات</div>
+                                <div class="guide-section__card-item" data-ar="المواصلات والتنقل" data-fr="Transports et déplacements">المواصلات والتنقل</div>
+                                <div class="guide-section__card-item" data-ar="الوثائق والمستندات المطلوبة" data-fr="Documents requis">الوثائق والمستندات المطلوبة</div>
+                                <div class="guide-section__card-item" data-ar="السكن والإقامة الجامعية" data-fr="Logement et résidence universitaire">السكن والإقامة الجامعية</div>
+                                <div class="guide-section__card-item" data-ar="نصائح الحياة اليومية" data-fr="Conseils de vie quotidienne">نصائح الحياة اليومية</div>
+                                <div class="guide-section__card-item" data-ar="الثقافة والاندماج" data-fr="Culture et intégration">الثقافة والاندماج</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== 5. SERVICES ======== -->
+        <section class="section" id="services">
             <div class="container">
                 <div class="section-header" data-aos="fade-up">
                     <span class="section-header__badge" data-ar="ما نقدمه" data-fr="Nos services">ما نقدمه</span>
-                    <h2 class="section-header__title" data-ar="الخدمات" data-fr="Services">الخدمات</h2>
+                    <h2 class="section-header__title" data-ar="خدماتنا" data-fr="Nos Services">خدماتنا</h2>
                     <div class="section-header__line"></div>
                     <p class="section-header__subtitle" data-ar="نسعى لتقديم أفضل الخدمات لدعم الطلبة الموريتانيين في مسيرتهم الأكاديمية" data-fr="Nous nous efforçons de fournir les meilleurs services pour soutenir les étudiants mauritaniens">نسعى لتقديم أفضل الخدمات لدعم الطلبة الموريتانيين في مسيرتهم الأكاديمية</p>
                 </div>
 
                 <div class="services-grid">
                     <div class="service-card" data-aos="fade-up" data-aos-delay="0">
-                        <div class="service-card__icon-wrap">
-                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                        <div class="service-card__icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
                         </div>
                         <h3 class="service-card__title" data-ar="التوجيه والإرشاد" data-fr="Orientation et conseil">التوجيه والإرشاد</h3>
-                        <p class="service-card__text" data-ar="تقديم الإرشادات الأكاديمية والإدارية ومساعدة الطلبة على الاندماج في الحياة الجامعية." data-fr="Fournir des orientations académiques et administratives pour faciliter l'intégration des étudiants.">تقديم الإرشادات الأكاديمية والإدارية ومساعدة الطلبة على الاندماج في الحياة الجامعية.</p>
-                        <div class="service-card__decoration"></div>
+                        <p class="service-card__desc" data-ar="تقديم الإرشادات الأكاديمية والإدارية ومساعدة الطلبة على الاندماج في الحياة الجامعية." data-fr="Fournir des orientations académiques et administratives pour faciliter l'intégration des étudiants.">تقديم الإرشادات الأكاديمية والإدارية ومساعدة الطلبة على الاندماج في الحياة الجامعية.</p>
                     </div>
 
                     <div class="service-card" data-aos="fade-up" data-aos-delay="100">
-                        <div class="service-card__icon-wrap">
-                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <div class="service-card__icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                         </div>
                         <h3 class="service-card__title" data-ar="استقبال الطلبة" data-fr="Accueil des étudiants">استقبال الطلبة</h3>
-                        <p class="service-card__text" data-ar="استقبال الطلبة الجدد منذ وصولهم إلى الجزائر ومرافقتهم في خطوات التسجيل." data-fr="Accueil des nouveaux étudiants dès leur arrivée en Algérie et accompagnement dans les démarches d'inscription.">استقبال الطلبة الجدد منذ وصولهم إلى الجزائر ومرافقتهم في خطوات التسجيل.</p>
-                        <div class="service-card__decoration"></div>
+                        <p class="service-card__desc" data-ar="استقبال الطلبة الجدد منذ وصولهم إلى الجزائر ومرافقتهم في خطوات التسجيل." data-fr="Accueil des nouveaux étudiants dès leur arrivée en Algérie et accompagnement dans les démarches d'inscription.">استقبال الطلبة الجدد منذ وصولهم إلى الجزائر ومرافقتهم في خطوات التسجيل.</p>
                     </div>
 
                     <div class="service-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="service-card__icon-wrap">
-                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                        <div class="service-card__icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                         </div>
                         <h3 class="service-card__title" data-ar="استخراج الوثائق" data-fr="Obtention de documents">استخراج الوثائق</h3>
-                        <p class="service-card__text" data-ar="المساعدة في استخراج مختلف الوثائق والشهادات والإجراءات الإدارية." data-fr="Aide à l'obtention de divers documents, certificats et procédures administratives.">المساعدة في استخراج مختلف الوثائق والشهادات والإجراءات الإدارية.</p>
-                        <div class="service-card__decoration"></div>
+                        <p class="service-card__desc" data-ar="المساعدة في استخراج مختلف الوثائق والشهادات والإجراءات الإدارية." data-fr="Aide à l'obtention de divers documents, certificats et procédures administratives.">المساعدة في استخراج مختلف الوثائق والشهادات والإجراءات الإدارية.</p>
                     </div>
 
                     <div class="service-card" data-aos="fade-up" data-aos-delay="300">
-                        <div class="service-card__icon-wrap">
-                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        <div class="service-card__icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
                         </div>
                         <h3 class="service-card__title" data-ar="متابعة شؤون الطلبة" data-fr="Suivi des affaires étudiantes">متابعة شؤون الطلبة</h3>
-                        <p class="service-card__text" data-ar="متابعة مشاكل الطلبة والعمل على إيجاد الحلول بالتنسيق مع الجهات المختصة." data-fr="Suivi des problèmes des étudiants et recherche de solutions en coordination avec les autorités compétentes.">متابعة مشاكل الطلبة والعمل على إيجاد الحلول بالتنسيق مع الجهات المختصة.</p>
-                        <div class="service-card__decoration"></div>
+                        <p class="service-card__desc" data-ar="متابعة مشاكل الطلبة والعمل على إيجاد الحلول بالتنسيق مع الجهات المختصة." data-fr="Suivi des problèmes des étudiants et recherche de solutions en coordination avec les autorités compétentes.">متابعة مشاكل الطلبة والعمل على إيجاد الحلول بالتنسيق مع الجهات المختصة.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Student Guide Section -->
-        <section class="section section--light" id="studentGuide">
-            <div class="container">
-                <div class="guide-section">
-                    <div class="guide-section__visual" data-aos="fade-left">
-                        <div class="guide-illustration">
-                            <div class="guide-illustration__circle"></div>
-                            <div class="guide-illustration__icon">
-                                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                                    <line x1="12" y1="6" x2="12" y2="12"/>
-                                    <line x1="9" y1="9" x2="15" y2="9"/>
-                                </svg>
-                            </div>
-                            <div class="guide-illustration__dots"></div>
-                        </div>
-                    </div>
-                    <div class="guide-section__content" data-aos="fade-right">
-                        <div class="guide-glass-card">
-                            <span class="section-header__badge" data-ar="دليل شامل" data-fr="Guide complet">دليل شامل</span>
-                            <h2 class="guide-section__title" data-ar="دليل الطالب" data-fr="Guide de l'étudiant">دليل الطالب</h2>
-                            <p class="guide-section__text" data-ar="كل ما يحتاجه الطالب الموريتاني للدراسة في الجزائر في مكان واحد، ابتداءً من التسجيل وحتى الحياة الجامعية." data-fr="Tout ce dont l'étudiant mauritanien a besoin pour étudier en Algérie en un seul endroit, de l'inscription à la vie universitaire.">
-                                كل ما يحتاجه الطالب الموريتاني للدراسة في الجزائر في مكان واحد، ابتداءً من التسجيل وحتى الحياة الجامعية.
-                            </p>
-                            <div class="guide-section__features">
-                                <div class="guide-feature">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                    <span data-ar="إجراءات التسجيل والقبول" data-fr="Procédures d'inscription et d'admission">إجراءات التسجيل والقبول</span>
-                                </div>
-                                <div class="guide-feature">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                    <span data-ar="السكن والإقامة الجامعية" data-fr="Logement et résidence universitaire">السكن والإقامة الجامعية</span>
-                                </div>
-                                <div class="guide-feature">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                    <span data-ar="الوثائق والمستندات المطلوبة" data-fr="Documents requis">الوثائق والمستندات المطلوبة</span>
-                                </div>
-                                <div class="guide-feature">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                    <span data-ar="الحياة الجامعية والاجتماعية" data-fr="Vie universitaire et sociale">الحياة الجامعية والاجتماعية</span>
-                                </div>
-                            </div>
-                            <div class="btn-group">
-                                <a href="guide.html" class="btn btn--primary btn--lg" data-ar="تحميل الدليل" data-fr="Télécharger le guide">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                                    تحميل الدليل
-                                </a>
-                                <a href="guide.html" class="btn btn--outline btn--lg" data-ar="قراءة الدليل" data-fr="Lire le guide">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                    قراءة الدليل
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Specialties Section -->
-        <section class="section section--white" id="specialties">
-            <div class="container">
-                <div class="section-header" data-aos="fade-up">
-                    <span class="section-header__badge" data-ar="التخصصات" data-fr="Spécialités">التخصصات</span>
-                    <h2 class="section-header__title" data-ar="التخصصات الجامعية" data-fr="Spécialités Universitaires">التخصصات الجامعية</h2>
-                    <div class="section-header__line"></div>
-                    <p class="section-header__subtitle" data-ar="تعرف على التخصصات المتاحة للطلبة الموريتانيين في الجامعات الجزائرية" data-fr="Découvrez les spécialités disponibles pour les étudiants mauritaniens dans les universités algériennes">تعرف على التخصصات المتاحة للطلبة الموريتانيين في الجامعات الجزائرية</p>
-                </div>
-
-                <div class="specialties-grid" id="specialtiesGrid">
-                    <!-- Loaded dynamically from API -->
-                    <div class="specialty-card-new" data-fallback="true" data-aos="fade-up">
-                        <div class="specialty-card-new__image-wrap">
-                            <div class="specialty-card-new__placeholder">
-                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 10 3 12 0v-5"/></svg>
-                            </div>
-                        </div>
-                        <div class="specialty-card-new__body">
-                            <h3 class="specialty-card-new__title" data-ar="جاري تحميل التخصصات..." data-fr="Chargement des spécialités...">جاري تحميل التخصصات...</h3>
-                            <p class="specialty-card-new__desc" data-ar="يتم تحميل التخصصات من الخادم" data-fr="Chargement des spécialités depuis le serveur">يتم تحميل التخصصات من الخادم</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Latest News Section -->
-        <section class="section section--light" id="latestNewsSection">
+        <!-- ======== 6. LATEST NEWS ======== -->
+        <section class="section section--alt" id="latestNewsSection">
             <div class="container">
                 <div class="section-header" data-aos="fade-up">
                     <span class="section-header__badge" data-ar="آخر المستجدات" data-fr="Dernières nouvelles">آخر المستجدات</span>
@@ -284,108 +310,215 @@
                 </div>
 
                 <div class="news-grid" id="latestNews">
-                    <!-- Fallback content replaced by JavaScript when API is available -->
                     <article class="news-card" data-aos="fade-up">
                         <div class="news-card__body">
-                            <span class="news-card__tag">أخبار</span>
+                            <span class="news-card__date" data-ar="جاري التحميل..." data-fr="Chargement...">جاري التحميل...</span>
                             <h3 class="news-card__title" data-ar="جاري تحميل الأخبار..." data-fr="Chargement des actualités...">جاري تحميل الأخبار...</h3>
-                            <p class="news-card__text" data-ar="يتم تحميل آخر الأخبار من الخادم..." data-fr="Chargement des dernières actualités...">يتم تحميل آخر الأخبار من الخادم...</p>
+                            <p class="news-card__excerpt" data-ar="يتم تحميل آخر الأخبار من الخادم..." data-fr="Chargement des dernières actualités...">يتم تحميل آخر الأخبار من الخادم...</p>
                         </div>
                     </article>
                 </div>
 
-                <div class="text-center mt-4" data-aos="fade-up">
+                <div class="text-center" style="margin-top: var(--space-3xl);" data-aos="fade-up">
                     <a href="news.html" class="btn btn--outline btn--lg" data-ar="عرض جميع الأخبار" data-fr="Voir toutes les actualités">
                         عرض جميع الأخبار
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- CTA Section -->
-        <section class="cta-section">
+        <!-- ======== 7. SPECIALTIES ======== -->
+        <section class="section" id="specialties">
             <div class="container">
-                <div class="cta-content" data-aos="zoom-in">
-                    <h2 class="cta-content__title" data-ar="هل تحتاج إلى مساعدة؟" data-fr="Besoin d'aide ?">هل تحتاج إلى مساعدة؟</h2>
-                    <p class="cta-content__text" data-ar="نحن هنا لمساعدتك في كل ما يتعلق بمسيرتك الأكاديمية في الجزائر" data-fr="Nous sommes là pour vous aider dans tout ce qui concerne votre parcours académique en Algérie">نحن هنا لمساعدتك في كل ما يتعلق بمسيرتك الأكاديمية في الجزائر</p>
-                    <a href="contact.html" class="btn btn--gold btn--lg" data-ar="تواصل معنا" data-fr="Contactez-nous">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                        تواصل معنا
-                    </a>
+                <div class="section-header" data-aos="fade-up">
+                    <span class="section-header__badge" data-ar="التخصصات" data-fr="Spécialités">التخصصات</span>
+                    <h2 class="section-header__title" data-ar="التخصصات الجامعية" data-fr="Spécialités Universitaires">التخصصات الجامعية</h2>
+                    <div class="section-header__line"></div>
+                    <p class="section-header__subtitle" data-ar="تعرف على التخصصات المتاحة للطلبة الموريتانيين في الجامعات الجزائرية" data-fr="Découvrez les spécialités disponibles pour les étudiants mauritaniens dans les universités algériennes">تعرف على التخصصات المتاحة للطلبة الموريتانيين في الجامعات الجزائرية</p>
+                </div>
+
+                <div class="specialties-grid" id="specialtiesGrid">
+                    <div class="specialty-card" data-fallback="true" data-aos="fade-up">
+                        <div class="specialty-card__body">
+                            <h3 class="specialty-card__title" data-ar="جاري تحميل التخصصات..." data-fr="Chargement des spécialités...">جاري تحميل التخصصات...</h3>
+                            <p class="specialty-card__desc" data-ar="يتم تحميل التخصصات من الخادم" data-fr="Chargement des spécialités depuis le serveur">يتم تحميل التخصصات من الخادم</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== 8. GALLERY ======== -->
+        <section class="section section--alt" id="gallery">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <span class="section-header__badge" data-ar="معرض الصور" data-fr="Galerie photos">معرض الصور</span>
+                    <h2 class="section-header__title" data-ar="من أنشطتنا" data-fr="Nos Activités">من أنشطتنا</h2>
+                    <div class="section-header__line"></div>
+                    <p class="section-header__subtitle" data-ar="لمحات من فعاليات وأنشطة الاتحاد" data-fr="Aperçus des événements et activités de l'Union">لمحات من فعاليات وأنشطة الاتحاد</p>
+                </div>
+
+                <div class="gallery-grid" data-aos="fade-up">
+                    <div class="gallery-item gallery-item--wide">
+                        <img src="assets/images/logo.png" alt="نشاط الاتحاد" style="object-fit: contain; background: linear-gradient(135deg, rgba(10,92,54,0.08), rgba(201,162,39,0.05));" onerror="this.style.background='linear-gradient(135deg, #0A5C36, #084A2C)'; this.style.objectFit='cover';">
+                        <div class="gallery-item__overlay">
+                            <span class="gallery-item__caption" data-ar="فعاليات الاتحاد" data-fr="Événements de l'Union">فعاليات الاتحاد</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/logo.png" alt="لقاء طلابي" style="object-fit: contain; background: var(--color-bg-muted);" onerror="this.style.background='#0E7E45';">
+                        <div class="gallery-item__overlay">
+                            <span class="gallery-item__caption" data-ar="لقاءات طلابية" data-fr="Rencontres étudiantes">لقاءات طلابية</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/logo.png" alt="نشاط ثقافي" style="object-fit: contain; background: var(--color-bg-muted);" onerror="this.style.background='#084A2C';">
+                        <div class="gallery-item__overlay">
+                            <span class="gallery-item__caption" data-ar="أنشطة ثقافية" data-fr="Activités culturelles">أنشطة ثقافية</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/images/logo.png" alt="استقبال" style="object-fit: contain; background: var(--color-bg-muted);" onerror="this.style.background='#C9A227';">
+                        <div class="gallery-item__overlay">
+                            <span class="gallery-item__caption" data-ar="استقبال الطلبة" data-fr="Accueil des étudiants">استقبال الطلبة</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item gallery-item--wide">
+                        <img src="assets/images/logo.png" alt="فعالية" style="object-fit: contain; background: linear-gradient(135deg, rgba(10,92,54,0.05), rgba(201,162,39,0.08));" onerror="this.style.background='linear-gradient(135deg, #084A2C, #063D24)'; this.style.objectFit='cover';">
+                        <div class="gallery-item__overlay">
+                            <span class="gallery-item__caption" data-ar="أنشطة اجتماعية" data-fr="Activités sociales">أنشطة اجتماعية</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== 9. CONTACT CTA ======== -->
+        <section class="cta-section cta-section--gradient">
+            <div class="container">
+                <div class="cta-section__content" data-aos="zoom-in">
+                    <div class="cta-section__icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    </div>
+                    <h2 class="cta-section__title" data-ar="هل تحتاج إلى مساعدة؟" data-fr="Besoin d'aide ?">هل تحتاج إلى مساعدة؟</h2>
+                    <p class="cta-section__text" data-ar="نحن هنا لمساعدتك في كل ما يتعلق بمسيرتك الأكاديمية في الجزائر. لا تتردد في التواصل معنا." data-fr="Nous sommes là pour vous aider dans tout ce qui concerne votre parcours académique en Algérie. N'hésitez pas à nous contacter.">نحن هنا لمساعدتك في كل ما يتعلق بمسيرتك الأكاديمية في الجزائر. لا تتردد في التواصل معنا.</p>
+                    <div class="btn-group btn-group--center">
+                        <a href="contact.html" class="btn btn--gold btn--lg" data-ar="تواصل معنا" data-fr="Contactez-nous">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            تواصل معنا
+                        </a>
+                        <a href="services.html" class="btn btn--ghost btn--lg" data-ar="استكشف خدماتنا" data-fr="Découvrir nos services">استكشف خدماتنا</a>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
+    <!-- ============ FOOTER ============ -->
     <footer class="footer-new">
-        <div class="container">
-            <div class="footer-new__grid">
-                <div class="footer-new__brand">
-                    <div class="footer-new__logo">
-                        <img src="assets/images/logo.png" alt="شعار الاتحاد" onerror="this.style.display='none'">
-                        <span data-ar="اتحاد الطلبة والمتدربين الموريتانيين بالجزائر" data-fr="Union des Étudiants et Stagiaires Mauritaniens en Algérie">اتحاد الطلبة والمتدربين الموريتانيين بالجزائر</span>
+        <div class="footer__top">
+            <div class="container">
+                <div class="footer__grid">
+                    <div class="footer__brand">
+                        <div class="footer__logo">
+                            <img src="assets/images/logo.png" alt="شعار الاتحاد" onerror="this.style.display='none'">
+                            <span class="footer__logo-text" data-ar="اتحاد الطلبة والمتدربين الموريتانيين بالجزائر" data-fr="Union des Étudiants et Stagiaires Mauritaniens en Algérie">اتحاد الطلبة والمتدربين الموريتانيين بالجزائر</span>
+                        </div>
+                        <p class="footer__desc" data-ar="منظمة طلابية تمثيلية تعمل على خدمة ودعم الطلبة الموريتانيين في الجزائر وتوفير بيئة تعليمية واجتماعية متميزة." data-fr="Organisation étudiante représentative travaillant à servir et soutenir les étudiants mauritaniens en Algérie.">
+                            منظمة طلابية تمثيلية تعمل على خدمة ودعم الطلبة الموريتانيين في الجزائر وتوفير بيئة تعليمية واجتماعية متميزة.
+                        </p>
+                        <div class="footer__social">
+                            <a href="#" class="footer__social-link" aria-label="فيسبوك">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                            </a>
+                            <a href="#" class="footer__social-link" aria-label="انستغرام">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                            </a>
+                            <a href="#" class="footer__social-link" aria-label="تويتر">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                            </a>
+                            <a href="#" class="footer__social-link" aria-label="يوتيوب">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 4-8 4z"/></svg>
+                            </a>
+                        </div>
                     </div>
-                    <p class="footer-new__about" data-ar="منظمة طلابية تهدف لخدمة ودعم الطلبة الموريتانيين في الجزائر وتوفير بيئة تعليمية واجتماعية متميزة." data-fr="Organisation étudiante visant à servir et soutenir les étudiants mauritaniens en Algérie et à fournir un environnement éducatif et social de qualité.">
-                        منظمة طلابية تهدف لخدمة ودعم الطلبة الموريتانيين في الجزائر وتوفير بيئة تعليمية واجتماعية متميزة.
-                    </p>
-                    <div class="footer-new__social">
-                        <a href="#" class="footer-social-btn" aria-label="فيسبوك">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                        </a>
-                        <a href="#" class="footer-social-btn" aria-label="انستغرام">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-                        </a>
-                        <a href="#" class="footer-social-btn" aria-label="تويتر">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        </a>
-                        <a href="#" class="footer-social-btn" aria-label="يوتيوب">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 4-8 4z"/></svg>
-                        </a>
-                    </div>
-                </div>
 
-                <div class="footer-new__links">
-                    <h4 data-ar="روابط سريعة" data-fr="Liens rapides">روابط سريعة</h4>
-                    <ul>
-                        <li><a href="about.html" data-ar="عن الاتحاد" data-fr="À propos">عن الاتحاد</a></li>
-                        <li><a href="services.html" data-ar="الخدمات" data-fr="Services">الخدمات</a></li>
-                        <li><a href="guide.html" data-ar="دليل الطالب" data-fr="Guide étudiant">دليل الطالب</a></li>
-                        <li><a href="programs.html" data-ar="البرامج الأكاديمية" data-fr="Programmes académiques">البرامج الأكاديمية</a></li>
-                        <li><a href="news.html" data-ar="الأخبار والفعاليات" data-fr="Actualités et événements">الأخبار والفعاليات</a></li>
-                    </ul>
-                </div>
+                    <div>
+                        <h4 class="footer__heading" data-ar="روابط سريعة" data-fr="Liens rapides">روابط سريعة</h4>
+                        <div class="footer__links">
+                            <a href="about.html" class="footer__link" data-ar="عن الاتحاد" data-fr="À propos">عن الاتحاد</a>
+                            <a href="services.html" class="footer__link" data-ar="الخدمات" data-fr="Services">الخدمات</a>
+                            <a href="guide.html" class="footer__link" data-ar="دليل الطالب" data-fr="Guide étudiant">دليل الطالب</a>
+                            <a href="programs.html" class="footer__link" data-ar="البرامج الأكاديمية" data-fr="Programmes">البرامج الأكاديمية</a>
+                            <a href="news.html" class="footer__link" data-ar="الأخبار" data-fr="Actualités">الأخبار</a>
+                        </div>
+                    </div>
 
-                <div class="footer-new__contact">
-                    <h4 data-ar="تواصل معنا" data-fr="Contactez-nous">تواصل معنا</h4>
-                    <div class="footer-contact-item">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                        <span>contact@uema-dz.org</span>
+                    <div>
+                        <h4 class="footer__heading" data-ar="موارد مفيدة" data-fr="Ressources utiles">موارد مفيدة</h4>
+                        <div class="footer__links">
+                            <a href="guide.html" class="footer__link" data-ar="إجراءات التسجيل" data-fr="Procédures d'inscription">إجراءات التسجيل</a>
+                            <a href="programs.html" class="footer__link" data-ar="التخصصات الجامعية" data-fr="Spécialités universitaires">التخصصات الجامعية</a>
+                            <a href="contact.html" class="footer__link" data-ar="اتصل بنا" data-fr="Contactez-nous">اتصل بنا</a>
+                            <a href="news.html" class="footer__link" data-ar="الفعاليات" data-fr="Événements">الفعاليات</a>
+                        </div>
                     </div>
-                    <div class="footer-contact-item">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                        <span>+213 XX XX XX XX</span>
-                    </div>
-                    <div class="footer-contact-item">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                        <span data-ar="الجزائر العاصمة، الجزائر" data-fr="Alger, Algérie">الجزائر العاصمة، الجزائر</span>
+
+                    <div>
+                        <h4 class="footer__heading" data-ar="تواصل معنا" data-fr="Contactez-nous">تواصل معنا</h4>
+                        <div class="footer__contact-item">
+                            <div class="footer__contact-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            </div>
+                            <span>contact@uema-dz.org</span>
+                        </div>
+                        <div class="footer__contact-item">
+                            <div class="footer__contact-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            </div>
+                            <span>+213 XX XX XX XX</span>
+                        </div>
+                        <div class="footer__contact-item">
+                            <div class="footer__contact-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            </div>
+                            <span data-ar="الجزائر العاصمة، الجزائر" data-fr="Alger, Algérie">الجزائر العاصمة، الجزائر</span>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="footer-new__bottom">
-                <p data-ar="&copy; 2026 اتحاد الطلبة والمتدربين الموريتانيين بالجزائر. جميع الحقوق محفوظة." data-fr="&copy; 2026 Union des Étudiants et Stagiaires Mauritaniens en Algérie. Tous droits réservés.">&copy; 2026 اتحاد الطلبة والمتدربين الموريتانيين بالجزائر. جميع الحقوق محفوظة.</p>
+        <div class="footer__bottom">
+            <div class="container">
+                <div class="footer__bottom-inner">
+                    <p data-ar="&copy; 2026 اتحاد الطلبة والمتدربين الموريتانيين بالجزائر. جميع الحقوق محفوظة." data-fr="&copy; 2026 Union des Étudiants et Stagiaires Mauritaniens en Algérie. Tous droits réservés.">&copy; 2026 اتحاد الطلبة والمتدربين الموريتانيين بالجزائر. جميع الحقوق محفوظة.</p>
+                    <div class="footer__bottom-links">
+                        <a href="#" data-ar="سياسة الخصوصية" data-fr="Politique de confidentialité">سياسة الخصوصية</a>
+                        <a href="#" data-ar="شروط الاستخدام" data-fr="Conditions d'utilisation">شروط الاستخدام</a>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
 
-    <!-- Back to Top Button -->
+    <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="18 15 12 9 6 15"></polyline>
         </svg>
     </button>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+        <button class="video-modal__close" id="videoClose" aria-label="إغلاق">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <div class="video-modal__content">
+            <iframe id="videoFrame" allowfullscreen></iframe>
+        </div>
+    </div>
 
     <!-- AOS Animation Library -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

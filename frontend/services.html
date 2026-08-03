@@ -10,16 +10,17 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
+    <header class="header" id="siteHeader">
         <div class="container header__container">
             <a href="index.html" class="header__logo">
                 <img src="assets/images/logo.png" alt="شعار اتحاد الطلبة الموريتانيين" onerror="this.style.display='none'">
-                <span class="header__logo-text" data-ar="اتحاد الطلبة والمتدربين الموريتانيين بالجزائر" data-fr="Union des Étudiants et Stagiaires Mauritaniens en Algérie">اتحاد الطلبة الموريتانيين</span>
+                <span class="header__logo-text" data-ar="اتحاد الطلبة والمتدربين الموريتانيين بالجزائر" data-fr="Union des Étudiants et Stagiaires Mauritaniens en Algérie">اتحاد الطلبة والمتدربين الموريتانيين بالجزائر</span>
             </a>
-
             <nav class="nav" id="mainNav">
                 <button class="nav__toggle" id="navToggle" aria-label="القائمة" aria-expanded="false">
                     <span></span>
@@ -45,7 +46,6 @@
             </nav>
         </div>
     </header>
-    <!-- Nav Backdrop -->
     <div class="nav__backdrop" id="navBackdrop"></div>
 
     <!-- Main Content -->
@@ -238,43 +238,9 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer__grid">
-                <div class="footer__section">
-                    <h4 data-ar="اتحاد الطلبة الموريتانيين" data-fr="Union des Étudiants Mauritaniens">اتحاد الطلبة الموريتانيين</h4>
-                    <p data-ar="منظمة طلابية تهدف لخدمة ودعم الطلبة الموريتانيين في الجزائر." data-fr="Organisation étudiante visant à servir et soutenir les étudiants mauritaniens en Algérie.">منظمة طلابية تهدف لخدمة ودعم الطلبة الموريتانيين في الجزائر.</p>
-                    <div class="footer__social">
-                        <a href="#" class="footer__social-link" aria-label="فيسبوك">📘</a>
-                        <a href="#" class="footer__social-link" aria-label="انستغرام">📷</a>
-                        <a href="#" class="footer__social-link" aria-label="تويتر">🐦</a>
-                    </div>
-                </div>
-
-                <div class="footer__section">
-                    <h4 data-ar="روابط سريعة" data-fr="Liens Rapides">روابط سريعة</h4>
-                    <ul>
-                        <li><a href="about.html" data-ar="من نحن" data-fr="À propos">من نحن</a></li>
-                        <li><a href="guide.html" data-ar="دليل الطالب" data-fr="Guide étudiant">دليل الطالب</a></li>
-                        <li><a href="programs.html" data-ar="البرامج الأكاديمية" data-fr="Programmes académiques">البرامج الأكاديمية</a></li>
-                        <li><a href="services.html" data-ar="الخدمات" data-fr="Services">الخدمات</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer__section">
-                    <h4 data-ar="تواصل معنا" data-fr="Contactez-nous">تواصل معنا</h4>
-                    <ul>
-                        <li>📧 contact@uema-dz.org</li>
-                        <li>📱 +213 XX XX XX XX</li>
-                        <li data-ar="📍 الجزائر العاصمة، الجزائر" data-fr="📍 Alger, Algérie">📍 الجزائر العاصمة، الجزائر</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer__bottom">
-                <p data-ar="© 2026 اتحاد الطلبة الموريتانيين بالجزائر. جميع الحقوق محفوظة." data-fr="© 2026 Union des Étudiants Mauritaniens en Algérie. Tous droits réservés.">© 2026 اتحاد الطلبة الموريتانيين بالجزائر. جميع الحقوق محفوظة.</p>
-            </div>
+            <p data-ar="&copy; 2026 اتحاد الطلبة والمتدربين الموريتانيين بالجزائر. جميع الحقوق محفوظة." data-fr="&copy; 2026 Union des Étudiants et Stagiaires Mauritaniens en Algérie. Tous droits réservés.">&copy; 2026 اتحاد الطلبة والمتدربين الموريتانيين بالجزائر. جميع الحقوق محفوظة.</p>
         </div>
     </footer>
 
